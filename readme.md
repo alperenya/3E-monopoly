@@ -1,11 +1,11 @@
 # CS319-03 PROJECT Koronapoly GROUP 3E
 
 Members:
-	Ertuğrul Aktaş 21802801
-	Muhammed Doğancan Yılmazoğlu 21801804
-	Osman Buğra Aydın 21704100
-	Oğuzhan Angın 21501910
-	Mehmet Alperen Yalçın 21502273
+	- Ertuğrul Aktaş 21802801
+	- Muhammed Doğancan Yılmazoğlu 21801804
+	- Osman Buğra Aydın 21704100
+	- Oğuzhan Angın 21501910
+	- Mehmet Alperen Yalçın 21502273
 
 Game: 
 	Monopoly
