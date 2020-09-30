@@ -1,19 +1,19 @@
 # CS319-03 PROJECT Koronapoly GROUP 3E
 
-Members:
+### Members
 	- Ertuğrul Aktaş 21802801
 	- Muhammed Doğancan Yılmazoğlu 21801804
 	- Osman Buğra Aydın 21704100
 	- Oğuzhan Angın 21501910
 	- Mehmet Alperen Yalçın 21502273
 
-Game: 
+### Game
 	Monopoly
 	
-Game Theme: 
+### Game Theme
 	Covid-19
 	
-Planned Programming Language: 
+### Planned Programming Language
 	Java
 
 The game will follow the basic rules of the monopoly with a few twists that will challenge the players.
