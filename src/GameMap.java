@@ -3,12 +3,12 @@ import java.util.Hashtable;
 public class GameMap {
     private Cell[] cells;
     private Card[] cards;
-    private Hashtable colors;
+    private Hashtable<Cell, String> colors;
 
     public GameMap(){}
     public Cell[] getCells(){ return cells;}
     public Card[] getCards(){ return cards;} //Was not on the diagram. Newly added
-    public Hashtable getColors(){ return colors;} //Was not on the diagram. Newly added
+    public Hashtable<Cell, String> getColors(){ return colors;} //Was not on the diagram. Newly added
 
     public Cell[] getSameColoredProperties(){ return null;}
     public Player[] getSickPlayers(){ return null;} //getPatientsNames changed to getSickPlayers
