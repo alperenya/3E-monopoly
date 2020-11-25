@@ -1,6 +1,6 @@
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
-public class BeInfected {
+public class BeInfected extends Cell {
 
     //properties
     private int banNumber;
