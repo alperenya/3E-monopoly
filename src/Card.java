@@ -1,7 +1,7 @@
 public class Card {
     private String message;
     private String type;
-    private String cardFunction;
+    private String cardFunction; //Newly added
 
     public Card(String message, String type, String cardFunction){
         this.message = message;
@@ -12,7 +12,6 @@ public class Card {
     private String getType(){ return type;}
     private String getCardFunction(){ return cardFunction;}
 
-    //public Card getRandomCard(){ return null;} should not be in card class. Removed
     public void setMessage(String message){ this.message = message;}
     public void setType(String type){ this.type = type;}
     public void setCardFunction(String cardFunction){ this.cardFunction = cardFunction;}

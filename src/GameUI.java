@@ -6,7 +6,7 @@ public class GameUI {
     public void exit(){}
     public void openGame(){}
     public void startGame(){}
-    public void movePlayer(Player player, int amount){}
+    public void movePlayer(Player player, Cell toPosition){}
     public void openTradeScreen(){}
     public void showMessage(){}
     public void rollDice(){}
