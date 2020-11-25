@@ -37,19 +37,12 @@ public abstract class Property extends Cell {
         this.price = price;
     }
 
-    public Boolean getAvailability() {
-        return availability;
-    }
 
-    public void setAvailability(Boolean availability) {
-        this.availability = availability;
-    }
-
-    public Boolean getOnMortgage() {
+    public Boolean getMortgage() {
         return onMortgage;
     }
 
-    public void setOnMortgage(Boolean onMortgage) {
+    public void setMortgage(Boolean onMortgage) {
         this.onMortgage = onMortgage;
     }
 }

@@ -1,8 +1,10 @@
-public class Taxation extends Cell{
+public class Taxation extends Cell {
     private int taxRate;
 
-    Taxation(){}
-    public void getMoneyFromUser(){
+    Taxation() {
+    }
 
+    public void getMoneyFromUser() {
+        System.out.println("get money from user");
     }
 }

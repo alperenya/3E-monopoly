@@ -25,10 +25,6 @@ public class Neighbourhood extends Property {
         return rent;
     }
 
-    public void setRent(int rent) {
-        this.rent = rent;
-    }
-
     public float getCoronaRisk() {
         return coronaRisk;
     }

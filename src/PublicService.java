@@ -16,14 +16,6 @@ public class PublicService extends Property{
         return 0;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public int getMultiplier() {
         return multiplier;
     }
