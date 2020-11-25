@@ -19,4 +19,8 @@ public class Quarantine extends Cell{
     public void setPatients(Player[] patients) {
         this.patients = patients;
     }
+
+    public Player[] getPatients() {
+        return patients;
+    }
 }
