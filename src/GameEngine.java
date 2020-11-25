@@ -8,10 +8,13 @@ public class GameEngine {
     private GameUI gameUI;
     private GameMap gameMap;
     private Player[] players;
-    private Player currentPlayer; //Added
+    private Player currentPlayer; //Newly added
     private Dice dice;
 
-    public GameEngine(){}
+    public GameEngine(int maxPlayers, int startingMoney){
+        this.maxPlayers = maxPlayers;
+        this.startingMoney = startingMoney;
+    }
     public int getMaxPlayers(){ return maxPlayers;}
     public int getTurns(){ return turns;}
     public int getStartingMoney(){ return startingMoney;}
@@ -21,26 +24,29 @@ public class GameEngine {
     public Player[] getPlayers(){ return players;}
     public Dice getDice(){ return dice;}
 
-    private void startGame(){}
-    private void updateUI(){}
-    private void movePlayer(){}
-    private void getCurrentPlayer(){}
-    private void finishGame(){}
-    private void volumeUp(){}
-    private void volumeDown(){}
-    private void muteGame(){}
-    private void manageProperties(){}
-    private void gameFlow(){}
-    private void nextTurn(){}
-    private void createPopup(){}
-    private void handleInfection(){}
-    private void manageBuildings(){}
-    private void handleBankruptcy(){}
-    private void managePatients(){}
-    private void handleCredits(){}
-    private void handleSettings(){}
-    private void createPlayers(){}
-    private void createMap(){}
-    private void createDice(){}
+    public void setMaxPlayers(int maxPlayers){ this.maxPlayers = maxPlayers;}
+    public void setStartingMoney(int startingMoney){ this.startingMoney = startingMoney;}
+
+    public void startGame(){}
+    public void updateUI(){}
+    public void movePlayer(){}
+    public void getCurrentPlayer(){}
+    public void finishGame(){}
+    public void volumeUp(){}
+    public void volumeDown(){}
+    public void muteGame(){}
+    public void manageProperties(){}
+    public void gameFlow(){}
+    public void nextTurn(){}
+    public void createPopup(){}
+    public void handleInfection(){}
+    public void manageBuildings(){}
+    public void handleBankruptcy(){}
+    public void managePatients(){}
+    public void handleCredits(){}
+    public void handleSettings(){}
+    public void createPlayers(){}
+    public void createMap(){}
+    public void createDice(){}
 
 }
