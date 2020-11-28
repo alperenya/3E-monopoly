@@ -2,12 +2,11 @@ import java.util.ArrayList;
 
 public class PublicService extends Property{
     //properties
-    private String type;
     private int multiplier;
     private int baseRent;
 
     //constructor
-    public PublicService( int price, int baseRent, String color, String type ) {
+    public PublicService( int price, int baseRent, String color ) {
         this.owner = null;
         this.color = color;
         this.price = price;
