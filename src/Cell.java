@@ -20,7 +20,6 @@ public abstract class Cell {
     }
 
     public void setVisitors( ArrayList<Player> visitors) {
-
         this.visitors = visitors;
     }
 }

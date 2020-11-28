@@ -25,11 +25,11 @@ public class PublicService extends Property{
         this.multiplier = multiplier;
     }
 
-    public int getRent() {
+    public int getBaseRent() {
         return baseRent;
     }
 
-    public void setRent( int baseRent ){ this.baseRent = baseRent; }
+    public void setBaseRent( int baseRent ){ this.baseRent = baseRent; }
 
     @Override
     public int calculateRent() {
