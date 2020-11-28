@@ -1,0 +1,153 @@
+Index: src/Player.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>public class Player {\r\n\r\n    //properties\r\n    private String name;\r\n    private int money;\r\n    private String piece;\r\n    private Property properties;\r\n    private Cell position;\r\n    private Boolean health;\r\n    private Boolean inQuarantine;\r\n    private Boolean isBankrupt;\r\n    private int banTurn;\r\n\r\n    //constructers\r\n    public Player(){\r\n        System.out.println(\"Ben oyuncuyum\");\r\n    }\r\n\r\n    //methods\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public int getMoney() {\r\n        return money;\r\n    }\r\n\r\n    public void setMoney(int money) {\r\n        this.money = money;\r\n    }\r\n\r\n    public String getPiece() {\r\n        return piece;\r\n    }\r\n\r\n    public void setPiece(String piece) {\r\n        this.piece = piece;\r\n    }\r\n\r\n    public Cell getPosition() {\r\n        return position;\r\n    }\r\n\r\n    public void setPosition(Cell position) {\r\n        this.position = position;\r\n    }\r\n\r\n    public Boolean isHealthy(){\r\n        return health;\r\n    }\r\n\r\n    public void setHealth(Boolean health) {\r\n        this.health = health;\r\n    }\r\n\r\n    public Property getProperties() {\r\n        return properties;\r\n    }\r\n\r\n    public Boolean sellProperty(){\r\n        return true;\r\n    }\r\n\r\n    public Boolean buyProperty(){\r\n        return true;\r\n    }\r\n\r\n    public Boolean isInQuarantine() {\r\n        return inQuarantine;\r\n    }\r\n\r\n    public void setQuarantine(Boolean inQuarantine) {\r\n        this.inQuarantine = inQuarantine;\r\n    }\r\n\r\n    public Boolean buildHouse(){\r\n        return true;\r\n    }\r\n\r\n    public Boolean buildHospital(){\r\n        return true;\r\n    }\r\n\r\n    public Boolean canBuild(){\r\n        return true;\r\n    }\r\n\r\n    public Boolean setBankrupt(){\r\n        return true;\r\n    }\r\n\r\n    public Boolean isBankrupt(){\r\n        return isBankrupt;\r\n    }\r\n\r\n    public Boolean rollDice(){\r\n        return true;\r\n    }\r\n\r\n    public Boolean mortgage(){\r\n        return true;\r\n    }\r\n\r\n    public Boolean cancelMortgage(){\r\n        return true;\r\n    }\r\n\r\n    public Boolean trade(){\r\n        return true;\r\n    }\r\n\r\n    public int getBanTurn() {\r\n        return banTurn;\r\n    }\r\n\r\n    public void setBanTurn(int banTurn) {\r\n        this.banTurn = banTurn;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Player.java	(revision 2824b21cab8ce0948ca65997c04351769d132364)
++++ src/Player.java	(date 1606592338194)
+@@ -1,10 +1,12 @@
++import java.util.ArrayList;
++
+ public class Player {
+ 
+     //properties
+     private String name;
+     private int money;
+     private String piece;
+-    private Property properties;
++    private ArrayList<Property> properties;
+     private Cell position;
+     private Boolean health;
+     private Boolean inQuarantine;
+@@ -12,8 +14,12 @@
+     private int banTurn;
+ 
+     //constructers
+-    public Player(){
+-        System.out.println("Ben oyuncuyum");
++    public Player(String name, String piece){
++        this.name = name;
++        this.piece = piece;
++    }
++
++    public Player() {
+     }
+ 
+     //methods
+@@ -21,10 +27,6 @@
+         return name;
+     }
+ 
+-    public void setName(String name) {
+-        this.name = name;
+-    }
+-
+     public int getMoney() {
+         return money;
+     }
+@@ -37,10 +39,6 @@
+         return piece;
+     }
+ 
+-    public void setPiece(String piece) {
+-        this.piece = piece;
+-    }
+-
+     public Cell getPosition() {
+         return position;
+     }
+@@ -57,11 +55,11 @@
+         this.health = health;
+     }
+ 
+-    public Property getProperties() {
++    public ArrayList<Property> getProperties() {
+         return properties;
+     }
+ 
+-    public Boolean sellProperty(){
++    public Boolean sellProperty(Property p){
+         return true;
+     }
+ 
+@@ -77,15 +75,15 @@
+         this.inQuarantine = inQuarantine;
+     }
+ 
+-    public Boolean buildHouse(){
++    public Boolean buildHouse(Property p){
+         return true;
+     }
+ 
+-    public Boolean buildHospital(){
++    public Boolean buildHospital(Property p){
+         return true;
+     }
+ 
+-    public Boolean canBuild(){
++    public Boolean canBuild(Property p){
+         return true;
+     }
+ 
+@@ -97,11 +95,11 @@
+         return isBankrupt;
+     }
+ 
+-    public Boolean rollDice(){
+-        return true;
+-    }
+-
+-    public Boolean mortgage(){
++    public int rollDice(){
++        return 0;
++    }
++
++    public Boolean mortgage(Property p){
+         return true;
+     }
+ 
+@@ -109,7 +107,7 @@
+         return true;
+     }
+ 
+-    public Boolean trade(){
++    public Boolean trade(Player p){
+         return true;
+     }
+ 
+Index: src/Bot.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>public class Bot extends Player{\r\n\r\n    //properties\r\n\r\n    //contructers\r\n    public Bot(){}\r\n\r\n    //methods\r\n    public Boolean decideBuyingProperty(){\r\n        return true;\r\n    }\r\n    public Boolean decideSellingProperty(){\r\n        return true;\r\n    }\r\n    public Boolean decideBuilding(){\r\n        return true;\r\n    }\r\n    public Boolean trade(){\r\n        return true;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Bot.java	(revision 2824b21cab8ce0948ca65997c04351769d132364)
++++ src/Bot.java	(date 1606592497399)
+@@ -3,20 +3,18 @@
+     //properties
+ 
+     //contructers
+-    public Bot(){}
++    Bot(){}
+ 
+     //methods
+     public Boolean decideBuyingProperty(){
+         return true;
+     }
+-    public Boolean decideSellingProperty(){
++    public Boolean decideSellingProperty(Property p){
+         return true;
+     }
+-    public Boolean decideBuilding(){
++    public Boolean decideBuilding(Property p){
+         return true;
+     }
+-    public Boolean trade(){
+-        return true;
+-    }
++    public Boolean decideTrading(Player p){return true; }
+ 
+ }
