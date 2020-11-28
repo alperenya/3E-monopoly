@@ -1,18 +1,14 @@
+import java.util.ArrayList;
+
 public abstract class Property extends Cell {
     //properties
-    private Player owner;
-    private String color;
-    private int price;
-    private Boolean availability;
-    private Boolean onMortgage;
-
-    //constructor
-    Property(){}
+    protected Player owner;
+    protected String color;
+    protected int price;
+    protected Boolean availability;
+    protected Boolean onMortgage;
 
     //methods
-    public void payOwner() {System.out.println("owner gets money");}
-    public abstract int calculateRent();
-    public void retrieveRent() {System.out.println("retrieve money from kiracı");}
     public Player getOwner() {
         return owner;
     }
@@ -37,6 +33,9 @@ public abstract class Property extends Cell {
         this.price = price;
     }
 
+    public Boolean getAvailability() { return availability; }
+
+    public void setAvailability(Boolean availability) { this.availability = availability; }
 
     public Boolean getMortgage() {
         return onMortgage;
@@ -45,4 +44,18 @@ public abstract class Property extends Cell {
     public void setMortgage(Boolean onMortgage) {
         this.onMortgage = onMortgage;
     }
+
+    public void payOwner( int rentAmount ) {
+        this.owner.setMoney( this.owner.getMoney() + rentAmount );
+        System.out.println("Owner gets money: " + rentAmount );
+    }
+
+    public void retrieveRent( Player tenant, int rentAmount ) {
+        tenant.setMoney( tenant.getMoney() - rentAmount );
+        System.out.println("Retrieve money: " +  tenant.getName() + " from: " + rentAmount);
+    }
+
+    public abstract int calculateRent();
+
+
 }

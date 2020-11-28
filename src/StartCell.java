@@ -1,11 +1,30 @@
+import java.util.ArrayList;
+
 public class StartCell extends Cell{
     //properties
-    private final int STARTINGMONEY = 0;
+    private final int STARTINGMONEY = 10000;
 
     //constructor
-    StartCell(){}
+    public StartCell( ){
+        this.name = "";
+        this.visitors = new ArrayList<Player>();
+    }
+    public StartCell( String name, ArrayList<Player> visitors ){
+        this.name = name;
+        this.visitors = visitors;
+    }
 
     //methods
-    public void payVisitor(){System.out.println("paranız ödendi");}
+    public void payVisitors( ){
+        int counter;
+
+        for ( counter = 0; counter < visitors.size(); counter++){
+
+            Player visitor = visitors.get(counter);
+            visitor.setMoney( visitor.getMoney() + STARTINGMONEY );
+
+            System.out.println("Paying Succesfull to the player: " + visitor.getName() );
+        }
+    }
 
 }

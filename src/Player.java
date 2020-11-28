@@ -1,10 +1,12 @@
+import java.util.ArrayList;
+
 public class Player {
 
     //properties
     private String name;
     private int money;
     private String piece;
-    private Property properties;
+    private ArrayList<Property> properties;
     private Cell position;
     private Boolean health;
     private Boolean inQuarantine;
@@ -57,7 +59,7 @@ public class Player {
         this.health = health;
     }
 
-    public Property getProperties() {
+    public ArrayList<Property> getProperties() {
         return properties;
     }
 

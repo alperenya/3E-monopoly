@@ -1,26 +1,38 @@
+import java.util.ArrayList;
+
 public class Quarantine extends Cell{
 
     //properties
     private String message;
-    private Player[] patients;
+    private ArrayList<Player> patients;
 
     //constructers
-    public Quarantine(){}
-
-    //methods
-    public String getMessage() {
-        return message;
+    public Quarantine(){
+        this.message = "Unfornutanelty, Your Covid-19 Test is POSITIVE";
+        patients = new ArrayList<Player>();
     }
-
-    public void setMessage(String message) {
+    public Quarantine( String message, ArrayList<Player> patients){
         this.message = message;
-    }
-
-    public void setPatients(Player[] patients) {
         this.patients = patients;
     }
 
-    public Player[] getPatients() {
+    //methods
+    public String getMessage() {
+
+        return message;
+    }
+
+    public void setMessage( String message) {
+
+        this.message = message;
+    }
+
+    public void setPatients( ArrayList<Player> patients) {
+
+        this.patients = patients;
+    }
+
+    public ArrayList<Player> getPatients() {
         return patients;
     }
 }

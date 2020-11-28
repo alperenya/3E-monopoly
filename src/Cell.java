@@ -1,8 +1,10 @@
+import java.util.ArrayList;
+
 public abstract class Cell {
 
     //properties
-    private String name;
-    private  Player[] visitors;
+    protected String name;
+    protected ArrayList<Player> visitors;
 
     //methods
     public String getName() {
@@ -13,11 +15,12 @@ public abstract class Cell {
         this.name = name;
     }
 
-    public Player[] getVisitors() {
+    public ArrayList<Player> getVisitors() {
         return visitors;
     }
 
-    public void setVisitors(Player[] visitors) {
+    public void setVisitors( ArrayList<Player> visitors) {
+
         this.visitors = visitors;
     }
 }
