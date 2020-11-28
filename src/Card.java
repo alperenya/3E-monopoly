@@ -24,12 +24,6 @@ public class Card extends Cell{
         this.message = message;
         this.cardFunction = cardFunction;
     }
-    public Card( String message, String cardFunction){
-        this.name = "";
-        this.visitors = new ArrayList<Player>();
-        this.message = message;
-        this.cardFunction = cardFunction;
-    }
 
     //methods
     private String getMessage(){ return message;}
