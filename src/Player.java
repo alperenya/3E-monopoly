@@ -14,17 +14,17 @@ public class Player {
     private int banTurn;
 
     //constructers
-    public Player(){
-        System.out.println("Ben oyuncuyum");
+    public Player(String name, String piece){
+        this.name = name;
+        this.piece = piece;
+    }
+
+    public Player() {
     }
 
     //methods
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getMoney() {
@@ -37,10 +37,6 @@ public class Player {
 
     public String getPiece() {
         return piece;
-    }
-
-    public void setPiece(String piece) {
-        this.piece = piece;
     }
 
     public Cell getPosition() {
@@ -63,7 +59,7 @@ public class Player {
         return properties;
     }
 
-    public Boolean sellProperty(){
+    public Boolean sellProperty(Property p){
         return true;
     }
 
@@ -79,15 +75,15 @@ public class Player {
         this.inQuarantine = inQuarantine;
     }
 
-    public Boolean buildHouse(){
+    public Boolean buildHouse(Property p){
         return true;
     }
 
-    public Boolean buildHospital(){
+    public Boolean buildHospital(Property p){
         return true;
     }
 
-    public Boolean canBuild(){
+    public Boolean canBuild(Property p){
         return true;
     }
 
@@ -99,11 +95,11 @@ public class Player {
         return isBankrupt;
     }
 
-    public Boolean rollDice(){
-        return true;
+    public int rollDice(){
+        return 0;
     }
 
-    public Boolean mortgage(){
+    public Boolean mortgage(Property p){
         return true;
     }
 
@@ -111,7 +107,7 @@ public class Player {
         return true;
     }
 
-    public Boolean trade(){
+    public Boolean trade(Player p){
         return true;
     }
 
