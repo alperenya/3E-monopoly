@@ -6,6 +6,7 @@ public class Neighbourhood extends Property {
 
     //constructor
     public Neighbourhood( int price, int rent, double coronaRisk, String color ){
+        this.name = "";
         this.owner = null;
         this.color = color;
         this.price = price;

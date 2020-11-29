@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class Transportation extends Property {
     //properties
-    private String type;
     private int rent;
     private double coronaRisk;
 
     //constructor
     public Transportation( int price, int rent, double coronaRisk, String color ) {
+        this.name = "";
         this.owner = null;
         this.color = color;
         this.price = price;
@@ -25,10 +25,6 @@ public class Transportation extends Property {
     public double getCoronaRisk() { return coronaRisk; }
 
     public void setCoronaRisk( double coronaRisk) { this.coronaRisk = coronaRisk; }
-
-    public String getType() { return type; }
-
-    public void setType(String type) { this.type = type; }
 
     @Override
     public int calculateRent() {

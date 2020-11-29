@@ -7,6 +7,7 @@ public class PublicService extends Property{
 
     //constructor
     public PublicService( int price, int baseRent, String color ) {
+        this.name = "";
         this.owner = null;
         this.color = color;
         this.price = price;
