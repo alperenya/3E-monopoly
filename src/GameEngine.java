@@ -1,10 +1,14 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class GameEngine {
-    private int maxPlayers; //Will be decided after pressing create game button
+    private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
+    private final int STARTING_MONEY = 20000;
+    private int playerCount;
     private int botCount; //Newly added. Will be decided after pressing create game button
     private int turns; //Will be set to zero at the start of the game
-    private int startingMoney; //Will be decided after pressing create game button
+    private ArrayList<String> pieces = new ArrayList<>(Arrays.asList("car", "hamburger", "glass", "computer", "football", "hat"));
     private float gameVolume; //Current game volume. Will be 50% initially.
 
     private GameUI gameUI; //Reference to gameui component
@@ -14,25 +18,27 @@ public class GameEngine {
     private Dice dice; //Reference to the dice
 
     public GameEngine(){} //Default constructor
-    public int getMaxPlayers(){ return maxPlayers;}
+    public int getMaxPlayers(){ return MAX_PLAYERS;}
     public int getTurns(){ return turns;}
-    public int getStartingMoney(){ return startingMoney;}
+    public int getStartingMoney(){ return STARTING_MONEY;}
 
     public GameUI getGameUI(){ return gameUI;}
     public GameMap getMap(){ return gameMap;}
     public ArrayList<Player> getPlayers(){ return players;}
     public Dice getDice(){ return dice;}
     public Player getCurrentPlayer(){return currentPlayer;}
-
-    public void setMaxPlayers(int maxPlayers){ this.maxPlayers = maxPlayers;}
     public void setBotCount(int botCount){ this.botCount = botCount;}
-    public void setStartingMoney(int startingMoney){ this.startingMoney = startingMoney;}
 
     //These methods will be working inside of the engine so I think they can be changed to private.
-    public void startGame(int maxPlayers, int startingMoney){ //Runs after deciding maxPlayers and
-        this.maxPlayers = maxPlayers;
-        this.startingMoney = startingMoney;
-        //Class properties will be initialized here
+    public void startGame(int playerCount){ //Runs after deciding maxPlayers and
+        this.playerCount = playerCount;
+        System.out.println("There are " + playerCount + " players. " + (MAX_PLAYERS-playerCount) + " bot(s) can be added.");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Please enter the number of bot: ");
+        setBotCount(sc.nextInt());
+        createMap();
+        createDice();
+        createPlayers();
     }
     public void updateUI(){} //Update game ui between turns
     public void movePlayer(Cell toCell){} //Move player to a cell
@@ -50,8 +56,31 @@ public class GameEngine {
     public void managePatients(){} //Check the patient players
     public void handleCredits(){} //Go to credits scene
     public void handleSettings(){} //Go to settings menu
-    public void createPlayers(int count){} //Initialize the given amount of players
+    public void createPlayers(){
+        players = new ArrayList<>();
+        for(int i = 1; i <= playerCount; i++){
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Please enter the name of player " + i + " :");
+            String playerName = sc.nextLine();
+            System.out.print("Please select the piece of player " + i + " " + pieces + ": ");
+            String pieceName = sc.nextLine();
+            pieces.remove(pieceName);
+            Player p = new Player(playerName, pieceName);
+            players.add(p);
+        }
+        for(int i = 1; i <= botCount; i++){
+            Player b = new Bot("bot" + i, pieces.get(0));
+            players.add(b);
+            System.out.println(b.getName());
+        }
+
+
+        System.out.println(players.get(1).getName());
+    } //Initialize the given amount of players
     public void createMap(){} //Initialize the map
     public void createDice(){} //Initialize the dice
+
+
+
 
 }

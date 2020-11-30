@@ -46,7 +46,7 @@ public abstract class Property extends Cell {
     }
 
     public void payOwner( int rentAmount ) {
-        this.owner.setMoney( this.owner.getMoney() + rentAmount );
+        owner.setMoney( owner.getMoney() + rentAmount );
         System.out.println("Owner gets money: " + rentAmount );
     }
 

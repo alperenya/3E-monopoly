@@ -13,13 +13,18 @@ public class Player {
     private Boolean isBankrupt;
     private int banTurn;
 
-    //constructers
+    //constructors
     public Player(String name, String piece){
         this.name = name;
         this.piece = piece;
+        this.health = false;
+        this.inQuarantine = false;
+        this.isBankrupt = false;
+        this.banTurn = 0;
+        this.properties = new ArrayList<>();
     }
 
-    public Player() {
+    public Player(){
     }
 
     //methods
@@ -60,11 +65,18 @@ public class Player {
     }
 
     public Boolean sellProperty(Property p){
+        properties.remove(p);
+        money += p.getPrice();
         return true;
     }
 
-    public Boolean buyProperty(){
-        return true;
+    public Boolean buyProperty(Property p){
+        if(money > p.getPrice()){
+            properties.add(p);
+            money -= p.getPrice();
+            return true;
+        }
+        return false;
     }
 
     public Boolean isInQuarantine() {
@@ -75,15 +87,15 @@ public class Player {
         this.inQuarantine = inQuarantine;
     }
 
+    public Boolean canBuild(Property p){
+        return true;
+    }
+
     public Boolean buildHouse(Property p){
         return true;
     }
 
     public Boolean buildHospital(Property p){
-        return true;
-    }
-
-    public Boolean canBuild(Property p){
         return true;
     }
 
@@ -95,15 +107,19 @@ public class Player {
         return isBankrupt;
     }
 
-    public int rollDice(){
+    public int rollDice(){ //delete
         return 0;
     }
 
     public Boolean mortgage(Property p){
+        p.setMortgage(true);
+        money += p.getPrice()*0.7;
         return true;
     }
 
-    public Boolean cancelMortgage(){
+    public Boolean cancelMortgage(Property p){
+        p.setMortgage(true);
+        money -= p.getPrice()*0.7;
         return true;
     }
 
