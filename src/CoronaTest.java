@@ -6,9 +6,9 @@ public class CoronaTest extends Cell{
 
 
     //constructers
-    public CoronaTest(){
-        this.name = "";
-        this.visitors = new ArrayList<Player>();
+    public CoronaTest(String name){
+        this.name = name;
+        this.visitors = new ArrayList<>();
     }
     public CoronaTest( String name, ArrayList<Player> visitors ){
         this.name = name;
@@ -22,7 +22,7 @@ public class CoronaTest extends Cell{
         try{
 
             for ( counter = 0; counter < visitors.size(); counter++){
-                if( visitors.get(counter).isHealthy() == false ){
+                if(!visitors.get(counter).isHealthy()){
                     visitors.get(counter).setBanTurn( 2 );
                     visitors.get(counter).setPosition( quarantineCell );
                 }

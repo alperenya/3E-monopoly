@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class StartCell extends Cell{
     //properties
-    private final int STARTINGMONEY = 10000;
+    private final int STARTINGMONEY = 2000;
 
     //constructor
     public StartCell( ){
-        this.name = "";
-        this.visitors = new ArrayList<Player>();
+        this.name = "Start";
+        this.visitors = new ArrayList<>();
     }
     public StartCell( String name, ArrayList<Player> visitors ){
         this.name = name;

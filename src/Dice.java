@@ -8,7 +8,7 @@ public class Dice {
 
     //methods
     public int roll(){
-        return (int)( Math.random() * 6 + 1 );
+        return (int)( Math.random() * 12 + 1 );
     }
 
 }

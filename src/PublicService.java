@@ -6,14 +6,15 @@ public class PublicService extends Property{
     private int baseRent;
 
     //constructor
-    public PublicService( int price, int baseRent, String color ) {
-        this.name = "";
+    public PublicService( String name, int price, int baseRent, String color ) {
+        this.name = name;
         this.owner = null;
         this.color = color;
         this.price = price;
         this.baseRent = baseRent;
         this.availability = true;
         this.onMortgage = false;
+        this.visitors = new ArrayList<>();
     }
 
     //methods

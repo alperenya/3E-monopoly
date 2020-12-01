@@ -3,18 +3,19 @@ import java.util.ArrayList;
 public class Player {
 
     //properties
-    private String name;
-    private int money;
-    private String piece;
-    private ArrayList<Property> properties;
-    private Cell position;
-    private Boolean health;
-    private Boolean inQuarantine;
-    private Boolean isBankrupt;
-    private int banTurn;
+    protected String name;
+    protected int money;
+    protected String piece;
+    protected ArrayList<Property> properties;
+    protected Cell position;
+    protected Boolean health;
+    protected Boolean inQuarantine;
+    protected Boolean isBankrupt;
+    protected int banTurn;
 
     //constructors
-    public Player(String name, String piece){
+    public Player(String name, String piece, Cell c){
+        this.position = c;
         this.name = name;
         this.piece = piece;
         this.health = false;
@@ -107,10 +108,6 @@ public class Player {
         return isBankrupt;
     }
 
-    public int rollDice(){ //delete
-        return 0;
-    }
-
     public Boolean mortgage(Property p){
         p.setMortgage(true);
         money += p.getPrice()*0.7;
@@ -134,4 +131,5 @@ public class Player {
     public void setBanTurn(int banTurn) {
         this.banTurn = banTurn;
     }
+
 }

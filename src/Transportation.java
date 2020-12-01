@@ -6,8 +6,8 @@ public class Transportation extends Property {
     private double coronaRisk;
 
     //constructor
-    public Transportation( int price, int rent, double coronaRisk, String color ) {
-        this.name = "";
+    public Transportation( String name, int price, int rent, double coronaRisk, String color ) {
+        this.name = name;
         this.owner = null;
         this.color = color;
         this.price = price;
@@ -15,6 +15,7 @@ public class Transportation extends Property {
         this.coronaRisk = coronaRisk;
         this.availability = true;
         this.onMortgage = false;
+        this.visitors = new ArrayList<>();
     }
 
     //methods

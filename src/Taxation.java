@@ -7,12 +7,12 @@ public class Taxation extends Cell {
     //constructers
     public Taxation() {
         this.name = "";
-        this.visitors = new ArrayList<Player>();
+        this.visitors = new ArrayList<>();
         this.taxRate = 0.23;
     }
-    public Taxation( int taxRate ) {
-        this.name = "";
-        this.visitors = new ArrayList<Player>();
+    public Taxation( String name, int taxRate ) {
+        this.name = name;
+        this.visitors = new ArrayList<>();
         this.taxRate = taxRate;
     }
     public Taxation( String name, ArrayList<Player> visitors) {

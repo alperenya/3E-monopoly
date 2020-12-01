@@ -1,4 +1,3 @@
-import javafx.scene.control.Cell;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -9,9 +8,9 @@ public class GameMap {
     private Hashtable<Cell, String> colors; //Will be initialized when start game button is pressed
 
     public GameMap(){ //Will be called after start game button is pressed
-        cells = new ArrayList<Cell>();
-        cards = new ArrayList<Card>();
-        colors = new Hashtable<Cell, String>();
+        cells = new ArrayList<>();
+        cards = new ArrayList<>();
+        colors = new Hashtable<>();
     }
     public ArrayList<Cell> getCells(){ return cells;} //Get all cells on the map
     public ArrayList<Card> getCards(){ return cards;} //Newly added. Return all the cards
@@ -20,7 +19,9 @@ public class GameMap {
     public ArrayList<Cell> getSameColoredProperties(){ return null;} //Get the properties with the same color
     public ArrayList<Player> getSickPlayers(){ return null;} //getPatientsNames changed to getSickPlayers
 
-    public Boolean addCell(Cell cell){return true;}
+    public void addCell(Cell cell){
+        cells.add(cell);
+    }
     public Boolean addCards(Card card){return true;}
     public Card drawCard(String type){return null;}
     public void shuffleCards(String type){}

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Neighbourhood extends Property {
     //properties
     private int houseCount;
@@ -5,8 +7,8 @@ public class Neighbourhood extends Property {
     private double coronaRisk;
 
     //constructor
-    public Neighbourhood( int price, int rent, double coronaRisk, String color ){
-        this.name = "";
+    public Neighbourhood( String name, int price, int rent, double coronaRisk, String color ){
+        this.name = name;
         this.owner = null;
         this.color = color;
         this.price = price;
@@ -15,6 +17,7 @@ public class Neighbourhood extends Property {
         this.coronaRisk = coronaRisk;
         this.availability = true;
         this.onMortgage = false;
+        this.visitors = new ArrayList<>();
     }
 
     //methods

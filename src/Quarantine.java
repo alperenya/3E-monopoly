@@ -7,13 +7,17 @@ public class Quarantine extends Cell{
     private ArrayList<Player> patients;
 
     //constructers
-    public Quarantine(){
+    public Quarantine(String name){
+        this.name = name;
         this.message = "Unfornutanelty, Your Covid-19 Test is POSITIVE";
-        patients = new ArrayList<Player>();
+        patients = new ArrayList<>();
+        this.visitors = new ArrayList<>();
     }
-    public Quarantine( String message, ArrayList<Player> patients){
+    public Quarantine( String name, String message, ArrayList<Player> patients){
+        this.name = name;
         this.message = message;
         this.patients = patients;
+        this.visitors = new ArrayList<>();
     }
 
     //methods
