@@ -54,7 +54,6 @@ public class GameEngine {
         currentPlayer = players.get(0);
     }
     public void updateUI(){} //Update game ui between turns
-    public void movePlayer(Cell toCell){} //Move player to a cell
     public boolean finishGame(){
         int bankrupted = 0;
         for (Player p: players) {
