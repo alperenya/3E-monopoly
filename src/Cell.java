@@ -19,7 +19,19 @@ public abstract class Cell {
         return visitors;
     }
 
+    public ArrayList<String> getVisitorsPiece(){
+        ArrayList<String> pieces = new ArrayList<>();
+        for (Player p:visitors) {
+            pieces.add(p.getPiece());
+        }
+        return pieces;
+    }
+
     public void setVisitors( ArrayList<Player> visitors) {
-        this.visitors = visitors;
+        this.visitors = (ArrayList<Player>) visitors.clone();
+    }
+
+    public void addVisitor(Player p){
+        visitors.add(p);
     }
 }
