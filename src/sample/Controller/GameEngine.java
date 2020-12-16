@@ -1,9 +1,11 @@
 package sample.Controller;
 
+import sample.Model.*;
+
+import javax.smartcardio.Card;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import sample.Model.*;
 
 public class GameEngine {
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
@@ -64,9 +66,12 @@ public class GameEngine {
         }
         return bankrupted >= players.size() - 1;
     } //Finish the game if everybody is bankrupt except one
-    public void volumeUp(){} //Increase the volume by a unit
-    public void volumeDown(){} //Decrease the volume  by a unit
-    public void muteGame(){} //Make the volume 0
+    public void setGameVolume(double volume){
+        gameVolume = volume;
+    }
+    public void muteGame(){
+        gameVolume = 0;
+    } //Make the volume 0
     public void manageProperties(){} //
     public void gameFlow(){
         for (Cell c:gameMap.getCells()) {
@@ -81,18 +86,38 @@ public class GameEngine {
             if(input.equals("R")){
                 movePlayer(dice.roll());
             }
+            handleInfection();
             for (Cell c:gameMap.getCells()) {
                 System.out.println("[ " + (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
             }
             nextTurn();
         }
-        
+
     } //Update game state between turns
     private void nextTurn(){
         currentPlayer = players.get((players.indexOf(currentPlayer) + 1)%players.size());
     } //Get to the next turn. Triggered by pressing next turn button.
     public void createPopup(){} //Create pop up to confirm or to get user interaction
-    public void handleInfection(){} //Check the infection risk of the cell
+    public void handleInfection(){
+        Cell pos = currentPlayer.getPosition();
+        if(pos.getName().equals("Quarantine"))
+            return;
+        for (Player p:pos.getVisitors()) {
+            if(!p.isHealthy())
+                currentPlayer.setHealth(false);
+            if(!currentPlayer.isHealthy())
+                p.setHealth(false);
+        }
+        if(pos.getClass() == Neighbourhood.class){
+            Neighbourhood neighbourhood = (Neighbourhood)pos;
+            currentPlayer.setHealth(neighbourhood.getCoronaRisk() < Math.random());
+        }
+        else if(pos.getClass() == Transportation.class){
+            Transportation transportation = (Transportation) pos;
+            currentPlayer.setHealth(transportation.getCoronaRisk() < Math.random());
+        }
+
+    } //Check the infection risk of the cell
     public void manageBuildings(){} //
     public void handleBankruptcy(){} //Check the bankruptcy status of players
     public void managePatients(){} //Check the patient players
@@ -116,12 +141,12 @@ public class GameEngine {
     public void createMap(){
         gameMap.addCell(new StartCell());
         gameMap.addCell(new Neighbourhood("Mamak", 600, 80, 0.7, "brown" ));
-        gameMap.addCell(new Card("Community Chest"));
+        gameMap.addCell(new CardCell("Community Chest"));
         gameMap.addCell(new Neighbourhood("Sincan", 600,80, 0.65, "brown") );
         gameMap.addCell(new Taxation("Income Tax", 2000));
         gameMap.addCell(new Transportation("Esenboga Airport", 2000, 300, 0.6, "black"));
         gameMap.addCell(new Neighbourhood("Altındağ", 1000,130, 0.5, "purple"));
-        gameMap.addCell(new Card("Chance"));
+        gameMap.addCell(new CardCell("Chance"));
         gameMap.addCell(new Neighbourhood("Etimesgut", 1000,130, 0.55, "purple"));
         gameMap.addCell(new Neighbourhood("Beypazarı", 1200,180, 0.4, "purple"));
         gameMap.addCell(new Quarantine("Quarantine"));
@@ -131,12 +156,12 @@ public class GameEngine {
         gameMap.addCell(new Neighbourhood("Cebeci", 1600,220, 0.75, "pink"));
         gameMap.addCell(new Transportation("YHT", 2000, 300, 0.5, "black"));
         gameMap.addCell(new Neighbourhood("Kolej", 1800,250, 0.55, "orange"));
-        gameMap.addCell(new Card("Community Chest"));
+        gameMap.addCell(new CardCell("Community Chest"));
         gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "orange"));
         gameMap.addCell(new Neighbourhood("Dikmen", 2000,280, 0.25, "orange"));
         gameMap.addCell(new CoronaTest("Test Center"));
         gameMap.addCell(new Neighbourhood("Emek", 2200,300, 0.55, "red"));
-        gameMap.addCell(new Card("Chance"));
+        gameMap.addCell(new CardCell("Chance"));
         gameMap.addCell(new Neighbourhood("Batıkent", 2200, 300, 0.45, "red" ));
         gameMap.addCell(new Neighbourhood("Yenimahalle", 2400, 320, 0.3, "red" ));
         gameMap.addCell(new Transportation("Railroads", 2000, 300, 0.9, "black"));
@@ -147,10 +172,10 @@ public class GameEngine {
         gameMap.addCell(new BeInfected("Go To Quarantine"));
         gameMap.addCell(new Neighbourhood("Bahçelievler", 3000, 400, 0.45, "green" ));
         gameMap.addCell(new Neighbourhood("Ulus", 3000, 400, 0.5, "green" ));
-        gameMap.addCell(new Card("Community Chest"));
+        gameMap.addCell(new CardCell("Community Chest"));
         gameMap.addCell(new Neighbourhood("Sıhhiye", 3200, 440, 0.6, "green" ));
         gameMap.addCell(new Transportation("AŞTİ", 2000, 300, 0.9, "black"));
-        gameMap.addCell(new Card("Chance"));
+        gameMap.addCell(new CardCell("Chance"));
         gameMap.addCell(new Neighbourhood("Çayyalu", 3500, 460, 0.1, "blue" ));
         gameMap.addCell(new Taxation("Luxury Tax", 100));
         gameMap.addCell(new Neighbourhood("Bilkent", 4000, 500, 0.05, "blue" ));
