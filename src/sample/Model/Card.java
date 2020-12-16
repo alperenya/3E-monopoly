@@ -2,56 +2,24 @@ package sample.Model;
 
 import java.util.ArrayList;
 
-public class Card extends Cell{
+public abstract class Card{
     //properties
     private String message;
-    private String cardFunction; //Newly added
+    private String function;
 
-    //constructers
-    public Card( String name){
-        this.name = name;
-        this.visitors = new ArrayList<Player>();
-        this.message = "";
-        this.cardFunction = "";
-    }
-    public Card( String name, ArrayList<Player> visitors){
-        this.name = name;
-        this.visitors = visitors;
-        this.message = "";
-        this.cardFunction = "";
-    }
-    public Card( String name, ArrayList<Player> visitors, String message, String cardFunction){
-        this.name = name;
-        this.visitors = visitors;
-        this.message = message;
-        this.cardFunction = cardFunction;
-    }
+    // abstract class has no constructers
 
     //methods
     private String getMessage(){ return message;}
-    private String getType(){ return this.name;}
-    private String getCardFunction(){ return cardFunction;}
+    private String getCardFunction(){ return function;}
 
     public void setMessage(String message){ this.message = message;}
-    public void setType(String type){ this.name = type;}
-    public void setCardFunction(String cardFunction){ this.cardFunction = cardFunction;}
+    public void setCardFunction(String cardFunction){ this.function = cardFunction;}
 
-    public void executeCardFunction(){} //Newly added. Will check cardFunction and execute corresponding function
+    public abstract void payVisitor(Player visitor, int amount);
+    public abstract void getMoneyFromUser(Player visitor, int amount);
+    public abstract void getMoneyFromUser(Player visitor, double rate);
+    public abstract void vaccinate(Player visitor);
+    public abstract void makeInfected( Player visitor );
 
-    //Card functions
-    private void payVisitor(Player visitor, int amount){
-        visitor.setMoney( visitor.getMoney() + amount );
-    }
-    private void getMoneyFromUser(Player visitor, int amount){
-        visitor.setMoney( visitor.getMoney() + amount );
-    }
-    private void getMoneyFromUser(Player visitor, double rate){
-
-        int newBalance = visitor.getMoney() - (int)(visitor.getMoney() * rate);
-        visitor.setMoney( newBalance );
-    }
-    private void vaccinate(Player visitor){
-        visitor.setHealth( true );
-        visitor.setBanTurn( 0 );
-    }
 }
