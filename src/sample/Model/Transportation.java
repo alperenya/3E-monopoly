@@ -1,3 +1,5 @@
+package sample.Model;
+
 import java.util.ArrayList;
 
 public class Transportation extends Property {

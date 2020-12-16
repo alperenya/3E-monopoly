@@ -1,9 +1,11 @@
+package sample.Model;
+
 import java.util.ArrayList;
 
 public class Bot extends Player{
 
     //contructors
-    Bot(String name, String piece, Cell c){
+    public Bot(String name, String piece, Cell c){
         super(name, piece, c);
     }
 

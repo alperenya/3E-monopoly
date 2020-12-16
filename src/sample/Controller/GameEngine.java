@@ -1,7 +1,9 @@
+package sample.Controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import sample.Model.*;
 
 public class GameEngine {
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
