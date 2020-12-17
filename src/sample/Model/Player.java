@@ -22,7 +22,7 @@ public class Player {
         this.inQuarantine = false;
         this.isBankrupt = false;
         this.banTurn = 0;
-        this.properties = new ArrayList<>();
+        this.properties = new ArrayList<Property>();
     }
 
     public Player(){
@@ -71,13 +71,26 @@ public class Player {
         return true;
     }
 
-    public Boolean buyProperty(Property p){
+    public boolean removeProperty(Property p){
+        if(properties.contains(p)){
+            properties.remove(p);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean buyProperty(Property p){
         if(money > p.getPrice()){
             properties.add(p);
             money -= p.getPrice();
             return true;
         }
         return false;
+    }
+
+    public void addProperty(Property p){
+        properties.add(p);
     }
 
     public Boolean isInQuarantine() {
@@ -89,7 +102,11 @@ public class Player {
     }
 
     public Boolean canBuild(Property p){
-        return true;
+       /* if(money >= p.getPrice() && p.getAvailability()){
+            return true;
+        }
+        */
+        return false;
     }
 
     public Boolean buildHouse(Property p){
@@ -101,7 +118,13 @@ public class Player {
     }
 
     public Boolean setBankrupt(){
-        return true;
+        if(money <= 0){
+            isBankrupt = true;
+            return true;
+        }
+
+        isBankrupt = false;
+        return false;
     }
 
     public Boolean isBankrupt(){
