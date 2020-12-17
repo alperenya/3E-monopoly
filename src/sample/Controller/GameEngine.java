@@ -1,14 +1,34 @@
 package sample.Controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
 import sample.Model.*;
-import sun.security.jca.GetInstance;
+//import sun.security.jca.GetInstance;
 
 import javax.smartcardio.Card;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class GameEngine {
+    //Properties
+    @FXML
+    private Button closeButton;
+    private MediaPlayer mediaPlayer;
+    @FXML private Slider soundControl;
+    @FXML private Pane player_piece;
+
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 10000;
     private int playerCount;
@@ -48,15 +68,15 @@ public class GameEngine {
 
     //These methods will be working inside of the engine so I think they can be changed to private.
     public void startGame(int playerCount){ //Runs after deciding maxPlayers and
-        this.playerCount = playerCount;
+       /* this.playerCount = playerCount;
         System.out.println("There are " + playerCount + " players. " + (MAX_PLAYERS-playerCount) + " bot(s) can be added.");
         Scanner sc = new Scanner(System.in);
         System.out.print("Please enter the number of bot: ");
         setBotCount(sc.nextInt());
 
-        createMap();
-        createPlayers();
-        currentPlayer = players.get(0);
+        //createMap();
+        //createPlayers();
+       // currentPlayer = players.get(0);*/
     }
     public void updateUI(){} //Update game ui between turns
     public boolean finishGame(){
@@ -75,13 +95,13 @@ public class GameEngine {
     } //Make the volume 0
     public void manageProperties(){} //
     public void gameFlow(){
-        for (Cell c:gameMap.getCells()) {
+       /* for (Cell c:gameMap.getCells()) {
             System.out.println("[ " +  (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
         }
         System.out.println();
-        Scanner sc = new Scanner(System.in);
-        while(!finishGame()){
-            System.out.println("Current player: " + currentPlayer.getName() + ", " + currentPlayer.getPiece());
+        Scanner sc = new Scanner(System.in);*/
+        //while(!finishGame()){
+            /*System.out.println("Current player: " + currentPlayer.getName() + ", " + currentPlayer.getPiece());
             System.out.println("Type R to roll dice");
             String input = sc.nextLine();
             if(input.equals("R")){
@@ -90,9 +110,14 @@ public class GameEngine {
             handleInfection();
             for (Cell c:gameMap.getCells()) {
                 System.out.println("[ " + (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
-            }
-            nextTurn();
-        }
+            }*/
+            System.out.println("girdi");
+            movePlayer(25,25);
+           // movePlayer(ctrl,25,50);
+           // movePlayer(ctrl,50,50);
+           // movePlayer(ctrl,150,150);
+           // nextTurn();
+       // }
 
     } //Update game state between turns
     private void nextTurn(){
@@ -184,16 +209,136 @@ public class GameEngine {
 
     } //Initialize the map
 
-    private void movePlayer(int amount){
-        int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()))%gameMap.getCells().size();
+    private void movePlayer(double x, double y){
+        /*int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()))%gameMap.getCells().size();
         Cell c = gameMap.getCells().get(position);
         currentPlayer.getPosition().getVisitors().remove(currentPlayer);
         currentPlayer.setPosition(c);
         c.addVisitor(currentPlayer);
-        System.out.println("Dice: " + amount);
+        System.out.println("Dice: " + amount);*/
+
+        moveUIPiece(x,y);
     }
 
 
 
+    public void moveUIPiece(double x, double y){
+        player_piece.setLayoutX(x);
+        player_piece.setLayoutY(y);
+    }
+
+    public void playButtonPushed(javafx.event.ActionEvent event) throws IOException {
+
+        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/playGame.fxml"));
+        Scene settingsScene = new Scene( settingsParent );
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(settingsScene);
+        window.show();
+    }
+
+    public void settingsButtonPushed(javafx.event.ActionEvent event) throws IOException{
+
+        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/settings.fxml"));
+        Scene settingsScene = new Scene( settingsParent );
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(settingsScene);
+        window.show();
+    }
+
+    public void howToPlayButtonPushed(javafx.event.ActionEvent event) throws IOException{
+
+        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/howToPlay.fxml"));
+        Scene settingsScene = new Scene( settingsParent );
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(settingsScene);
+        window.show();
+    }
+
+    public void creditsButtonPushed(javafx.event.ActionEvent event) throws IOException{
+
+        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/credits.fxml"));
+        Scene settingsScene = new Scene( settingsParent );
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(settingsScene);
+        window.show();
+    }
+
+    public void closeButtonAction(){
+        // get a handle to the stage
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        // do what you have to do
+        stage.close();
+    }
+
+    public void singlePlayerButtonPushed(javafx.event.ActionEvent event) throws IOException{
+
+        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
+        Scene settingsScene = new Scene( settingsParent );
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(settingsScene);
+        window.show();
+    }
+
+    public void multiPlayerButtonPushed(javafx.event.ActionEvent event) throws IOException{
+
+        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/multi.fxml"));
+        Scene settingsScene = new Scene( settingsParent );
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(settingsScene);
+        window.show();
+    }
+
+    public void backButtonPushed(javafx.event.ActionEvent event) throws IOException {
+
+        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/sample.fxml"));
+        Scene settingsScene = new Scene( settingsParent );
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(settingsScene);
+        window.show();
+    }
+
+    public void gamePausedButtonPushed(javafx.event.ActionEvent event) throws IOException {
+
+        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/pause.fxml"));
+        Scene settingsScene = new Scene( settingsParent );
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(settingsScene);
+        window.show();
+    }
+
+
+    public void adjustSoundButtonPushed(){
+
+
+        soundControl.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+
+                mediaPlayer.volumeProperty().bindBidirectional( soundControl.valueProperty());
+                System.out.println( (soundControl.valueProperty().getClass()) );
+
+            }
+        });
+    }
+
 
 }
+
+

@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="700.0" prefWidth="850.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.Controller">
+<AnchorPane prefHeight="700.0" prefWidth="850.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.GameEngine">
    <children>
       <Label layoutX="233.0" layoutY="100.0" styleClass="normal-headings" stylesheets="@../style.css" text="Play New Game" textFill="#6b1515" />
       <Button layoutX="325.0" layoutY="251.0" mnemonicParsing="false" onAction="#singlePlayerButtonPushed" prefHeight="50.0" prefWidth="200.0" styleClass="action-button" text="Single Player" textFill="WHITE" />
