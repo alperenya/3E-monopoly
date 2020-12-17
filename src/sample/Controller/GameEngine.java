@@ -1,6 +1,7 @@
 package sample.Controller;
 
 import sample.Model.*;
+import sun.security.jca.GetInstance;
 
 import javax.smartcardio.Card;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class GameEngine {
         pieces = new ArrayList<>(Arrays.asList("car", "hamburger", "glass", "computer", "football", "hat"));
         gameVolume = 0.5;
         gameUI = new GameUI();
-        gameMap = new GameMap();
+        gameMap = GameMap.getInstance();
         players = new ArrayList<>();
         currentPlayer = null;
         dice = new Dice();
@@ -139,6 +140,7 @@ public class GameEngine {
         gameMap.getCells().get(0).setVisitors(players);
     } //Initialize the given amount of players
     public void createMap(){
+        gameMap.newMap();
         gameMap.addCell(new StartCell());
         gameMap.addCell(new Neighbourhood("Mamak", 600, 80, 0.7, "brown" ));
         gameMap.addCell(new CardCell("Community Chest"));
