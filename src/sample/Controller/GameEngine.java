@@ -55,6 +55,7 @@ public class GameEngine {
         currentPlayer = null;
         dice = new Dice();
     } //Default constructor
+
     public int getMaxPlayers(){ return MAX_PLAYERS;}
     public int getTurns(){ return turns;}
     public int getStartingMoney(){ return STARTING_MONEY;}
@@ -93,7 +94,23 @@ public class GameEngine {
     public void muteGame(){
         gameVolume = 0;
     } //Make the volume 0
-    public void manageProperties(){} //
+
+    public void manageProperties(){
+
+        Cell currentPosition = currentPlayer.getPosition();
+
+        if( currentPosition instanceof Property ){
+
+            int price = ((Property) currentPlayer.getPosition()).getPrice();
+
+            if( price <= currentPlayer.getMoney()){
+                currentPlayer.buyProperty( (Property) currentPosition );
+                ((Property) currentPosition).setOwner( currentPlayer );
+                gameUI.buyProperty( currentPlayer, (Property) currentPosition );
+            }
+        }
+
+    }
 
     public void gameFlow(){
         for (Cell c:gameMap.getCells()) {
