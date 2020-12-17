@@ -4,11 +4,19 @@ package sample.Model;
 import java.util.*;
 
 public class GameMap {
+    private static GameMap instance;
     private ArrayList<Cell> cells; //Will be initialized when start game button is pressed
     private ArrayList<CommunityChest> communityCards;
     private ArrayList<Chance> chanceCards; //Will be initialized when start game button is pressed
 
-    public GameMap(){ //Will be called after start game button is pressed
+    public static GameMap getInstance(){
+        if (instance == null){
+            instance = new GameMap();
+        }
+        return instance;
+    }
+
+    private GameMap(){ //Will be called after start game button is pressed
         cells = new ArrayList<>();
         chanceCards = new ArrayList<>();
         communityCards = new ArrayList<>();
@@ -19,12 +27,18 @@ public class GameMap {
 
     public ArrayList<Chance> getChanceCards() { return chanceCards; }
 
-    public ArrayList<Player> getSickPlayers(){ return cells.get(10).getVisitors();} //return sick players names
-
+    public ArrayList<Player> getPatients(){ return cells.get(10).getVisitors();} //return players in the quarantine
 
     public void addCell(Cell cell){ //to add all cells before starting the game
         cells.add(cell);
     }
+
+    public void newMap(){
+        cells = new ArrayList<>();
+        chanceCards = new ArrayList<>();
+        communityCards = new ArrayList<>();
+    }
+
     public Boolean addCards(Card card){ //to add all cards before starting the game
         if(card.getClass() == Chance.class)
             chanceCards.add((Chance) card);
