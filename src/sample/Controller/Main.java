@@ -49,7 +49,7 @@ public class Main extends Application {
             }
         });
 
-        String musicFile = "/Users/welcome/Desktop/dersler/ucun-biri/cs319/denemeFX/src/sample/songs/drum.mp3";     // For example
+        String musicFile = "src/sample/songs/drum.mp3";     // For example
 
         Media sound = new Media(new File(musicFile).toURI().toString());
         mediaPlayer = new MediaPlayer(sound);
