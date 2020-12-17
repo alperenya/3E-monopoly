@@ -70,12 +70,14 @@ public class Player {
     public Boolean sellProperty(Property p){
         properties.remove(p);
         money += p.getPrice();
+        p.setAvailability(true);
         return true;
     }
 
     public boolean removeProperty(Property p){
         if(properties.contains(p)){
             properties.remove(p);
+            p.setAvailability(true);
             return true;
         }
 
@@ -85,6 +87,7 @@ public class Player {
     public boolean buyProperty(Property p){
         if(money > p.getPrice()){
             properties.add(p);
+            p.setAvailability(false);
             money -= p.getPrice();
             return true;
         }
@@ -93,6 +96,7 @@ public class Player {
 
     public void addProperty(Property p){
         properties.add(p);
+        p.setAvailability(false);
     }
 
     public Boolean isInQuarantine() {
@@ -156,6 +160,10 @@ public class Player {
     }
 
     public Boolean trade(Player p){
+        // WHICH PROPERTIES WILL BE EXCHANGED IS NOT STATED?
+        // THIS IS A TEST CODE
+        Commerce commerce = new Commerce(this,p,properties.get(0), p.getProperties().get(0));
+        commerce.exchange();
         return true;
     }
 
