@@ -68,15 +68,15 @@ public class GameEngine {
 
     //These methods will be working inside of the engine so I think they can be changed to private.
     public void startGame(int playerCount){ //Runs after deciding maxPlayers and
-       /* this.playerCount = playerCount;
+        this.playerCount = playerCount;
         System.out.println("There are " + playerCount + " players. " + (MAX_PLAYERS-playerCount) + " bot(s) can be added.");
         Scanner sc = new Scanner(System.in);
         System.out.print("Please enter the number of bot: ");
         setBotCount(sc.nextInt());
 
-        //createMap();
-        //createPlayers();
-       // currentPlayer = players.get(0);*/
+        createMap();
+        createPlayers();
+        currentPlayer = players.get(0);
     }
     public void updateUI(){} //Update game ui between turns
     public boolean finishGame(){
@@ -94,30 +94,35 @@ public class GameEngine {
         gameVolume = 0;
     } //Make the volume 0
     public void manageProperties(){} //
+
     public void gameFlow(){
-       /* for (Cell c:gameMap.getCells()) {
+        for (Cell c:gameMap.getCells()) {
             System.out.println("[ " +  (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
         }
+
         System.out.println();
-        Scanner sc = new Scanner(System.in);*/
-        //while(!finishGame()){
-            /*System.out.println("Current player: " + currentPlayer.getName() + ", " + currentPlayer.getPiece());
+        Scanner sc = new Scanner(System.in);
+
+        while(!finishGame()){
+
+            System.out.println("Current player: " + currentPlayer.getName() + ", " + currentPlayer.getPiece());
             System.out.println("Type R to roll dice");
             String input = sc.nextLine();
+
             if(input.equals("R")){
                 movePlayer(dice.roll());
             }
+
             handleInfection();
+
             for (Cell c:gameMap.getCells()) {
                 System.out.println("[ " + (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
-            }*/
-            System.out.println("girdi");
-            movePlayer(25,25);
-           // movePlayer(ctrl,25,50);
-           // movePlayer(ctrl,50,50);
-           // movePlayer(ctrl,150,150);
-           // nextTurn();
-       // }
+            }
+
+            
+
+            nextTurn();
+        }
 
     } //Update game state between turns
     private void nextTurn(){
@@ -209,15 +214,16 @@ public class GameEngine {
 
     } //Initialize the map
 
-    private void movePlayer(double x, double y){
-        /*int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()))%gameMap.getCells().size();
+    //double x, double y
+    private void movePlayer(int amount){
+        int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()))%gameMap.getCells().size();
         Cell c = gameMap.getCells().get(position);
         currentPlayer.getPosition().getVisitors().remove(currentPlayer);
         currentPlayer.setPosition(c);
         c.addVisitor(currentPlayer);
-        System.out.println("Dice: " + amount);*/
+        System.out.println("Dice: " + amount);
 
-        moveUIPiece(x,y);
+        //moveUIPiece(x,y);
     }
 
 
@@ -287,6 +293,10 @@ public class GameEngine {
 
         window.setScene(settingsScene);
         window.show();
+
+        System.out.println("Başladı");
+        this.startGame(5);
+        this.gameFlow();
     }
 
     public void multiPlayerButtonPushed(javafx.event.ActionEvent event) throws IOException{

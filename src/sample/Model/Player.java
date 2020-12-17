@@ -70,7 +70,7 @@ public class Player {
     public Boolean sellProperty(Property p){
         properties.remove(p);
         money += p.getPrice();
-        p.setAvailability(true);
+        //p.setAvailability(true);
         return true;
     }
 
@@ -87,7 +87,7 @@ public class Player {
     public boolean buyProperty(Property p){
         if(money > p.getPrice()){
             properties.add(p);
-            p.setAvailability(false);
+            //p.setAvailability(false);
             money -= p.getPrice();
             return true;
         }

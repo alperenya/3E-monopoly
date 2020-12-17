@@ -23,9 +23,12 @@ public abstract class Cell {
 
     public ArrayList<String> getVisitorsPiece(){
         ArrayList<String> pieces = new ArrayList<>();
-        for (Player p:visitors) {
-            pieces.add(p.getPiece());
+        if(visitors != null){
+            for (Player p:visitors) {
+                pieces.add(p.getPiece());
+            }
         }
+
         return pieces;
     }
 

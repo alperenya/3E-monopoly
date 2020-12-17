@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sample.Model.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class GameUI extends Application {
@@ -77,8 +78,12 @@ public class GameUI extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
-
-
+        GameEngine engine = new GameEngine();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Number of players: ");
+        int playerCount = sc.nextInt();
+        engine.startGame(playerCount);
+        engine.gameFlow();
+        //launch(args);
     }
 }
