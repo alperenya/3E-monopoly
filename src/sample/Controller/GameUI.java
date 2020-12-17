@@ -22,9 +22,8 @@ public class GameUI extends Application {
 
     public GameUI(){
         properties = new ArrayList<Label>();
+    } //Default constructorgit
 
-
-    } //Default constructor
     public void initializeMenu(){} //Runs at the start of the game
     public void openCredits(){} //Runs on clicking credits button
     public void openSettings(){} //Runs on clicking settings button
@@ -36,9 +35,11 @@ public class GameUI extends Application {
     public void showMessage(){} //Show an informing message
     public void rollDice(){} //Activate the dice rolling animation
     public void updateGame(){} //Updates the state of the board. Might run after a turn ends
+
     public void buyProperty(Player currentPlayer, Property property){
 
     } //After current player buys a property
+
     public void sellProperty(Player currentPlayer, Property property){} //After current player sells a property
     public void pauseGame(){} //Pause the game in the current state
     public void celebrateWinner(Player winner){ System.out.println("winner.getName() + has won the game"); } //Activate the celebration animation for a given player
