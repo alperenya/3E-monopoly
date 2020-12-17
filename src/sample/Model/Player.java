@@ -24,7 +24,7 @@ public class Player {
         this.inQuarantine = false;
         this.isBankrupt = false;
         this.banTurn = 0;
-        this.properties = new ArrayList<Property>();
+        this.properties = new ArrayList<>();
     }
 
     public Player(){
@@ -111,12 +111,22 @@ public class Player {
         return false;
     }
 
-    public Boolean buildHouse(Property p){
-        return true;
+    public Boolean buildHouse(Neighbourhood n){
+        if(n.getHouseCount() <= 3){
+            n.setHouseCount(n.getHouseCount() + 1);
+            return true;
+        }
+
+        return false;
     }
 
-    public Boolean buildHospital(Property p){
-        return true;
+    public Boolean buildHospital(Neighbourhood n){
+        if(n.getHouseCount() > 3){
+            n.setHouseCount(n.getHouseCount() + 1);
+            return true;
+        }
+
+        return false;
     }
 
     public Boolean setBankrupt(){
