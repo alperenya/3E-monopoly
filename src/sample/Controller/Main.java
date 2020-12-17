@@ -49,9 +49,11 @@ public class Main extends Application {
             }
         });
 
-        //Media sound = new Media(new File(musicFile).toURI().toString());
-        //mediaPlayer = new MediaPlayer(sound);
-        //mediaPlayer.play();
+        String musicFile = "src/sample/songs/drum.mp3";     // For example
+
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);
+
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));

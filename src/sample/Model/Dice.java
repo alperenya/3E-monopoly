@@ -1,3 +1,5 @@
+package sample.Model;
+
 public class Dice {
 
     //properties
@@ -8,7 +10,7 @@ public class Dice {
 
     //methods
     public int roll(){
-        return (int)( Math.random() * 12 + 1 );
+        return (int)( Math.random() * 12 + 2 );
     }
 
 }

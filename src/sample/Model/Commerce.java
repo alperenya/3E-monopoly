@@ -1,3 +1,5 @@
+package sample.Model;
+
 public class  Commerce {
     //Properties
     protected static Player buyer;

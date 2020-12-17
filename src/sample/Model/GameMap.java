@@ -1,29 +1,60 @@
+package sample.Model;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
+
+import java.util.*;
 
 public class GameMap {
     private ArrayList<Cell> cells; //Will be initialized when start game button is pressed
-    private ArrayList<Card> cards; //Will be initialized when start game button is pressed
-    private Hashtable<Cell, String> colors; //Will be initialized when start game button is pressed
+    private ArrayList<CommunityChest> communityCards;
+    private ArrayList<Chance> chanceCards; //Will be initialized when start game button is pressed
 
     public GameMap(){ //Will be called after start game button is pressed
         cells = new ArrayList<>();
-        cards = new ArrayList<>();
-        colors = new Hashtable<>();
+        chanceCards = new ArrayList<>();
+        communityCards = new ArrayList<>();
     }
     public ArrayList<Cell> getCells(){ return cells;} //Get all cells on the map
-    public ArrayList<Card> getCards(){ return cards;} //Newly added. Return all the cards
-    public Hashtable<Cell, String> getColors(){ return colors;} //Newly added. Return all the colors
 
-    public ArrayList<Cell> getSameColoredProperties(){ return null;} //Get the properties with the same color
-    public ArrayList<Player> getSickPlayers(){ return null;} //getPatientsNames changed to getSickPlayers
+    public ArrayList<CommunityChest> getCommunityCards() {return communityCards; }
 
-    public void addCell(Cell cell){
+    public ArrayList<Chance> getChanceCards() { return chanceCards; }
+
+    public ArrayList<Player> getSickPlayers(){ return cells.get(10).getVisitors();} //return sick players names
+
+
+    public void addCell(Cell cell){ //to add all cells before starting the game
         cells.add(cell);
     }
-    public Boolean addCards(Card card){return true;}
-    public Card drawCard(String type){return null;}
-    public void shuffleCards(String type){}
+    public Boolean addCards(Card card){ //to add all cards before starting the game
+        if(card.getClass() == Chance.class)
+            chanceCards.add((Chance) card);
+        else if(card.getClass() == CommunityChest.class)
+            communityCards.add((CommunityChest) card);
+        else
+            return false;
+        return true;
+    }
+    public Card drawCard(String type){ //draw cards when a player comes to a card cell
+        Card c;
+        if(type.equals("Chance")){
+            c = chanceCards.get(0);
+            chanceCards.remove(0);
+            chanceCards.add((Chance) c);
+        }
+        else if(type.equals("CommunityChest")){
+            c = communityCards.get(0);
+            communityCards.remove(0);
+            communityCards.add((CommunityChest) c);
+        }
+        else{
+            c = null;
+        }
+
+        return c;
+    }
+    public void shuffleCards(String type){ //shuffle card before starting the game
+        Collections.shuffle(chanceCards);
+        Collections.shuffle(communityCards);
+    }
 
 }

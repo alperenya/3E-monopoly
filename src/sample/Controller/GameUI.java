@@ -1,3 +1,6 @@
+package sample.Controller;
+
+import sample.Model.*;
 import java.util.ArrayList;
 
 public class GameUI {
