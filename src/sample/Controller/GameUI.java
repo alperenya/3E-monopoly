@@ -90,12 +90,12 @@ public class GameUI extends Application {
 
 
     public static void main(String[] args) {
-        GameEngine engine = new GameEngine();
+       /* GameEngine engine = new GameEngine();
         Scanner sc = new Scanner(System.in);
         System.out.println("Number of players: ");
         int playerCount = sc.nextInt();
         engine.startGame(playerCount);
-        engine.gameFlow();
-        //launch(args);
+        engine.gameFlow();*/
+        launch(args);
     }
 }

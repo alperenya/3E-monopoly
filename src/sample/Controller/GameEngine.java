@@ -4,11 +4,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -17,8 +20,10 @@ import sample.Model.*;
 
 import javax.smartcardio.Card;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class GameEngine {
@@ -112,7 +117,19 @@ public class GameEngine {
 
     }
 
+    @FXML private GridPane property;
+
     public void gameFlow(){
+        for (Node node : property.getChildren()) {
+
+
+            //String a = property.getColumnIndex(node).toString() + " " + property.getRowIndex(node).toString() ;
+            System.out.println(node.toString());
+            System.out.println(GridPane.getColumnIndex(node));
+            System.out.println(GridPane.getRowIndex(node));
+            //System.out.println(property.getId());
+        }
+
         for (Cell c:gameMap.getCells()) {
             System.out.println("[ " +  (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
         }
@@ -136,7 +153,7 @@ public class GameEngine {
                 System.out.println("[ " + (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
             }
 
-            
+
 
             nextTurn();
         }
@@ -171,6 +188,7 @@ public class GameEngine {
     public void managePatients(){} //Check the patient players
     public void handleCredits(){} //Go to credits scene
     public void handleSettings(){} //Go to settings menu
+
     public void createPlayers(){
         for(int i = 1; i <= playerCount; i++){
             Scanner sc = new Scanner(System.in);
@@ -303,16 +321,18 @@ public class GameEngine {
 
     public void singlePlayerButtonPushed(javafx.event.ActionEvent event) throws IOException{
 
-        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
+        //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
+        loader.setController(this);
+        Parent settingsParent = loader.load();
         Scene settingsScene = new Scene( settingsParent );
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         window.setScene(settingsScene);
         window.show();
-
-        System.out.println("Başladı");
-        this.startGame(5);
+        System.out.println("Başladı: " + property.getId());
+        this.startGame(1);
         this.gameFlow();
     }
 
@@ -364,8 +384,6 @@ public class GameEngine {
             }
         });
     }
-
-
 }
 
 
