@@ -187,6 +187,8 @@ public class GameEngine {
                 ((Taxation) currentPosition).getMoneyFromUser(currentPlayer);
                 System.out.println( currentPlayer.getName() + ": " + currentPlayer.getMoney());
 
+            }else if( currentPosition instanceof CardCell ){
+                buyButton.setDisable(true);
             }
 
         });
