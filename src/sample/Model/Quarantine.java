@@ -9,11 +9,13 @@ public class Quarantine extends Cell{
     private ArrayList<Player> patients;
 
     //constructers
-    public Quarantine(String name){
+    public Quarantine(String name, double x, double y){
         this.name = name;
         this.message = "Unfornutanelty, Your Covid-19 Test is POSITIVE";
         patients = new ArrayList<>();
         this.visitors = new ArrayList<>();
+        this.x = x;
+        this.y = y;
     }
     public Quarantine( String name, String message, ArrayList<Player> patients){
         this.name = name;

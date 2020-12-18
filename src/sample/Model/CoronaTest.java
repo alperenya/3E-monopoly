@@ -5,12 +5,15 @@ import java.util.ArrayList;
 public class CoronaTest extends Cell{
 
     //properties
-
+    private  double x;
+    private double y;
 
     //constructers
-    public CoronaTest(String name){
+    public CoronaTest(String name, double x, double y){
         this.name = name;
         this.visitors = new ArrayList<>();
+        this.x = x;
+        this.y = y;
     }
     public CoronaTest( String name, ArrayList<Player> visitors ){
         this.name = name;

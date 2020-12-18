@@ -6,9 +6,11 @@ public class PublicService extends Property{
     //properties
     private int multiplier;
     private int baseRent;
+    private  double x;
+    private  double y;
 
     //constructor
-    public PublicService( String name, int price, int baseRent, String color ) {
+    public PublicService( String name, int price, int baseRent, String color, double x, double y ) {
         this.name = name;
         this.owner = null;
         this.color = color;
@@ -51,5 +53,13 @@ public class PublicService extends Property{
         }
 
         return baseRent * multiplier;
+    }
+
+    public double getX(){
+        return  x;
+    }
+
+    public double getY(){
+        return y;
     }
 }

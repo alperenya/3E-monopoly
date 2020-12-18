@@ -7,6 +7,8 @@ public abstract class Cell {
     //properties
     protected String name;
     protected ArrayList<Player> visitors;
+    protected double x;
+    protected double y;
 
     //methods
     public String getName() {
@@ -38,5 +40,13 @@ public abstract class Cell {
 
     public void addVisitor(Player p){
         visitors.add(p);
+    }
+
+    public double getX(){
+        return x;
+    }
+
+    public double getY(){
+     return y;
     }
 }

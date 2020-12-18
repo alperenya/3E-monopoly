@@ -217,58 +217,59 @@ public class GameEngine {
     public void createMap(){
         gameMap.newMap();
         gameMap.addCell(new StartCell());
-        gameMap.addCell(new Neighbourhood("Mamak", 600, 80, 0.7, "brown" ));
-        gameMap.addCell(new CardCell("Community Chest"));
-        gameMap.addCell(new Neighbourhood("Sincan", 600,80, 0.65, "brown") );
-        gameMap.addCell(new Taxation("Income Tax", 2000));
-        gameMap.addCell(new Transportation("Esenboga Airport", 2000, 300, 0.6, "black"));
-        gameMap.addCell(new Neighbourhood("Altındağ", 1000,130, 0.5, "purple"));
-        gameMap.addCell(new CardCell("Chance"));
-        gameMap.addCell(new Neighbourhood("Etimesgut", 1000,130, 0.55, "purple"));
-        gameMap.addCell(new Neighbourhood("Beypazarı", 1200,180, 0.4, "purple"));
-        gameMap.addCell(new Quarantine("Quarantine"));
-        gameMap.addCell(new Neighbourhood("Gölbaşı", 1400,200, 0.8, "pink"));
-        gameMap.addCell(new PublicService("Tedaş", 1500, 200, "white"));
-        gameMap.addCell(new Neighbourhood("Kızılcahamam", 1400,200, 0.3, "pink"));
-        gameMap.addCell(new Neighbourhood("Cebeci", 1600,220, 0.75, "pink"));
-        gameMap.addCell(new Transportation("YHT", 2000, 300, 0.5, "black"));
-        gameMap.addCell(new Neighbourhood("Kolej", 1800,250, 0.55, "orange"));
-        gameMap.addCell(new CardCell("Community Chest"));
-        gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "orange"));
-        gameMap.addCell(new Neighbourhood("Dikmen", 2000,280, 0.25, "orange"));
-        gameMap.addCell(new CoronaTest("Test Center"));
-        gameMap.addCell(new Neighbourhood("Emek", 2200,300, 0.55, "red"));
-        gameMap.addCell(new CardCell("Chance"));
-        gameMap.addCell(new Neighbourhood("Batıkent", 2200, 300, 0.45, "red" ));
-        gameMap.addCell(new Neighbourhood("Yenimahalle", 2400, 320, 0.3, "red" ));
-        gameMap.addCell(new Transportation("Railroads", 2000, 300, 0.9, "black"));
-        gameMap.addCell(new Neighbourhood("Ostim", 2600, 350, 0.6, "yellow" ));
-        gameMap.addCell(new Neighbourhood("Eryaman", 2600, 350, 0.5, "yellow" ));
-        gameMap.addCell(new PublicService("ASKİ", 1500, 200, "white"));
-        gameMap.addCell(new Neighbourhood("Beşevler", 2800, 380, 0.3, "yellow" ));
-        gameMap.addCell(new BeInfected("Go To Quarantine"));
-        gameMap.addCell(new Neighbourhood("Bahçelievler", 3000, 400, 0.45, "green" ));
-        gameMap.addCell(new Neighbourhood("Ulus", 3000, 400, 0.5, "green" ));
-        gameMap.addCell(new CardCell("Community Chest"));
-        gameMap.addCell(new Neighbourhood("Sıhhiye", 3200, 440, 0.6, "green" ));
-        gameMap.addCell(new Transportation("AŞTİ", 2000, 300, 0.9, "black"));
-        gameMap.addCell(new CardCell("Chance"));
-        gameMap.addCell(new Neighbourhood("Çayyalu", 3500, 460, 0.1, "blue" ));
-        gameMap.addCell(new Taxation("Luxury Tax", 100));
-        gameMap.addCell(new Neighbourhood("Bilkent", 4000, 500, 0.05, "blue" ));
+        gameMap.addCell(new Neighbourhood("Mamak", 600, 80, 0.7, "brown", 50, 50 ));
+        gameMap.addCell(new CardCell("Community Chest", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Sincan", 600,80, 0.65, "brown", 50, 50 ) );
+        gameMap.addCell(new Taxation("Income Tax", 2000, 50, 50 ));
+        gameMap.addCell(new Transportation("Esenboga Airport", 2000, 300, 0.6, "black", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Altındağ", 1000,130, 0.5, "purple", 50, 50 ));
+        gameMap.addCell(new CardCell("Chance", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Etimesgut", 1000,130, 0.55, "purple", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Beypazarı", 1200,180, 0.4, "purple", 50, 50 ));
+        gameMap.addCell(new Quarantine("Quarantine" , 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Gölbaşı", 1400,200, 0.8, "pink", 50, 50 ));
+        gameMap.addCell(new PublicService("Tedaş", 1500, 200, "white", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Kızılcahamam", 1400,200, 0.3, "pink", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Cebeci", 1600,220, 0.75, "pink", 50, 50 ));
+        gameMap.addCell(new Transportation("YHT", 2000, 300, 0.5, "black", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Kolej", 1800,250, 0.55, "orange", 50, 50 ));
+        gameMap.addCell(new CardCell("Community Chest", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "orange", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Dikmen", 2000,280, 0.25, "orange", 50, 50 ));
+        gameMap.addCell(new CoronaTest("Test Center" , 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Emek", 2200,300, 0.55, "red", 50, 50 ));
+        gameMap.addCell(new CardCell("Chance", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Batıkent", 2200, 300, 0.45, "red" , 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Yenimahalle", 2400, 320, 0.3, "red", 50, 50  ));
+        gameMap.addCell(new Transportation("Railroads", 2000, 300, 0.9, "black", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Ostim", 2600, 350, 0.6, "yellow" , 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Eryaman", 2600, 350, 0.5, "yellow" , 50, 50 ));
+        gameMap.addCell(new PublicService("ASKİ", 1500, 200, "white", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Beşevler", 2800, 380, 0.3, "yellow" , 50, 50 ));
+        gameMap.addCell(new BeInfected("Go To Quarantine", 50, 50));
+        gameMap.addCell(new Neighbourhood("Bahçelievler", 3000, 400, 0.45, "green", 50, 50  ));
+        gameMap.addCell(new Neighbourhood("Ulus", 3000, 400, 0.5, "green" , 50, 50 ));
+        gameMap.addCell(new CardCell("Community Chest", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Sıhhiye", 3200, 440, 0.6, "green", 50, 50  ));
+        gameMap.addCell(new Transportation("AŞTİ", 2000, 300, 0.9, "black", 50, 50 ));
+        gameMap.addCell(new CardCell("Chance", 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Çayyalu", 3500, 460, 0.1, "blue" , 50, 50 ));
+        gameMap.addCell(new Taxation("Luxury Tax", 100, 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Bilkent", 4000, 500, 0.05, "blue" , 50, 50 ));
 
     } //Initialize the map
 
     //double x, double y
     private void movePlayer(int amount){
-/*        int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()))%gameMap.getCells().size();
+        int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()))%gameMap.getCells().size();
         Cell c = gameMap.getCells().get(position);
         currentPlayer.getPosition().getVisitors().remove(currentPlayer);
         currentPlayer.setPosition(c);
+        System.out.println(c.getName());
         c.addVisitor(currentPlayer);
-        System.out.println("Dice: " + amount);*/
+        System.out.println("Dice: " + amount);
 
-        moveUIPiece(amount,amount);
+        moveUIPiece(c.getX(),c.getY());
     }
 
 

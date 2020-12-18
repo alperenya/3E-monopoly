@@ -9,7 +9,7 @@ public class Neighbourhood extends Property {
     private double coronaRisk;
 
     //constructor
-    public Neighbourhood( String name, int price, int rent, double coronaRisk, String color ){
+    public Neighbourhood( String name, int price, int rent, double coronaRisk, String color, double x, double y ){
         this.name = name;
         this.owner = null;
         this.color = color;
@@ -20,6 +20,8 @@ public class Neighbourhood extends Property {
         this.availability = true;
         this.onMortgage = false;
         this.visitors = new ArrayList<>();
+        this.x = x;
+        this.y = y;
     }
 
     //methods

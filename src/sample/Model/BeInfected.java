@@ -13,9 +13,11 @@ public class BeInfected extends Cell {
         this.name = "";
         this.visitors = new ArrayList<>();
     }
-    public BeInfected( String name){
+    public BeInfected( String name, double x, double y){
         this.name = name;
         this.visitors = new ArrayList<>();
+        this.x = x;
+        this.y = y;
     }
     public BeInfected( String name, ArrayList<Player> visitors, int banNumber){
         this.name = name;
