@@ -161,12 +161,22 @@ public class Player {
         return true;
     }
 
-    public Boolean trade(Player p){
-        // WHICH PROPERTIES WILL BE EXCHANGED IS NOT STATED?
-        // THIS IS A TEST CODE
-        Commerce commerce = new Commerce(this,p,properties.get(0), p.getProperties().get(0));
-        commerce.exchange();
-        return true;
+    //Will do the trading without any checks.
+    public void trade(Player otherPlayer, int offeredMoney, Property offeredProperty, int requestedMoney, Property requestedProperty){
+
+        if(offeredProperty != null){
+            properties.remove(offeredProperty);
+            otherPlayer.addProperty(offeredProperty);
+        }
+        money -= offeredMoney;
+        otherPlayer.setMoney(otherPlayer.getMoney() + offeredMoney);
+
+        if(requestedProperty != null){
+            otherPlayer.removeProperty(requestedProperty);
+            properties.add(requestedProperty);
+        }
+        otherPlayer.setMoney(otherPlayer.getMoney() - requestedMoney);
+        money += requestedMoney;
     }
 
     public int getBanTurn() {

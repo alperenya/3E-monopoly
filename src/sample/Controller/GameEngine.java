@@ -1,5 +1,6 @@
 package sample.Controller;
 
+import com.sun.deploy.util.StringUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -8,17 +9,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.Model.*;
+import sample.Model.Cell;
+import sun.plugin2.ipc.windows.WindowsNamedPipe;
 //import sun.security.jca.GetInstance;
 
 import javax.smartcardio.Card;
+import javax.xml.soap.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,7 +47,17 @@ public class GameEngine {
     @FXML private Label turnlabel;
     @FXML private Button rollDice;
     @FXML private Button mortgageButton;
+
     @FXML private Button tradeButton;
+    @FXML private Button completeTradeButton;
+    @FXML private Button cancelTradeButton;
+    @FXML private TextField offeredMoneyBox;
+    @FXML private TextField requestedMoneyBox;
+    @FXML private PasswordField buyerPasswordBox;
+    @FXML private PasswordField sellerPasswordBox;
+    @FXML private ListView buyerPropertiesListView;
+    @FXML private ListView sellerPropertiesListView;
+    @FXML private ComboBox clientsComboBox;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 10000;
@@ -134,6 +147,101 @@ public class GameEngine {
 
     @FXML private GridPane property;
 
+    private void openTradePopup(javafx.event.ActionEvent event) throws IOException {
+        Stage tradePopup = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/trade.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();//FXMLLoader.load(getClass().getResource("../view/trade.fxml"));
+        tradePopup.setScene(new Scene(root));
+
+        tradePopup.initModality(Modality.APPLICATION_MODAL);
+        tradePopup.initOwner(tradeButton.getScene().getWindow());
+        tradePopup.show();
+
+        for (Property p:currentPlayer.getProperties()) {
+            buyerPropertiesListView.getItems().add(p.getName());
+        }
+        for (Player p:players) {
+            if (!p.isBankrupt() && p != currentPlayer){
+                clientsComboBox.getItems().add(p.getName());
+            }
+        }
+
+        clientsComboBox.setOnAction(eventComboBox -> {
+            Player client = null;
+            String clientName = (String) clientsComboBox.getSelectionModel().getSelectedItem();
+            for (Player p:players) {
+                if (p.getName().equals(clientName)){
+                    client = p;
+                    break;
+                }
+            }
+            sellerPropertiesListView.getItems().clear();
+            for (Property p:client.getProperties()) {
+                sellerPropertiesListView.getItems().add(p.getName());
+            }
+        });
+
+        completeTradeButton.setOnAction(eventCompleteTrade -> {
+            Player client = null;
+            String clientName = (String) clientsComboBox.getSelectionModel().getSelectedItem();
+            for (Player p:players) {
+                if (p.getName().equals(clientName)){
+                    client = p;
+                    break;
+                }
+            }
+            if (client == null) return;
+            if(true){//buyerPasswordBox.getText().equals(currentPlayer.getPassword()) && sellerPasswordBox.getText().equals(client.getPassword())){
+                Property offeredProperty = null;
+                if (buyerPropertiesListView.getSelectionModel().getSelectedItem() != null){
+                    for (Property p:currentPlayer.getProperties()) {
+                        if (p.getName().equals((String) buyerPropertiesListView.getSelectionModel().getSelectedItem())){
+                            offeredProperty = p;
+                            break;
+                        }
+                    }
+                    System.out.println((String) buyerPropertiesListView.getSelectionModel().getSelectedItem());
+                }
+
+                Property requestedProperty = null;
+                if (sellerPropertiesListView.getSelectionModel().getSelectedItem() != null) {
+                    for (Property p : client.getProperties()) {
+                        if (p.getName().equals((String) sellerPropertiesListView.getSelectionModel().getSelectedItem())) {
+                            requestedProperty = p;
+                            break;
+                        }
+                    }
+                    System.out.println((String) sellerPropertiesListView.getSelectionModel().getSelectedItem());
+                }
+                Commerce commerce = new Commerce(currentPlayer, client, offeredProperty, requestedProperty,
+                        Integer.parseInt(isNumeric(offeredMoneyBox.getText()) ? "0" : offeredMoneyBox.getText()), Integer.parseInt(isNumeric(requestedMoneyBox.getText()) ? "0" : requestedMoneyBox.getText()));
+                if (commerce.exchange()){
+                    System.out.println("Exchange successfull");
+                }
+                else{
+                    System.out.println("Excahnge failed");
+                }
+            }
+        });
+        cancelTradeButton.setOnAction(eventCancelTrade -> {
+            // get a handle to the stage
+            Stage stage = (Stage) cancelTradeButton.getScene().getWindow();
+            // do what you have to do
+            stage.close();
+        });
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
+//        GameEngine engine = new GameEngine();
+//        loader.setController(this);
+//        Parent settingsParent = (Parent) loader.load();
+//        Scene settingsScene = new Scene( settingsParent );
+
+
+//        // get a handle to the stage
+//        Stage stage = (Stage) completeTradeButton.getScene().getWindow();
+//        // do what you have to do
+//        stage.close();
+    }
     public void gameFlow(){
        /* for (Node node : property.getChildren()) {
 
@@ -149,6 +257,19 @@ public class GameEngine {
             movePlayer(dice.roll());
             nextTurn();
         });
+
+
+
+        tradeButton.setOnAction(event -> {
+
+            try {
+                openTradePopup(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+
 
         buyButton.setOnAction(event -> {
             currentPlayer.setMoney(1000000);
@@ -184,11 +305,6 @@ public class GameEngine {
                 diceLabel.setText( "Dice: " + dice.roll() );
             }
 
-        });
-
-
-        tradeButton.setOnAction( event -> {
-            System.out.println("trade");
         });
 
 
@@ -306,8 +422,6 @@ public class GameEngine {
         moveUIPiece(currentPlayer.getPiece(),c.getX(),c.getY());
     }
 
-
-
     public void moveUIPiece(Pane piece,double x, double y){
         piece.setLayoutX(x);
         piece.setLayoutY(y);
@@ -415,7 +529,6 @@ public class GameEngine {
         window.show();
     }
 
-
     public void adjustSoundButtonPushed(){
 
 
@@ -429,6 +542,20 @@ public class GameEngine {
 
             }
         });
+    }
+
+    private boolean isNumeric(final String str) {
+
+        // null or empty
+        if (str == null || str.length() == 0) {
+            return false;
+        }
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
