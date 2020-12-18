@@ -179,9 +179,13 @@ public class GameEngine {
                 ((PublicService) currentPosition).setMultiplier( diceValue );
                 int rent = ((PublicService) currentPosition).calculateRent();
 
-                System.out.println( "Retrieved money: " + rent );
+                //System.out.println( "Retrieved money: " + rent );
 
                 currentPlayer.setMoney( currentPlayer.getMoney() - rent );
+
+                Player owner = ((PublicService) currentPosition).getOwner();
+                owner.setMoney(owner.getMoney() + rent);
+
                 System.out.println( "CurrentPlayer money: " + currentPlayer.getMoney() );
                 updateMoneyUI();
                 diceLabel.setText( "Dice: " + dice.roll() );
@@ -196,12 +200,33 @@ public class GameEngine {
                 ((StartCell) currentPosition).payVisitors(currentPlayer);
                 updateMoneyUI();
                 System.out.println( currentPlayer.getName() + ": " + currentPlayer.getMoney());
+            }else if(startCellPassed){
+                startCellPassed = false;
+                currentPlayer.setMoney(currentPlayer.getMoney() + 200);
+                updateMoneyUI();
             }else if( currentPosition instanceof CardCell ){
                 buyButton.setDisable(true);
+            }else if( currentPosition instanceof Neighbourhood && ((Neighbourhood)currentPosition).hasOwner() ){
+                //int diceValue = dice.roll();
+
+                int rent = ((Neighbourhood) currentPosition).calculateRent();
+
+                //System.out.println( "Retrieved money: " + rent );
+
+                currentPlayer.setMoney( currentPlayer.getMoney() - rent );
+
+                Player owner = ((Neighbourhood) currentPosition).getOwner();
+                owner.setMoney(owner.getMoney() + rent);
+                System.out.println( "CurrentPlayer money: " + currentPlayer.getMoney() );
+                updateMoneyUI();
+                diceLabel.setText( "Dice: " + dice.roll() );
+            }else if( currentPosition instanceof BeInfected){
+                moveUIPiece(currentPlayer.getPiece(),65,735);
+                currentPlayer.setPosition(gameMap.getCells().get(10));
+                currentPlayer.getPosition().addVisitor(currentPlayer);
             }
 
             handleInfection();
-
         });
 
 
@@ -337,7 +362,6 @@ public class GameEngine {
 
 
         updateMoneyUI();
-
         gameMap.getCells().get(0).setVisitors(players);
     } //Initialize the given amount of players
     public void createMap(){
@@ -384,9 +408,16 @@ public class GameEngine {
         gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "orange", 755, 655 ));
     } //Initialize the map
 
+    private  boolean startCellPassed = false;
     //double x, double y
     private void movePlayer(int amount){
-        int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()))%gameMap.getCells().size();
+        int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()));
+
+        if(position >= gameMap.getCells().size()){
+            startCellPassed = true;
+        }
+
+        position= position%gameMap.getCells().size();
         Cell c = gameMap.getCells().get(position);
         currentPlayer.getPosition().getVisitors().remove(currentPlayer);
         currentPlayer.setPosition(c);
