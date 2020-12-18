@@ -214,10 +214,15 @@ public class GameEngine {
                     }
                     System.out.println((String) sellerPropertiesListView.getSelectionModel().getSelectedItem());
                 }
+
                 Commerce commerce = new Commerce(currentPlayer, client, offeredProperty, requestedProperty,
-                        Integer.parseInt(isNumeric(offeredMoneyBox.getText()) ? "0" : offeredMoneyBox.getText()), Integer.parseInt(isNumeric(requestedMoneyBox.getText()) ? "0" : requestedMoneyBox.getText()));
+                        Integer.parseInt(isNumeric(
+                                offeredMoneyBox.getText()) ? offeredMoneyBox.getText() : "0"), Integer.parseInt(isNumeric(requestedMoneyBox.getText()) ? requestedMoneyBox.getText() : "0"));
                 if (commerce.exchange()){
-                    System.out.println("Exchange successfull");
+                    if(buyerPasswordBox.getText().equals(currentPlayer.getPassword()) && sellerPasswordBox.getText().equals(client.getPassword()))
+                        System.out.println("Exchange successfull");
+                    else
+                        System.out.println("Wrong password");
                 }
                 else{
                     System.out.println("Excahnge failed");
@@ -351,10 +356,10 @@ public class GameEngine {
             //String pieceName = sc.nextLine();
             pieces = new ArrayList<>(Arrays.asList(player_piece,player_piece_1,player_piece_2,player_piece_3,player_piece_4,player_piece_5));
             pieces.remove(player_piece);
-            players.add(new Player("playerName", player_piece, gameMap.getCells().get(0)));
+            players.add(new Player("playerName", player_piece, "1234", gameMap.getCells().get(0)));
         //}
         for(int i = 1; i <= botCount; i++){
-            players.add(new Bot("bot" + i, pieces.get(0) , gameMap.getCells().get(0)));
+            players.add(new Bot("bot" + i, pieces.get(0) , "1234", gameMap.getCells().get(0)));
             pieces.remove(pieces.get(0));
         }
 
@@ -547,7 +552,7 @@ public class GameEngine {
     private boolean isNumeric(final String str) {
 
         // null or empty
-        if (str == null || str.length() == 0) {
+        if (str == "" || str == null || str.length() == 0) {
             return false;
         }
         for (char c : str.toCharArray()) {
