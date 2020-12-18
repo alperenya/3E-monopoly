@@ -17,12 +17,12 @@
    <children>
       <Pane layoutY="367.0" prefHeight="70.0" prefWidth="837.0" style="-fx-border-color: black;" styleClass="general-scene" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="303.0">
          <children>
-            <Button layoutX="47.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="action-button" text="Roll Dice" textFill="WHITE" fx:id="rollDice"/>
-            <Button layoutX="180.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Buy" textFill="WHITE" fx:id="buyButton"/>
-            <Button layoutX="302.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Mortgage" textFill="WHITE" fx:id="mortgageButton"/>
+            <Button fx:id="rollDice" layoutX="47.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="action-button" text="Roll Dice" textFill="WHITE" />
+            <Button fx:id="buyButton" layoutX="180.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Buy" textFill="WHITE" />
+            <Button fx:id="mortgageButton" layoutX="302.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Mortgage" textFill="WHITE" />
             <Button fx:id="skipbtn" layoutX="581.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Skip" textFill="WHITE" />
             <Button layoutX="711.0" layoutY="15.0" mnemonicParsing="false" onAction="#gamePausedButtonPushed" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Pause Game" textFill="WHITE" />
-            <Button layoutX="428.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Trade" textFill="WHITE" fx:id="tradeButton"/>
+            <Button fx:id="tradeButton" layoutX="428.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Trade" textFill="WHITE" />
          </children>
       </Pane>
       <ImageView fitHeight="797.0" fitWidth="797.0" layoutX="21.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" smooth="false">
@@ -31,7 +31,7 @@
          </image>
       </ImageView>
       <Label fx:id="turnlabel" layoutX="217.0" layoutY="225.0" prefHeight="60.0" prefWidth="135.0" text="Round: Osman" />
-      <Label layoutX="505.0" layoutY="560.0" prefHeight="60.0" prefWidth="135.0" text="Dice: 8" fx:id="diceLabel"/>
+      <Label fx:id="diceLabel" layoutX="505.0" layoutY="560.0" prefHeight="60.0" prefWidth="135.0" text="Dice: 8" />
       <VBox layoutX="823.0" prefHeight="246.0" prefWidth="318.0" styleClass="general-scene">
          <children>
             <Label alignment="CENTER" prefHeight="40.0" prefWidth="288.0" style="-fx-font-weight: bold;" text="Players" textFill="WHITE">
@@ -125,6 +125,7 @@
                   <Label prefHeight="17.0" prefWidth="138.0" text="TEDAŞ -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="ASKİ -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Bahçelievler -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                  <Label prefHeight="17.0" prefWidth="138.0" text="Altındağ -&gt; Empty" textFill="WHITE" />
                </children>
             </GridPane>
             <Label alignment="CENTER" prefHeight="32.0" prefWidth="325.0" style="-fx-font-weight: bold;" text="Health" textFill="WHITE">
