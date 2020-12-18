@@ -20,15 +20,15 @@ public class StartCell extends Cell{
 
     //methods
     public void payVisitors( ){
-        int counter;
+       // int counter;
 
-        for ( counter = 0; counter < visitors.size(); counter++){
+        //for ( counter = 0; counter < visitors.size(); counter++){
 
             Player visitor = visitors.get(counter);
             visitor.setMoney( visitor.getMoney() + STARTINGMONEY );
 
             System.out.println("Paying Succesfull to the player: " + visitor.getName() );
-        }
+       // }
     }
 
 }
