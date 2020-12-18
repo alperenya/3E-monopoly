@@ -87,9 +87,10 @@ public class Player {
     }
 
     public boolean buyProperty(Property p){
-        if(money > p.getPrice()){
+        if( money > p.getPrice() && p.getAvailability() ){
             properties.add(p);
-            //p.setAvailability(false);
+            p.setAvailability(false);
+            p.setOwner(this);
             money -= p.getPrice();
             return true;
         }

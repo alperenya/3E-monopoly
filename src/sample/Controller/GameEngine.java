@@ -121,13 +121,9 @@ public class GameEngine {
         if( currentPosition instanceof Property ){
 
             int price = ((Property) currentPlayer.getPosition()).getPrice();
-
-            if( price <= currentPlayer.getMoney()){
-                currentPlayer.buyProperty( (Property) currentPosition );
-                ((Property) currentPosition).setOwner( currentPlayer );
-                gameUI.buyProperty( currentPlayer, (Property) currentPosition );
-                return true;
-            }
+            currentPlayer.buyProperty( (Property) currentPosition );
+            //gameUI.buyProperty( currentPlayer, (Property) currentPosition );
+            return true;
         }
         return false;
     }
