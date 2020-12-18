@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class StartCell extends Cell{
     //properties
-    private final int STARTINGMONEY = 2000;
+    private final int STARTINGMONEY = 200;
 
     //constructor
     public StartCell( double x, double y ){
@@ -19,16 +19,16 @@ public class StartCell extends Cell{
     }
 
     //methods
-    public void payVisitors( ){
-        int counter;
+    public void payVisitors(Player player){
+       // int counter;
 
-        for ( counter = 0; counter < visitors.size(); counter++){
+        //for ( counter = 0; counter < visitors.size(); counter++){
 
-            Player visitor = visitors.get(counter);
-            visitor.setMoney( visitor.getMoney() + STARTINGMONEY );
+            //layer visitor = visitors.get(player);
+            player.setMoney( player.getMoney() + STARTINGMONEY );
 
-            System.out.println("Paying Succesfull to the player: " + visitor.getName() );
-        }
+            System.out.println("Paying Succesfull to the player: " + player.getName() );
+       // }
     }
 
 }
