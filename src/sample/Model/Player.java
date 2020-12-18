@@ -22,7 +22,7 @@ public class Player {
         this.position = c;
         this.name = name;
         this.piece = piece;
-        this.health = false;
+        this.health = true;
         this.inQuarantine = false;
         this.isBankrupt = false;
         this.banTurn = 0;

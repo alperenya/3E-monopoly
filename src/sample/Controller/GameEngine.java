@@ -47,6 +47,8 @@ public class GameEngine {
     @FXML private Button tradeButton;
     @FXML private GridPane property;
     @FXML private GridPane healthSystem;
+    @FXML private GridPane money_grid;
+    @FXML private GridPane name_grid;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
@@ -137,6 +139,8 @@ public class GameEngine {
                     //System.out.println(GridPane.getRowIndex(node));
                     //System.out.println(property.getId());
                 }
+
+                updateMoneyUI();
             }
             //gameUI.buyProperty( currentPlayer, (Property) currentPosition );
 
@@ -147,6 +151,7 @@ public class GameEngine {
 
     public void gameFlow(){
 
+
         skipbtn.setOnAction(event -> {
             nextTurn();
             rollDice.setDisable(false);
@@ -154,11 +159,7 @@ public class GameEngine {
         });
 
         buyButton.setOnAction(event -> {
-            //currentPlayer.setMoney(1000000);
-            //System.out.println( currentPlayer.getMoney() );
-            //System.out.println( currentPlayer.getPosition().getName() );
             if ( manageProperties() ){
-                //System.out.println( currentPlayer.getMoney() );
                 for ( Property pro :  currentPlayer.getProperties() ){
                     System.out.println( pro.getName() + " -> " + pro.getPrice() );
                 }
@@ -168,11 +169,8 @@ public class GameEngine {
 
         rollDice.setOnAction( event -> {
             movePlayer(dice.roll());
-            //currentPlayer.setMoney(1000000);
-            //System.out.println( currentPlayer.getMoney() );
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
-            //&& ((PublicService) currentPosition).getOwner() != currentPlayer && ((PublicService) currentPosition).getAvailability()
 
             if ( currentPosition instanceof PublicService  && ((PublicService)currentPosition).hasOwner() ){
 
@@ -185,20 +183,24 @@ public class GameEngine {
 
                 currentPlayer.setMoney( currentPlayer.getMoney() - rent );
                 System.out.println( "CurrentPlayer money: " + currentPlayer.getMoney() );
-
+                updateMoneyUI();
                 diceLabel.setText( "Dice: " + dice.roll() );
             }
             else if(currentPosition instanceof Taxation){
                 buyButton.setDisable(true);
                 ((Taxation) currentPosition).getMoneyFromUser(currentPlayer);
+                updateMoneyUI();
                 System.out.println( currentPlayer.getName() + ": " + currentPlayer.getMoney());
             }else if(currentPosition instanceof StartCell){
                 buyButton.setDisable(true);
                 ((StartCell) currentPosition).payVisitors(currentPlayer);
+                updateMoneyUI();
                 System.out.println( currentPlayer.getName() + ": " + currentPlayer.getMoney());
             }else if( currentPosition instanceof CardCell ){
                 buyButton.setDisable(true);
             }
+
+            handleInfection();
 
         });
 
@@ -214,43 +216,73 @@ public class GameEngine {
     public void nextTurn(){
         currentPlayer = players.get((players.indexOf(currentPlayer) + 1)%players.size());
         turnlabel.setText("Round: " +  currentPlayer.getName());
+        turns++;
     } //Get to the next turn. Triggered by pressing next turn button.
     public void createPopup(){} //Create pop up to confirm or to get user interaction
     public void handleInfection(){
-        Cell pos = currentPlayer.getPosition();
-        if(pos.getName().equals("Quarantine"))
+
+        Cell currentPosition = currentPlayer.getPosition();
+        boolean virusExist = false;
+
+        if(currentPosition.getName().equals("Quarantine"))
             return;
-        for (Player p:pos.getVisitors()) {
-            if(!p.isHealthy())
-                currentPlayer.setHealth(false);
-            if(!currentPlayer.isHealthy())
-                p.setHealth(false);
+
+        if ( currentPosition.getVisitors().size() > 1 ){
+
+            for ( Player player : currentPosition.getVisitors() ) {
+
+                if ( !player.isHealthy() ){
+                    virusExist = true;
+                    break;
+                }
+            }
+            System.out.println( virusExist );
+            if ( virusExist ){
+                for ( Player player : currentPosition.getVisitors() ) {
+                    player.setHealth( false );
+                }
+            }
+
         }
-        if(pos.getClass() == Neighbourhood.class){
-            Neighbourhood neighbourhood = (Neighbourhood)pos;
-            currentPlayer.setHealth(neighbourhood.getCoronaRisk() < Math.random());
+
+
+        if( currentPosition instanceof Neighbourhood ){
+            Neighbourhood neighbourhood = (Neighbourhood)currentPosition;
+            currentPlayer.setHealth( neighbourhood.getCoronaRisk() < Math.random() );
+            System.out.println( currentPlayer.getName() + " neig " + neighbourhood.getCoronaRisk() + " " + currentPlayer.isHealthy() );
         }
-        else if(pos.getClass() == Transportation.class){
-            Transportation transportation = (Transportation) pos;
-            currentPlayer.setHealth(transportation.getCoronaRisk() < Math.random());
+        else if( currentPosition instanceof Transportation ){
+            Transportation transportation = (Transportation) currentPosition;
+            currentPlayer.setHealth(transportation.getCoronaRisk() < Math.random() );
+
+            System.out.println( currentPlayer.getName() + " trnas " + transportation.getCoronaRisk() + " " + currentPlayer.isHealthy());
         }
+
+        int counter = 0;
 
 
         for (Node node : healthSystem.getChildren()) {
             Label updateHealth =  (Label) node ;
 
-            for( Player player : players ){
+            Player player = players.get(counter);
 
-                if( updateHealth.getText().contains( player.getName() ) ){
-                    String updateLabel = player.getName() + "                     " + currentPlayer.getName();
-                    updateHealth.setText( updateLabel );
+            if( updateHealth.getText().contains( player.getName() ) ){
+
+                String updateLabel = player.getName() + "                     ";
+
+                if ( player.isInQuarantine() ){
+                    updateLabel = updateLabel + "Quarantine";
+                }else if( !player.isHealthy() ){
+                    updateLabel = updateLabel + "Infected";
+                }else{
+                    updateLabel = updateLabel + "Healhty";
                 }
-
+                System.out.println( updateLabel );
+                updateHealth.setText( updateLabel );
             }
-            System.out.println(updateHealth.getText());
-            //System.out.println(GridPane.getColumnIndex(node));
-            //System.out.println(GridPane.getRowIndex(node));
-            //System.out.println(property.getId());
+
+            counter++;
+
         }
 
 
@@ -260,6 +292,27 @@ public class GameEngine {
     public void managePatients(){} //Check the patient players
     public void handleCredits(){} //Go to credits scene
     public void handleSettings(){} //Go to settings menu
+
+    public void updateMoneyUI(){
+        int playerCounter = 0;
+
+        for (Node node : money_grid.getChildren()) {
+            Label label = (Label) node;
+
+            label.setText(players.get(playerCounter).getMoney() + "");
+            playerCounter++;
+        }
+
+        playerCounter = 0;
+
+        for (Node node : name_grid.getChildren()) {
+            Label label = (Label) node;
+
+            label.setText(players.get(playerCounter).getName() + "");
+            playerCounter++;
+        }
+
+    }
 
     public void createPlayers(){
         //for(int i = 1; i <= playerCount; i++){
@@ -281,6 +334,10 @@ public class GameEngine {
             players.get(i).setMoney(STARTING_MONEY);
             moveUIPiece(players.get(i).getPiece(),gameMap.getCells().get(0).getX(),gameMap.getCells().get(0).getY());
         }
+
+
+        updateMoneyUI();
+
         gameMap.getCells().get(0).setVisitors(players);
     } //Initialize the given amount of players
     public void createMap(){
