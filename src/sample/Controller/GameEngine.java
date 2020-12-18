@@ -33,6 +33,8 @@ public class GameEngine {
     private MediaPlayer mediaPlayer;
     @FXML private Slider soundControl;
     @FXML private Pane player_piece;
+    @FXML private Button skipbtn;
+    @FXML private Label turnlabel;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 10000;
@@ -76,13 +78,14 @@ public class GameEngine {
     public void startGame(int playerCount){ //Runs after deciding maxPlayers and
         this.playerCount = playerCount;
         System.out.println("There are " + playerCount + " players. " + (MAX_PLAYERS-playerCount) + " bot(s) can be added.");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Please enter the number of bot: ");
-        setBotCount(sc.nextInt());
+        /*Scanner sc = new Scanner(System.in);
+        System.out.print("Please enter the number of bot: ");*/
+        setBotCount(MAX_PLAYERS-playerCount);
 
         createMap();
         createPlayers();
         currentPlayer = players.get(0);
+        turnlabel.setText("Round: " +  currentPlayer.getName());
     }
     public void updateUI(){} //Update game ui between turns
     public boolean finishGame(){
@@ -120,7 +123,7 @@ public class GameEngine {
     @FXML private GridPane property;
 
     public void gameFlow(){
-        for (Node node : property.getChildren()) {
+       /* for (Node node : property.getChildren()) {
 
 
             //String a = property.getColumnIndex(node).toString() + " " + property.getRowIndex(node).toString() ;
@@ -128,39 +131,46 @@ public class GameEngine {
             System.out.println(GridPane.getColumnIndex(node));
             System.out.println(GridPane.getRowIndex(node));
             //System.out.println(property.getId());
-        }
+        }*/
 
-        for (Cell c:gameMap.getCells()) {
+       /* for (Cell c:gameMap.getCells()) {
             System.out.println("[ " +  (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
         }
+*/
+       // System.out.println();
+        //Scanner sc = new Scanner(System.in);
 
-        System.out.println();
-        Scanner sc = new Scanner(System.in);
+       //while(!finishGame()){
+               //System.out.println("Current player: " + currentPlayer.getName() + ", " + currentPlayer.getPiece());
+               //System.out.println("Type R to roll dice");
+               //String input = sc.nextLine();
 
-        while(!finishGame()){
+               // if(input.equals("R")){
 
-            System.out.println("Current player: " + currentPlayer.getName() + ", " + currentPlayer.getPiece());
-            System.out.println("Type R to roll dice");
-            String input = sc.nextLine();
+               // }
 
-            if(input.equals("R")){
-                movePlayer(dice.roll());
-            }
-
-            handleInfection();
+            /*handleInfection();
 
             for (Cell c:gameMap.getCells()) {
                 System.out.println("[ " + (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
-            }
+            }*/
 
 
 
+               // nextTurn();
+          // }
+
+        skipbtn.setOnAction(event -> {
+            movePlayer(dice.roll());
             nextTurn();
-        }
+        });
 
     } //Update game state between turns
-    private void nextTurn(){
+
+
+    public void nextTurn(){
         currentPlayer = players.get((players.indexOf(currentPlayer) + 1)%players.size());
+        turnlabel.setText("Round: " +  currentPlayer.getName());
     } //Get to the next turn. Triggered by pressing next turn button.
     public void createPopup(){} //Create pop up to confirm or to get user interaction
     public void handleInfection(){
@@ -190,15 +200,15 @@ public class GameEngine {
     public void handleSettings(){} //Go to settings menu
 
     public void createPlayers(){
-        for(int i = 1; i <= playerCount; i++){
-            Scanner sc = new Scanner(System.in);
-            System.out.print("Please enter the name of player " + i + " :");
-            String playerName = sc.nextLine();
-            System.out.print("Please select the piece of player " + i + " " + pieces + ": ");
-            String pieceName = sc.nextLine();
-            pieces.remove(pieceName);
-            players.add(new Player(playerName, pieceName, gameMap.getCells().get(0)));
-        }
+        //for(int i = 1; i <= playerCount; i++){
+            //Scanner sc = new Scanner(System.in);
+            //System.out.print("Please enter the name of player " + i + " :");
+            //String playerName = sc.nextLine();
+            //System.out.print("Please select the piece of player " + i + " " + pieces + ": ");
+            //String pieceName = sc.nextLine();
+            pieces.remove("car");
+            players.add(new Player("playerName", "car", gameMap.getCells().get(0)));
+        //}
         for(int i = 1; i <= botCount; i++){
             players.add(new Bot("bot" + i, pieces.get(0) , gameMap.getCells().get(0)));
         }
@@ -251,14 +261,14 @@ public class GameEngine {
 
     //double x, double y
     private void movePlayer(int amount){
-        int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()))%gameMap.getCells().size();
+/*        int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()))%gameMap.getCells().size();
         Cell c = gameMap.getCells().get(position);
         currentPlayer.getPosition().getVisitors().remove(currentPlayer);
         currentPlayer.setPosition(c);
         c.addVisitor(currentPlayer);
-        System.out.println("Dice: " + amount);
+        System.out.println("Dice: " + amount);*/
 
-        //moveUIPiece(x,y);
+        moveUIPiece(amount,amount);
     }
 
 
@@ -324,14 +334,14 @@ public class GameEngine {
         //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
         loader.setController(this);
-        Parent settingsParent = loader.load();
+        Parent settingsParent = (Parent) loader.load();
         Scene settingsScene = new Scene( settingsParent );
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         window.setScene(settingsScene);
         window.show();
-        System.out.println("Başladı: " + property.getId());
+        System.out.println("Başladı: " + property);
         this.startGame(1);
         this.gameFlow();
     }

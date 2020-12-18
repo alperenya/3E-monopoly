@@ -20,7 +20,7 @@
             <Button layoutX="47.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="action-button" text="Roll Dice" textFill="WHITE" />
             <Button layoutX="180.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Buy" textFill="WHITE" />
             <Button layoutX="302.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Mortgage" textFill="WHITE" />
-            <Button layoutX="581.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Skip" textFill="WHITE" />
+            <Button fx:id="skipbtn" layoutX="581.0" layoutY="14.0" mnemonicParsing="false" onAction="#nextTurn" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Skip" textFill="WHITE" />
             <Button layoutX="711.0" layoutY="15.0" mnemonicParsing="false" onAction="#gamePausedButtonPushed" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Pause Game" textFill="WHITE" />
             <Button layoutX="428.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Trade" textFill="WHITE" />
          </children>
@@ -30,7 +30,7 @@
             <Image url="@../imgs/gamemap.png" />
          </image>
       </ImageView>
-      <Label layoutX="217.0" layoutY="225.0" prefHeight="60.0" prefWidth="135.0" text="Round: Osman" />
+      <Label fx:id="turnlabel" layoutX="217.0" layoutY="225.0" prefHeight="60.0" prefWidth="135.0" text="Round: Osman" />
       <Label layoutX="505.0" layoutY="560.0" prefHeight="60.0" prefWidth="135.0" text="Dice: 8" />
       <VBox layoutX="823.0" prefHeight="246.0" prefWidth="318.0" styleClass="general-scene">
          <children>
@@ -111,7 +111,7 @@
                   <Label prefHeight="17.0" prefWidth="138.0" text="Dikmen -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Ostim -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Beşevler -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label prefHeight="17.0" prefWidth="138.0" text="Sincan -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                  <Label prefHeight="17.0" prefWidth="138.0" text="Sincan -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Batıkent -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Cebeci -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Bahçelievler -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="7" />
