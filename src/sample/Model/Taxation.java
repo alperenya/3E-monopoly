@@ -12,7 +12,7 @@ public class Taxation extends Cell {
         this.visitors = new ArrayList<>();
         this.taxRate = 0.23;
     }
-    public Taxation( String name, int taxRate, double x, double y ) {
+    public Taxation( String name, double taxRate, double x, double y ) {
         this.name = name;
         this.visitors = new ArrayList<>();
         this.taxRate = taxRate;
@@ -31,17 +31,17 @@ public class Taxation extends Cell {
     }
 
     //methods
-    public void getMoneyFromUser() {
+    public void getMoneyFromUser(Player player) {
 
-        int counter;
+        /*int counter;
 
-        for ( counter = 0; counter < visitors.size(); counter++){
+        for ( counter = 0; counter < visitors.size(); counter++){*/
 
-            Player visitor = visitors.get(counter);
-            int taxtAmount = visitor.getMoney() - (int)(visitor.getMoney() * taxRate);
-            visitor.setMoney( taxtAmount );
+            //Player visitor = visitors.get(counter);
+            int taxAmount = player.getMoney() - (int)(player.getMoney() * taxRate);
+            player.setMoney( taxAmount );
 
-            System.out.println("Player: " + visitor.getName() + " has payed: " + taxtAmount );
-        }
+            System.out.println("Player: " + player.getName() + " has payed: " + taxAmount );
+        //}
     }
 }

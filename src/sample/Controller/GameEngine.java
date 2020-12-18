@@ -144,6 +144,7 @@ public class GameEngine {
         skipbtn.setOnAction(event -> {
             nextTurn();
             rollDice.setDisable(false);
+            buyButton.setDisable(false);
         });
 
         buyButton.setOnAction(event -> {
@@ -160,12 +161,14 @@ public class GameEngine {
         });
 
         rollDice.setOnAction( event -> {
+            movePlayer(dice.roll());
             //currentPlayer.setMoney(1000000);
             //System.out.println( currentPlayer.getMoney() );
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
+            //&& ((PublicService) currentPosition).getOwner() != currentPlayer && ((PublicService) currentPosition).getAvailability()
 
-            if ( currentPosition instanceof PublicService ){
+            if ( currentPosition instanceof PublicService  ){
 
                 int diceValue = dice.roll();
 
@@ -178,9 +181,12 @@ public class GameEngine {
                 System.out.println( "CurrentPlayer money: " + currentPlayer.getMoney() );
 
                 diceLabel.setText( "Dice: " + dice.roll() );
-            }else{
+            }
+            else if(currentPosition instanceof Taxation){
+                buyButton.setDisable(true);
+                ((Taxation) currentPosition).getMoneyFromUser(currentPlayer);
                 System.out.println( currentPlayer.getName() + ": " + currentPlayer.getMoney());
-                movePlayer(dice.roll());
+
             }
 
         });
@@ -253,7 +259,7 @@ public class GameEngine {
         gameMap.addCell(new Neighbourhood("Altındağ", 1000,130, 0.5, "purple", 655, 755 ));
         gameMap.addCell(new CardCell("Community Chest", 590, 755 ));
         gameMap.addCell(new Neighbourhood("Sincan", 600,80, 0.65, "brown", 525, 755 ) );
-        gameMap.addCell(new Taxation("Income Tax", 2000, 460, 755 ));
+        gameMap.addCell(new Taxation("Income Tax", 0.23, 460, 755 ));
         gameMap.addCell(new Transportation("Railroads", 2000, 300, 0.9, "black", 395, 755 ));
         gameMap.addCell(new Neighbourhood("Kolej", 1800,250, 0.55, "orange", 330, 755 ));
         gameMap.addCell(new CardCell("Chance", 265, 755 ));
