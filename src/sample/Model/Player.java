@@ -1,5 +1,7 @@
 package sample.Model;
 
+import javafx.scene.layout.Pane;
+
 import java.util.ArrayList;
 
 public class Player {
@@ -7,7 +9,7 @@ public class Player {
     //properties
     protected String name;
     protected int money;
-    protected String piece;
+    protected Pane piece;
     protected ArrayList<Property> properties;
     protected Cell position;
     protected Boolean health;
@@ -16,7 +18,7 @@ public class Player {
     protected int banTurn;
 
     //constructors
-    public Player(String name, String piece, Cell c){
+    public Player(String name, Pane piece, Cell c){
         this.position = c;
         this.name = name;
         this.piece = piece;
@@ -43,7 +45,7 @@ public class Player {
         this.money = money;
     }
 
-    public String getPiece() {
+    public Pane getPiece() {
         return piece;
     }
 

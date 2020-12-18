@@ -6,8 +6,6 @@ public class PublicService extends Property{
     //properties
     private int multiplier;
     private int baseRent;
-    private  double x;
-    private  double y;
 
     //constructor
     public PublicService( String name, int price, int baseRent, String color, double x, double y ) {
@@ -20,7 +18,7 @@ public class PublicService extends Property{
         this.onMortgage = false;
         this.visitors = new ArrayList<>();
         this.x = x;
-        this.y = x;
+        this.y = y;
     }
 
     //methods
