@@ -47,7 +47,7 @@ public class GameEngine {
     @FXML private Button tradeButton;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
-    private final int STARTING_MONEY = 10000;
+    private final int STARTING_MONEY = 100000;
     private int playerCount;
     private int botCount; //Newly added. Will be decided after pressing create game button
     private int turns; //Will be set to zero at the start of the game
@@ -146,16 +146,16 @@ public class GameEngine {
         }*/
 
         skipbtn.setOnAction(event -> {
-            movePlayer(dice.roll());
             nextTurn();
+            rollDice.setDisable(false);
         });
 
         buyButton.setOnAction(event -> {
-            currentPlayer.setMoney(1000000);
-            System.out.println( currentPlayer.getMoney() );
-            System.out.println( currentPlayer.getPosition().getName() );
+            //currentPlayer.setMoney(1000000);
+            //System.out.println( currentPlayer.getMoney() );
+            //System.out.println( currentPlayer.getPosition().getName() );
             if ( manageProperties() ){
-                System.out.println( currentPlayer.getMoney() );
+                //System.out.println( currentPlayer.getMoney() );
                 for ( Property pro :  currentPlayer.getProperties() ){
                     System.out.println( pro.getName() + " -> " + pro.getPrice() );
                 }
@@ -164,9 +164,9 @@ public class GameEngine {
         });
 
         rollDice.setOnAction( event -> {
-            currentPlayer.setMoney(1000000);
-            System.out.println( currentPlayer.getMoney() );
-
+            //currentPlayer.setMoney(1000000);
+            //System.out.println( currentPlayer.getMoney() );
+            rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
 
             if ( currentPosition instanceof PublicService ){
@@ -182,6 +182,9 @@ public class GameEngine {
                 System.out.println( "CurrentPlayer money: " + currentPlayer.getMoney() );
 
                 diceLabel.setText( "Dice: " + dice.roll() );
+            }else{
+                System.out.println( currentPlayer.getName() + ": " + currentPlayer.getMoney());
+                movePlayer(dice.roll());
             }
 
         });
@@ -243,6 +246,7 @@ public class GameEngine {
         }
 
         for(int i = 0; i <= players.size() - 1; i++){
+            players.get(i).setMoney(STARTING_MONEY);
             moveUIPiece(players.get(i).getPiece(),gameMap.getCells().get(0).getX(),gameMap.getCells().get(0).getY());
         }
         gameMap.getCells().get(0).setVisitors(players);
