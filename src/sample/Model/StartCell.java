@@ -7,9 +7,11 @@ public class StartCell extends Cell{
     private final int STARTINGMONEY = 2000;
 
     //constructor
-    public StartCell( ){
+    public StartCell( double x, double y ){
         this.name = "Start";
         this.visitors = new ArrayList<>();
+        this.x = x;
+        this.y = y;
     }
     public StartCell( String name, ArrayList<Player> visitors ){
         this.name = name;

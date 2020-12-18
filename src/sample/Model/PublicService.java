@@ -19,6 +19,8 @@ public class PublicService extends Property{
         this.availability = true;
         this.onMortgage = false;
         this.visitors = new ArrayList<>();
+        this.x = x;
+        this.y = x;
     }
 
     //methods
@@ -53,13 +55,5 @@ public class PublicService extends Property{
         }
 
         return baseRent * multiplier;
-    }
-
-    public double getX(){
-        return  x;
-    }
-
-    public double getY(){
-        return y;
     }
 }
