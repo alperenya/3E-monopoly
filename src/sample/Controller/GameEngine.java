@@ -213,7 +213,7 @@ public class GameEngine {
             }else if( currentPosition instanceof CardCell ){
                 buyButton.setDisable(true);
             }else if( currentPosition instanceof Neighbourhood && ((Neighbourhood)currentPosition).hasOwner() ){
-                int diceValue = dice.roll();
+                //int diceValue = dice.roll();
 
                 int rent = ((Neighbourhood) currentPosition).calculateRent();
 
@@ -227,8 +227,11 @@ public class GameEngine {
                 System.out.println( "CurrentPlayer money: " + currentPlayer.getMoney() );
                 updateMoneyUI();
                 diceLabel.setText( "Dice: " + dice.roll() );
+            }else if( currentPosition instanceof BeInfected){
+                moveUIPiece(currentPlayer.getPiece(),65,735);
+                currentPlayer.setPosition(gameMap.getCells().get(10));
+                currentPlayer.getPosition().addVisitor(currentPlayer);
             }
-
         });
 
 
@@ -365,6 +368,7 @@ public class GameEngine {
     //double x, double y
     private void movePlayer(int amount){
         int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()));
+
         if(position >= gameMap.getCells().size()){
             startCellPassed = true;
         }
