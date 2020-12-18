@@ -46,6 +46,8 @@ public class GameEngine {
     @FXML private Button mortgageButton;
     @FXML private Button tradeButton;
     @FXML private GridPane property;
+    @FXML private GridPane money_grid;
+    @FXML private GridPane name_grid;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
@@ -136,6 +138,8 @@ public class GameEngine {
                     //System.out.println(GridPane.getRowIndex(node));
                     //System.out.println(property.getId());
                 }
+
+                updateMoneyUI();
             }
             //gameUI.buyProperty( currentPlayer, (Property) currentPosition );
 
@@ -145,6 +149,7 @@ public class GameEngine {
     }
 
     public void gameFlow(){
+
 
         skipbtn.setOnAction(event -> {
             nextTurn();
@@ -184,16 +189,18 @@ public class GameEngine {
 
                 currentPlayer.setMoney( currentPlayer.getMoney() - rent );
                 System.out.println( "CurrentPlayer money: " + currentPlayer.getMoney() );
-
+                updateMoneyUI();
                 diceLabel.setText( "Dice: " + dice.roll() );
             }
             else if(currentPosition instanceof Taxation){
                 buyButton.setDisable(true);
                 ((Taxation) currentPosition).getMoneyFromUser(currentPlayer);
+                updateMoneyUI();
                 System.out.println( currentPlayer.getName() + ": " + currentPlayer.getMoney());
             }else if(currentPosition instanceof StartCell){
                 buyButton.setDisable(true);
                 ((StartCell) currentPosition).payVisitors(currentPlayer);
+                updateMoneyUI();
                 System.out.println( currentPlayer.getName() + ": " + currentPlayer.getMoney());
             }else if( currentPosition instanceof CardCell ){
                 buyButton.setDisable(true);
@@ -241,6 +248,27 @@ public class GameEngine {
     public void handleCredits(){} //Go to credits scene
     public void handleSettings(){} //Go to settings menu
 
+    public void updateMoneyUI(){
+        int playerCounter = 0;
+
+        for (Node node : money_grid.getChildren()) {
+            Label label = (Label) node;
+
+            label.setText(players.get(playerCounter).getMoney() + "");
+            playerCounter++;
+        }
+
+        playerCounter = 0;
+
+        for (Node node : name_grid.getChildren()) {
+            Label label = (Label) node;
+
+            label.setText(players.get(playerCounter).getName() + "");
+            playerCounter++;
+        }
+
+    }
+
     public void createPlayers(){
         //for(int i = 1; i <= playerCount; i++){
             //Scanner sc = new Scanner(System.in);
@@ -261,6 +289,10 @@ public class GameEngine {
             players.get(i).setMoney(STARTING_MONEY);
             moveUIPiece(players.get(i).getPiece(),gameMap.getCells().get(0).getX(),gameMap.getCells().get(0).getY());
         }
+
+
+        updateMoneyUI();
+
         gameMap.getCells().get(0).setVisitors(players);
     } //Initialize the given amount of players
     public void createMap(){
