@@ -43,6 +43,8 @@ public class GameEngine {
     @FXML private Button buyButton;
     @FXML private Label turnlabel;
     @FXML private Button rollDice;
+    @FXML private Button mortgageButton;
+    @FXML private Button tradeButton;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 10000;
@@ -143,38 +145,10 @@ public class GameEngine {
             //System.out.println(property.getId());
         }*/
 
-       /* for (Cell c:gameMap.getCells()) {
-            System.out.println("[ " +  (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
-        }
-*/
-       // System.out.println();
-        //Scanner sc = new Scanner(System.in);
-
-       //while(!finishGame()){
-               //System.out.println("Current player: " + currentPlayer.getName() + ", " + currentPlayer.getPiece());
-               //System.out.println("Type R to roll dice");
-               //String input = sc.nextLine();
-
-               // if(input.equals("R")){
-
-               // }
-
-            /*handleInfection();
-
-            for (Cell c:gameMap.getCells()) {
-                System.out.println("[ " + (gameMap.getCells().indexOf(c)+1) + " " + c.getName() + ": " + c.getVisitorsPiece() + " ] ");
-            }*/
-
-
-
-               // nextTurn();
-          // }
-
         skipbtn.setOnAction(event -> {
             movePlayer(dice.roll());
             nextTurn();
         });
-
 
         buyButton.setOnAction(event -> {
             currentPlayer.setMoney(1000000);
@@ -212,6 +186,10 @@ public class GameEngine {
 
         });
 
+
+        tradeButton.setOnAction( event -> {
+            System.out.println("trade");
+        });
 
 
     } //Update game state between turns
