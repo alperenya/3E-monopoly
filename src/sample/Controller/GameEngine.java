@@ -242,13 +242,11 @@ public class GameEngine {
             for( Player player : players ){
 
                 if( updateHealth.getText().contains( player.getName() ) ){
-                    String updateLabel = player.getName() + " -> " + currentPlayer.getName();
+                    String updateLabel = player.getName() + "                     " + currentPlayer.getName();
                     updateHealth.setText( updateLabel );
                 }
 
             }
-
-
             System.out.println(updateHealth.getText());
             //System.out.println(GridPane.getColumnIndex(node));
             //System.out.println(GridPane.getRowIndex(node));
