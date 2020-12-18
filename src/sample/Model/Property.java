@@ -19,6 +19,14 @@ public abstract class Property extends Cell {
         this.owner = owner;
     }
 
+    public boolean hasOwner() {
+        if(owner == null){
+            return false;
+        }
+
+        return true;
+    }
+
     public String getColor() {
         return color;
     }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Taxation extends Cell {
     //properties
     private double taxRate;
+    private final int LUXURY_TAX_AMOUNT = 150;
 
     //constructers
     public Taxation() {
@@ -38,10 +39,19 @@ public class Taxation extends Cell {
         for ( counter = 0; counter < visitors.size(); counter++){*/
 
             //Player visitor = visitors.get(counter);
-            int taxAmount = player.getMoney() - (int)(player.getMoney() * taxRate);
-            player.setMoney( taxAmount );
+            if(this.name.equals("Income Tax")) {
+                int taxAmount = player.getMoney() - (int) (player.getMoney() * taxRate);
+                player.setMoney(taxAmount);
+                System.out.println("Player: " + player.getName() + " has payed: " + taxAmount );
+            }
 
-            System.out.println("Player: " + player.getName() + " has payed: " + taxAmount );
+            if(this.name.equals("Luxury Tax")) {
+                //int taxAmount = player.getMoney() - (int) (player.getMoney() * taxRate);
+                player.setMoney(player.getMoney() - LUXURY_TAX_AMOUNT);
+                System.out.println("Player: " + player.getName() + " has payed: " + LUXURY_TAX_AMOUNT );
+            }
+
+
         //}
     }
 }

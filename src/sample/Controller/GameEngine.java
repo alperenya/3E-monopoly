@@ -168,7 +168,7 @@ public class GameEngine {
             Cell currentPosition = currentPlayer.getPosition();
             //&& ((PublicService) currentPosition).getOwner() != currentPlayer && ((PublicService) currentPosition).getAvailability()
 
-            if ( currentPosition instanceof PublicService  ){
+            if ( currentPosition instanceof PublicService  && ((PublicService)currentPosition).hasOwner() ){
 
                 int diceValue = dice.roll();
 
@@ -293,7 +293,7 @@ public class GameEngine {
         gameMap.addCell(new Transportation("AŞTİ", 2000, 300, 0.9, "black", 755, 395 ));
         gameMap.addCell(new CardCell("Chance", 755, 460 ));
         gameMap.addCell(new Neighbourhood("Kızılcahamam", 1400,200, 0.3, "pink", 755, 525 ));
-        gameMap.addCell(new Taxation("Luxury Tax", 100, 755, 590 ));
+        gameMap.addCell(new Taxation("Luxury Tax", 0.23, 755, 590 ));
         gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "orange", 755, 655 ));
     } //Initialize the map
 
