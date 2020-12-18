@@ -5,8 +5,6 @@ import java.util.ArrayList;
 public class CoronaTest extends Cell{
 
     //properties
-    private  double x;
-    private double y;
 
     //constructers
     public CoronaTest(String name, double x, double y){

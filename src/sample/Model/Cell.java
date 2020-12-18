@@ -1,5 +1,7 @@
 package sample.Model;
 
+import javafx.scene.layout.Pane;
+
 import java.util.ArrayList;
 
 public abstract class Cell {
@@ -23,8 +25,8 @@ public abstract class Cell {
         return visitors;
     }
 
-    public ArrayList<String> getVisitorsPiece(){
-        ArrayList<String> pieces = new ArrayList<>();
+    public ArrayList<Pane> getVisitorsPiece(){
+        ArrayList<Pane> pieces = new ArrayList<>();
        // if(visitors != null){
             for (Player p:visitors) {
                 pieces.add(p.getPiece());

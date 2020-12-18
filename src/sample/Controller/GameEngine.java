@@ -33,6 +33,11 @@ public class GameEngine {
     private MediaPlayer mediaPlayer;
     @FXML private Slider soundControl;
     @FXML private Pane player_piece;
+    @FXML private Pane player_piece_1;
+    @FXML private Pane player_piece_2;
+    @FXML private Pane player_piece_3;
+    @FXML private Pane player_piece_4;
+    @FXML private Pane player_piece_5;
     @FXML private Button skipbtn;
     @FXML private Label turnlabel;
 
@@ -41,7 +46,7 @@ public class GameEngine {
     private int playerCount;
     private int botCount; //Newly added. Will be decided after pressing create game button
     private int turns; //Will be set to zero at the start of the game
-    private ArrayList<String> pieces;
+    private ArrayList<Pane> pieces;
     private double gameVolume; //Current game volume. Will be 50% initially.
 
     private GameUI gameUI; //Reference to gameui component
@@ -54,7 +59,7 @@ public class GameEngine {
         playerCount = 0;
         botCount = 0;
         turns = 0;
-        pieces = new ArrayList<>(Arrays.asList("car", "hamburger", "glass", "computer", "football", "hat"));
+        pieces = null;
         gameVolume = 0.5;
         gameUI = new GameUI();
         gameMap = GameMap.getInstance();
@@ -86,6 +91,7 @@ public class GameEngine {
         createPlayers();
         currentPlayer = players.get(0);
         turnlabel.setText("Round: " +  currentPlayer.getName());
+        System.out.println("Piece 1 id = " + player_piece_1.getId());
     }
     public void updateUI(){} //Update game ui between turns
     public boolean finishGame(){
@@ -206,57 +212,58 @@ public class GameEngine {
             //String playerName = sc.nextLine();
             //System.out.print("Please select the piece of player " + i + " " + pieces + ": ");
             //String pieceName = sc.nextLine();
-            pieces.remove("car");
-            players.add(new Player("playerName", "car", gameMap.getCells().get(0)));
+            pieces = new ArrayList<>(Arrays.asList(player_piece,player_piece_1,player_piece_2,player_piece_3,player_piece_4,player_piece_5));
+            pieces.remove(player_piece);
+            players.add(new Player("playerName", player_piece, gameMap.getCells().get(0)));
         //}
         for(int i = 1; i <= botCount; i++){
             players.add(new Bot("bot" + i, pieces.get(0) , gameMap.getCells().get(0)));
+            pieces.remove(pieces.get(0));
         }
         gameMap.getCells().get(0).setVisitors(players);
     } //Initialize the given amount of players
     public void createMap(){
         gameMap.newMap();
         gameMap.addCell(new StartCell(55,755));
-        gameMap.addCell(new Neighbourhood("Mamak", 600, 80, 0.7, "brown", 330, 35 ));
-        gameMap.addCell(new CardCell("Community Chest", 755, 260 ));
-        gameMap.addCell(new Neighbourhood("Sincan", 600,80, 0.65, "brown", 525, 755 ) );
-        gameMap.addCell(new Taxation("Income Tax", 2000, 460, 755 ));
-        gameMap.addCell(new Transportation("Esenboga Airport", 2000, 300, 0.6, "black", 395, 35 ));
-        gameMap.addCell(new Neighbourhood("Altındağ", 1000,130, 0.5, "purple", 655, 755 ));
-        gameMap.addCell(new CardCell("Chance", 265, 755 ));
-        gameMap.addCell(new Neighbourhood("Etimesgut", 1000,130, 0.55, "purple", 40, 195 ));
-        gameMap.addCell(new Neighbourhood("Beypazarı", 1200,180, 0.4, "purple", 40, 460 ));
-        gameMap.addCell(new Quarantine("Quarantine" , 65, 730 ));
-        gameMap.addCell(new Neighbourhood("Gölbaşı", 1400,200, 0.8, "pink", 40, 130 ));
-        gameMap.addCell(new PublicService("Tedaş", 1500, 200, "white", 40, 590 ));
-        gameMap.addCell(new Neighbourhood("Kızılcahamam", 1400,200, 0.3, "pink", 755, 525 ));
-        gameMap.addCell(new Neighbourhood("Cebeci", 1600,220, 0.75, "pink", 755, 200 ));
-        gameMap.addCell(new Transportation("YHT", 2000, 300, 0.5, "black", 40, 395));
-        gameMap.addCell(new Neighbourhood("Kolej", 1800,250, 0.55, "orange", 330, 755 ));
-        gameMap.addCell(new CardCell("Community Chest", 590, 755 ));
-        gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "orange", 755, 655 ));
-        gameMap.addCell(new Neighbourhood("Dikmen", 2000,280, 0.25, "orange", 40, 325 ));
-        gameMap.addCell(new CoronaTest("Test Center" , 50, 50 ));
-        gameMap.addCell(new Neighbourhood("Emek", 2200,300, 0.55, "red", 525, 35 ));
-        gameMap.addCell(new CardCell("Chance", 755, 460 ));
-        gameMap.addCell(new Neighbourhood("Batıkent", 2200, 300, 0.45, "red" , 135, 35 ));
-        gameMap.addCell(new Neighbourhood("Yenimahalle", 2400, 320, 0.3, "red", 260, 35  ));
-        gameMap.addCell(new Transportation("Railroads", 2000, 300, 0.9, "black", 395, 755 ));
-        gameMap.addCell(new Neighbourhood("Ostim", 2600, 350, 0.6, "yellow" , 40, 525 ));
         gameMap.addCell(new Neighbourhood("Eryaman", 2600, 350, 0.5, "yellow" , 40, 655 ));
+        gameMap.addCell(new PublicService("Tedaş", 1500, 200, "white", 40, 590 ));
+        gameMap.addCell(new Neighbourhood("Ostim", 2600, 350, 0.6, "yellow" , 40, 525 ));
+        gameMap.addCell(new Neighbourhood("Beypazarı", 1200,180, 0.4, "purple", 40, 460 ));
+        gameMap.addCell(new Transportation("YHT", 2000, 300, 0.5, "black", 40, 395));
+        gameMap.addCell(new Neighbourhood("Dikmen", 2000,280, 0.25, "orange", 40, 325 ));
+        gameMap.addCell(new CardCell("Community Chest", 40, 265 ));
+        gameMap.addCell(new Neighbourhood("Etimesgut", 1000,130, 0.55, "purple", 40, 195 ));
+        gameMap.addCell(new Neighbourhood("Gölbaşı", 1400,200, 0.8, "pink", 40, 130 ));
+        gameMap.addCell(new CoronaTest("Test Center" , 50, 50 ));
+        gameMap.addCell(new Neighbourhood("Batıkent", 2200, 300, 0.45, "red" , 135, 35 ));
+        gameMap.addCell(new CardCell("Chance", 195, 35 ));
+        gameMap.addCell(new Neighbourhood("Yenimahalle", 2400, 320, 0.3, "red", 260, 35  ));
+        gameMap.addCell(new Neighbourhood("Mamak", 600, 80, 0.7, "brown", 330, 35 ));
+        gameMap.addCell(new Transportation("Esenboga Airport", 2000, 300, 0.6, "black", 395, 35 ));
+        gameMap.addCell(new Neighbourhood("Sıhhiye", 3200, 440, 0.6, "green", 460, 35  ));
+        gameMap.addCell(new Neighbourhood("Emek", 2200,300, 0.55, "red", 525, 35 ));
         gameMap.addCell(new PublicService("ASKİ", 1500, 200, "white", 590, 35 ));
-        gameMap.addCell(new Neighbourhood("Beşevler", 2800, 380, 0.3, "yellow" , 195, 755 ));
+        gameMap.addCell(new Neighbourhood("Bilkent", 4000, 500, 0.05, "blue" , 655, 35 ));
         gameMap.addCell(new BeInfected("Go To Quarantine", 755, 35));
         gameMap.addCell(new Neighbourhood("Bahçelievler", 3000, 400, 0.45, "green", 755, 135  ));
+        gameMap.addCell(new Neighbourhood("Cebeci", 1600,220, 0.75, "pink", 755, 200 ));
+        gameMap.addCell(new CardCell("Community Chest", 755, 260 ));
         gameMap.addCell(new Neighbourhood("Ulus", 3000, 400, 0.5, "green" , 755, 325 ));
-        gameMap.addCell(new CardCell("Community Chest", 40, 265 ));
-        gameMap.addCell(new Neighbourhood("Sıhhiye", 3200, 440, 0.6, "green", 460, 35  ));
         gameMap.addCell(new Transportation("AŞTİ", 2000, 300, 0.9, "black", 755, 395 ));
-        gameMap.addCell(new CardCell("Chance", 195, 35 ));
-        gameMap.addCell(new Neighbourhood("Çayyalu", 3500, 460, 0.1, "blue" , 135, 755 ));
+        gameMap.addCell(new CardCell("Chance", 265, 755 ));
+        gameMap.addCell(new Neighbourhood("Kızılcahamam", 1400,200, 0.3, "pink", 755, 525 ));
         gameMap.addCell(new Taxation("Luxury Tax", 100, 755, 590 ));
-        gameMap.addCell(new Neighbourhood("Bilkent", 4000, 500, 0.05, "blue" , 655, 35 ));
-
+        gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "orange", 755, 655 ));
+        gameMap.addCell(new Neighbourhood("Altındağ", 1000,130, 0.5, "purple", 655, 755 ));
+        gameMap.addCell(new CardCell("Community Chest", 590, 755 ));
+        gameMap.addCell(new Neighbourhood("Sincan", 600,80, 0.65, "brown", 525, 755 ) );
+        gameMap.addCell(new Taxation("Income Tax", 2000, 460, 755 ));
+        gameMap.addCell(new Transportation("Railroads", 2000, 300, 0.9, "black", 395, 755 ));
+        gameMap.addCell(new Neighbourhood("Kolej", 1800,250, 0.55, "orange", 330, 755 ));
+        gameMap.addCell(new CardCell("Chance", 755, 460 ));
+        gameMap.addCell(new Neighbourhood("Beşevler", 2800, 380, 0.3, "yellow" , 195, 755 ));
+        gameMap.addCell(new Neighbourhood("Çayyalu", 3500, 460, 0.1, "blue" , 135, 755 ));
+        gameMap.addCell(new Quarantine("Quarantine" , 65, 730 ));
     } //Initialize the map
 
     //double x, double y
@@ -269,14 +276,15 @@ public class GameEngine {
         c.addVisitor(currentPlayer);
         System.out.println("Dice: " + amount);
 
-        moveUIPiece(c.getX(),c.getY());
+
+        moveUIPiece(currentPlayer.getPiece(),c.getX(),c.getY());
     }
 
 
 
-    public void moveUIPiece(double x, double y){
-        player_piece.setLayoutX(x);
-        player_piece.setLayoutY(y);
+    public void moveUIPiece(Pane piece,double x, double y){
+        piece.setLayoutX(x);
+        piece.setLayoutY(y);
     }
 
     public void playButtonPushed(javafx.event.ActionEvent event) throws IOException {
@@ -334,6 +342,7 @@ public class GameEngine {
 
         //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
+        GameEngine engine = new GameEngine();
         loader.setController(this);
         Parent settingsParent = (Parent) loader.load();
         Scene settingsScene = new Scene( settingsParent );

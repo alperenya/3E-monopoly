@@ -1,11 +1,13 @@
 package sample.Model;
 
+import javafx.scene.layout.Pane;
+
 import java.util.ArrayList;
 
 public class Bot extends Player{
 
     //contructors
-    public Bot(String name, String piece, Cell c){
+    public Bot(String name, Pane piece, Cell c){
         super(name, piece, c);
     }
 
