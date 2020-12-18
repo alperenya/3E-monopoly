@@ -17,8 +17,8 @@
    <children>
       <Pane layoutY="367.0" prefHeight="70.0" prefWidth="837.0" style="-fx-border-color: black;" styleClass="general-scene" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="303.0">
          <children>
-            <Button layoutX="47.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="action-button" text="Roll Dice" textFill="WHITE" />
-            <Button layoutX="180.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Buy" textFill="WHITE" />
+            <Button layoutX="47.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="action-button" text="Roll Dice" textFill="WHITE" fx:id="rollDice"/>
+            <Button layoutX="180.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Buy" textFill="WHITE" fx:id="buyButton"/>
             <Button layoutX="302.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Mortgage" textFill="WHITE" />
             <Button fx:id="skipbtn" layoutX="581.0" layoutY="14.0" mnemonicParsing="false" onAction="#nextTurn" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Skip" textFill="WHITE" />
             <Button layoutX="711.0" layoutY="15.0" mnemonicParsing="false" onAction="#gamePausedButtonPushed" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Pause Game" textFill="WHITE" />
@@ -31,7 +31,7 @@
          </image>
       </ImageView>
       <Label fx:id="turnlabel" layoutX="217.0" layoutY="225.0" prefHeight="60.0" prefWidth="135.0" text="Round: Osman" />
-      <Label layoutX="505.0" layoutY="560.0" prefHeight="60.0" prefWidth="135.0" text="Dice: 8" />
+      <Label layoutX="505.0" layoutY="560.0" prefHeight="60.0" prefWidth="135.0" text="Dice: 8" fx:id="diceLabel"/>
       <VBox layoutX="823.0" prefHeight="246.0" prefWidth="318.0" styleClass="general-scene">
          <children>
             <Label alignment="CENTER" prefHeight="40.0" prefWidth="288.0" style="-fx-font-weight: bold;" text="Players" textFill="WHITE">

@@ -34,7 +34,10 @@ public class GameEngine {
     @FXML private Slider soundControl;
     @FXML private Pane player_piece;
     @FXML private Button skipbtn;
+    @FXML private Label diceLabel;
+    @FXML private Button buyButton;
     @FXML private Label turnlabel;
+    @FXML private Button rollDice;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 10000;
@@ -103,7 +106,7 @@ public class GameEngine {
         gameVolume = 0;
     } //Make the volume 0
 
-    public void manageProperties(){
+    public boolean manageProperties(){
 
         Cell currentPosition = currentPlayer.getPosition();
 
@@ -115,9 +118,10 @@ public class GameEngine {
                 currentPlayer.buyProperty( (Property) currentPosition );
                 ((Property) currentPosition).setOwner( currentPlayer );
                 gameUI.buyProperty( currentPlayer, (Property) currentPosition );
+                return true;
             }
         }
-
+        return false;
     }
 
     @FXML private GridPane property;
@@ -164,6 +168,45 @@ public class GameEngine {
             movePlayer(dice.roll());
             nextTurn();
         });
+
+
+        buyButton.setOnAction(event -> {
+            currentPlayer.setMoney(1000000);
+            System.out.println( currentPlayer.getMoney() );
+            System.out.println( currentPlayer.getPosition().getName() );
+            if ( manageProperties() ){
+                System.out.println( currentPlayer.getMoney() );
+                for ( Property pro :  currentPlayer.getProperties() ){
+                    System.out.println( pro.getName() + " -> " + pro.getPrice() );
+                }
+                System.out.println( currentPlayer.getMoney() );
+            }
+        });
+
+        rollDice.setOnAction( event -> {
+            currentPlayer.setMoney(1000000);
+            System.out.println( currentPlayer.getMoney() );
+
+            Cell currentPosition = currentPlayer.getPosition();
+
+            if ( currentPosition instanceof PublicService ){
+
+                int diceValue = dice.roll();
+
+                ((PublicService) currentPosition).setMultiplier( diceValue );
+                int rent = ((PublicService) currentPosition).calculateRent();
+
+                System.out.println( "Retrieved money: " + rent );
+
+                currentPlayer.setMoney( currentPlayer.getMoney() - rent );
+                System.out.println( "CurrentPlayer money: " + currentPlayer.getMoney() );
+
+                diceLabel.setText( "Dice: " + dice.roll() );
+            }
+
+        });
+
+
 
     } //Update game state between turns
 
@@ -268,6 +311,8 @@ public class GameEngine {
         System.out.println(c.getName());
         c.addVisitor(currentPlayer);
         System.out.println("Dice: " + amount);
+
+        diceLabel.setText( "Dice: " + amount );
 
         moveUIPiece(c.getX(),c.getY());
     }

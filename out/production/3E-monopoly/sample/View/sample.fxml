@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="700.0" prefWidth="850.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.Controller">
+<AnchorPane prefHeight="700.0" prefWidth="850.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.GameEngine">
    <children>
       <Label layoutX="129.0" layoutY="81.0" styleClass="koronapoly" text="Koronapoly" textFill="#6b1515" />
       <Button layoutX="325.0" layoutY="230.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playButtonPushed" prefHeight="50.0" prefWidth="200.0" styleClass="action-button" text="Play" textFill="WHITE" />
