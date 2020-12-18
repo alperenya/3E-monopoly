@@ -125,7 +125,7 @@
                   <Label prefHeight="17.0" prefWidth="138.0" text="TEDAŞ -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="ASKİ -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Bahçelievler -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                  <Label prefHeight="17.0" prefWidth="138.0" text="Altındağ -&gt; Empty" textFill="WHITE" />
+                  <Label prefHeight="17.0" prefWidth="138.0" text="Altındağ -&gt; Empty" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                </children>
             </GridPane>
             <Label alignment="CENTER" prefHeight="32.0" prefWidth="325.0" style="-fx-font-weight: bold;" text="Health" textFill="WHITE">

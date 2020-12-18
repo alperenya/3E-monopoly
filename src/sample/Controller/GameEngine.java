@@ -45,6 +45,7 @@ public class GameEngine {
     @FXML private Button rollDice;
     @FXML private Button mortgageButton;
     @FXML private Button tradeButton;
+    @FXML private GridPane property;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
@@ -121,25 +122,29 @@ public class GameEngine {
         if( currentPosition instanceof Property ){
 
             int price = ((Property) currentPlayer.getPosition()).getPrice();
-            currentPlayer.buyProperty( (Property) currentPosition );
+            if(currentPlayer.buyProperty( (Property) currentPosition )){
+                for (Node node : property.getChildren()) {
+                    Label updateProperty =  (Label) node ;
+
+                    if ( updateProperty.getText().contains( currentPlayer.getPosition().getName() ) ){
+                        String updateLabel = currentPlayer.getPosition().getName() + " -> " + currentPlayer.getName();
+                        updateProperty.setText( updateLabel );
+                    }
+
+                    System.out.println(updateProperty.getText());
+                    //System.out.println(GridPane.getColumnIndex(node));
+                    //System.out.println(GridPane.getRowIndex(node));
+                    //System.out.println(property.getId());
+                }
+            }
             //gameUI.buyProperty( currentPlayer, (Property) currentPosition );
+
             return true;
         }
         return false;
     }
 
-    @FXML private GridPane property;
-
     public void gameFlow(){
-       /* for (Node node : property.getChildren()) {
-
-
-            //String a = property.getColumnIndex(node).toString() + " " + property.getRowIndex(node).toString() ;
-            System.out.println(node.toString());
-            System.out.println(GridPane.getColumnIndex(node));
-            System.out.println(GridPane.getRowIndex(node));
-            //System.out.println(property.getId());
-        }*/
 
         skipbtn.setOnAction(event -> {
             nextTurn();
@@ -262,14 +267,14 @@ public class GameEngine {
         gameMap.addCell(new CardCell("Community Chest", 590, 755 ));
         gameMap.addCell(new Neighbourhood("Sincan", 600,80, 0.65, "brown", 525, 755 ) );
         gameMap.addCell(new Taxation("Income Tax", 0.23, 460, 755 ));
-        gameMap.addCell(new Transportation("Railroads", 2000, 300, 0.9, "black", 395, 755 ));
+        gameMap.addCell(new Transportation("Railroad", 2000, 300, 0.9, "black", 395, 755 ));
         gameMap.addCell(new Neighbourhood("Kolej", 1800,250, 0.55, "orange", 330, 755 ));
         gameMap.addCell(new CardCell("Chance", 265, 755 ));
         gameMap.addCell(new Neighbourhood("Beşevler", 2800, 380, 0.3, "yellow" , 195, 755 ));
-        gameMap.addCell(new Neighbourhood("Çayyalu", 3500, 460, 0.1, "blue" , 135, 755 ));
+        gameMap.addCell(new Neighbourhood("Çayyolu", 3500, 460, 0.1, "blue" , 135, 755 ));
         gameMap.addCell(new Quarantine("Quarantine" , 65, 730 ));
         gameMap.addCell(new Neighbourhood("Eryaman", 2600, 350, 0.5, "yellow" , 40, 655 ));
-        gameMap.addCell(new PublicService("Tedaş", 1500, 200, "white", 40, 590 ));
+        gameMap.addCell(new PublicService("TEDAŞ", 1500, 200, "white", 40, 590 ));
         gameMap.addCell(new Neighbourhood("Ostim", 2600, 350, 0.6, "yellow" , 40, 525 ));
         gameMap.addCell(new Neighbourhood("Beypazarı", 1200,180, 0.4, "purple", 40, 460 ));
         gameMap.addCell(new Transportation("YHT", 2000, 300, 0.5, "black", 40, 395));
