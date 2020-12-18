@@ -46,6 +46,7 @@ public class GameEngine {
     @FXML private Button mortgageButton;
     @FXML private Button tradeButton;
     @FXML private GridPane property;
+    @FXML private GridPane healthSystem;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
@@ -233,6 +234,27 @@ public class GameEngine {
             Transportation transportation = (Transportation) pos;
             currentPlayer.setHealth(transportation.getCoronaRisk() < Math.random());
         }
+
+
+        for (Node node : healthSystem.getChildren()) {
+            Label updateHealth =  (Label) node ;
+
+            for( Player player : players ){
+
+                if( updateHealth.getText().contains( player.getName() ) ){
+                    String updateLabel = player.getName() + " -> " + currentPlayer.getName();
+                    updateHealth.setText( updateLabel );
+                }
+
+            }
+
+
+            System.out.println(updateHealth.getText());
+            //System.out.println(GridPane.getColumnIndex(node));
+            //System.out.println(GridPane.getRowIndex(node));
+            //System.out.println(property.getId());
+        }
+
 
     } //Check the infection risk of the cell
     public void manageBuildings(){} //
