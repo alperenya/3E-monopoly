@@ -13,6 +13,7 @@ public class CardCell extends Cell{
         this.type = "";
         this.x = x;
         this.y = y;
+        this.visitors = new ArrayList<>();
     }
     public CardCell(String name, ArrayList<Player> visitors){
         this.name = name;

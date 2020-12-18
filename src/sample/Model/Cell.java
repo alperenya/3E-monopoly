@@ -25,11 +25,11 @@ public abstract class Cell {
 
     public ArrayList<String> getVisitorsPiece(){
         ArrayList<String> pieces = new ArrayList<>();
-        if(visitors != null){
+       // if(visitors != null){
             for (Player p:visitors) {
                 pieces.add(p.getPiece());
             }
-        }
+       // }
 
         return pieces;
     }
