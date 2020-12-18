@@ -234,7 +234,6 @@ public class GameEngine {
             System.out.println("trade");
         });
 
-
     } //Update game state between turns
 
 
