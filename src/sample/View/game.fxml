@@ -232,5 +232,19 @@
             </ImageView>
          </children>
       </Pane>
+      <Pane fx:id="card_container" layoutX="234.0" layoutY="286.0" prefHeight="254.0" prefWidth="372.0" styleClass="community-chance-card" stylesheets="@../style.css">
+         <children>
+            <Label fx:id="card_title" alignment="CENTER" layoutX="135.0" layoutY="14.0" prefHeight="17.0" prefWidth="103.0" style="-fx-font-weight: bold;" text="card_type" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="card_text" alignment="TOP_LEFT" layoutX="24.0" layoutY="48.0" prefHeight="184.0" prefWidth="337.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
