@@ -80,6 +80,7 @@ public class GameEngine {
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
+    private final int MAX_BAN_TURN = 3;
     private int playerCount;
     private int botCount; //Newly added. Will be decided after pressing create game button
     private int turns; //Will be set to zero at the start of the game
@@ -348,11 +349,17 @@ public class GameEngine {
 
     public void gameFlow(){
 
-
         skipbtn.setOnAction(event -> {
             nextTurn();
+
+            if(currentPlayer.getBanTurn() > 0){
+                currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
+                nextTurn();
+            }
+
             rollDice.setDisable(false);
             buyButton.setDisable(false);
+
         });
 
         tradeButton.setOnAction(event -> {
@@ -445,6 +452,7 @@ public class GameEngine {
                     currentPlayer.setPosition(gameMap.getCells().get(10));
                     currentPlayer.getPosition().addVisitor(currentPlayer);
                 }
+                currentPlayer.setBanTurn(MAX_BAN_TURN);
             }
 
             handleInfection();
@@ -489,12 +497,14 @@ public class GameEngine {
 
         if( currentPosition instanceof Neighbourhood ){
             Neighbourhood neighbourhood = (Neighbourhood)currentPosition;
-            currentPlayer.setHealth( neighbourhood.getCoronaRisk() < Math.random() );
+            if( !(neighbourhood.getCoronaRisk() < Math.random()) )
+                currentPlayer.setHealth( false );
             System.out.println( currentPlayer.getName() + " neig " + neighbourhood.getCoronaRisk() + " " + currentPlayer.isHealthy() );
         }
         else if( currentPosition instanceof Transportation ){
             Transportation transportation = (Transportation) currentPosition;
-            currentPlayer.setHealth(transportation.getCoronaRisk() < Math.random() );
+            if( !(transportation.getCoronaRisk() < Math.random()) )
+                currentPlayer.setHealth( false );
 
             System.out.println( currentPlayer.getName() + " trnas " + transportation.getCoronaRisk() + " " + currentPlayer.isHealthy());
         }
