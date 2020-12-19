@@ -16,9 +16,12 @@ public class Player {
     protected Boolean inQuarantine;
     protected Boolean isBankrupt;
     protected int banTurn;
+    protected String password;
+
+
 
     //constructors
-    public Player(String name, Pane piece, Cell c){
+    public Player(String name, Pane piece, String password, Cell c){
         this.position = c;
         this.name = name;
         this.piece = piece;
@@ -27,6 +30,7 @@ public class Player {
         this.isBankrupt = false;
         this.banTurn = 0;
         this.properties = new ArrayList<>();
+        this.password = password;
     }
 
     public Player(){
@@ -67,6 +71,10 @@ public class Player {
 
     public ArrayList<Property> getProperties() {
         return properties;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public Boolean sellProperty(Property p){
@@ -152,22 +160,32 @@ public class Player {
 
     public Boolean mortgage(Property p){
         p.setMortgage(true);
-        money += p.getPrice()*0.7;
+        money += p.getPrice()*0.5;
         return true;
     }
 
     public Boolean cancelMortgage(Property p){
-        p.setMortgage(true);
-        money -= p.getPrice()*0.7;
+        p.setMortgage(false);
+        money -= p.getPrice()*0.55;
         return true;
     }
 
-    public Boolean trade(Player p){
-        // WHICH PROPERTIES WILL BE EXCHANGED IS NOT STATED?
-        // THIS IS A TEST CODE
-        Commerce commerce = new Commerce(this,p,properties.get(0), p.getProperties().get(0));
-        commerce.exchange();
-        return true;
+    //Will do the trading without any checks.
+    public void trade(Player otherPlayer, int offeredMoney, Property offeredProperty, int requestedMoney, Property requestedProperty){
+
+        if(offeredProperty != null){
+            properties.remove(offeredProperty);
+            otherPlayer.addProperty(offeredProperty);
+        }
+        money -= offeredMoney;
+        otherPlayer.setMoney(otherPlayer.getMoney() + offeredMoney);
+
+        if(requestedProperty != null){
+            otherPlayer.removeProperty(requestedProperty);
+            properties.add(requestedProperty);
+        }
+        otherPlayer.setMoney(otherPlayer.getMoney() - requestedMoney);
+        money += requestedMoney;
     }
 
     public int getBanTurn() {

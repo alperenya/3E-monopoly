@@ -1,24 +1,31 @@
 package sample.Controller;
 
+import com.sun.deploy.util.StringUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.Model.*;
+import sample.Model.Cell;
+import sun.plugin2.ipc.windows.WindowsNamedPipe;
 //import sun.security.jca.GetInstance;
 
 import javax.smartcardio.Card;
+import javax.xml.soap.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,11 +51,32 @@ public class GameEngine {
     @FXML private Label turnlabel;
     @FXML private Button rollDice;
     @FXML private Button mortgageButton;
+
+    //Trade popup elements
     @FXML private Button tradeButton;
+
     @FXML private GridPane property;
     @FXML private GridPane healthSystem;
     @FXML private GridPane money_grid;
     @FXML private GridPane name_grid;
+
+    @FXML private Button completeTradeButton;
+    @FXML private Button cancelTradeButton;
+    @FXML private TextField offeredMoneyBox;
+    @FXML private TextField requestedMoneyBox;
+    @FXML private PasswordField buyerPasswordBox;
+    @FXML private PasswordField sellerPasswordBox;
+    @FXML private ListView buyerPropertiesListView;
+    @FXML private ListView sellerPropertiesListView;
+    @FXML private ComboBox clientsComboBox;
+
+    //MOrtgage popup elements
+    @FXML private Button mortgageAcceptButton;
+    @FXML private Button mortgageCancelButton;
+    @FXML private Label totalMortgageEarnLabel;
+    @FXML private Label totalMortgagePayLabel;
+    @FXML private ListView propertiesListView;
+    @FXML private ListView mortgagedPropertiesListView;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
@@ -149,6 +177,165 @@ public class GameEngine {
         return false;
     }
 
+    private void openMortgagePopup(javafx.event.ActionEvent event) throws IOException {
+        Stage mortgagePopup = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/mortgage.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        mortgagePopup.setScene(new Scene(root));
+
+        mortgagePopup.initModality(Modality.APPLICATION_MODAL);
+        mortgagePopup.initOwner(tradeButton.getScene().getWindow());
+        mortgagePopup.show();
+
+        for (Property p:currentPlayer.getProperties()) {
+            if (!p.getMortgage()){
+                propertiesListView.getItems().add(p.getName());
+            }
+            else{
+                mortgagedPropertiesListView.getItems().add(p.getName());
+            }
+        }
+        propertiesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                for (Property p: currentPlayer.getProperties()) {
+                    if(p.getName().equals(propertiesListView.getSelectionModel().getSelectedItem())){
+                        totalMortgageEarnLabel.setText((int)(Integer.parseInt(totalMortgageEarnLabel.getText()) + p.getPrice()*0.5) + "");
+                        break;
+                    }
+                }
+                mortgagedPropertiesListView.getItems().add(propertiesListView.getSelectionModel().getSelectedItem());
+                propertiesListView.getItems().remove(propertiesListView.getSelectionModel().getSelectedItem());
+            }
+        });
+        mortgagedPropertiesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                for (Property p: currentPlayer.getProperties()) {
+                    if(p.getName().equals(mortgagedPropertiesListView.getSelectionModel().getSelectedItem())){
+                        totalMortgagePayLabel.setText((int)(Integer.parseInt(totalMortgagePayLabel.getText()) + p.getPrice()*0.55) + "");
+                        break;
+                    }
+                }
+                propertiesListView.getItems().add(mortgagedPropertiesListView.getSelectionModel().getSelectedItem());
+                mortgagedPropertiesListView.getItems().remove(mortgagedPropertiesListView.getSelectionModel().getSelectedItem());
+            }
+        });
+
+        mortgageAcceptButton.setOnAction(event1 -> {
+            for (Property p:currentPlayer.getProperties()) {
+                if(p.getMortgage()){
+                    if (propertiesListView.getItems().contains(p.getName())){
+                        currentPlayer.cancelMortgage(p);
+                    }
+                }
+                else{
+                    if (mortgagedPropertiesListView.getItems().contains(p.getName())){
+                        currentPlayer.mortgage(p);
+                    }
+                }
+            }
+            // get a handle to the stage
+            Stage stage = (Stage) mortgageAcceptButton.getScene().getWindow();
+            // do what you have to do
+            stage.close();
+        });
+        mortgageCancelButton.setOnAction(event1 -> {
+            // get a handle to the stage
+            Stage stage = (Stage) mortgageCancelButton.getScene().getWindow();
+            // do what you have to do
+            stage.close();
+        });
+    }
+
+    private void openTradePopup(javafx.event.ActionEvent event) throws IOException {
+        Stage tradePopup = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/trade.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        tradePopup.setScene(new Scene(root));
+
+        tradePopup.initModality(Modality.APPLICATION_MODAL);
+        tradePopup.initOwner(tradeButton.getScene().getWindow());
+        tradePopup.show();
+
+        for (Property p:currentPlayer.getProperties()) {
+            buyerPropertiesListView.getItems().add(p.getName());
+        }
+        for (Player p:players) {
+            if (!p.isBankrupt() && p != currentPlayer){
+                clientsComboBox.getItems().add(p.getName());
+            }
+        }
+
+        clientsComboBox.setOnAction(eventComboBox -> {
+            Player client = null;
+            String clientName = (String) clientsComboBox.getSelectionModel().getSelectedItem();
+            for (Player p:players) {
+                if (p.getName().equals(clientName)){
+                    client = p;
+                    break;
+                }
+            }
+            sellerPropertiesListView.getItems().clear();
+            for (Property p:client.getProperties()) {
+                sellerPropertiesListView.getItems().add(p.getName());
+            }
+        });
+
+        completeTradeButton.setOnAction(eventCompleteTrade -> {
+            Player client = null;
+            String clientName = (String) clientsComboBox.getSelectionModel().getSelectedItem();
+            for (Player p:players) {
+                if (p.getName().equals(clientName)){
+                    client = p;
+                    break;
+                }
+            }
+            if (client == null) return;
+            if(buyerPasswordBox.getText().equals(currentPlayer.getPassword()) && sellerPasswordBox.getText().equals(client.getPassword())){
+                Property offeredProperty = null;
+                if (buyerPropertiesListView.getSelectionModel().getSelectedItem() != null){
+                    for (Property p:currentPlayer.getProperties()) {
+                        if (p.getName().equals((String) buyerPropertiesListView.getSelectionModel().getSelectedItem())){
+                            offeredProperty = p;
+                            break;
+                        }
+                    }
+                }
+
+                Property requestedProperty = null;
+                if (sellerPropertiesListView.getSelectionModel().getSelectedItem() != null) {
+                    for (Property p : client.getProperties()) {
+                        if (p.getName().equals((String) sellerPropertiesListView.getSelectionModel().getSelectedItem())) {
+                            requestedProperty = p;
+                            break;
+                        }
+                    }
+                }
+
+                Commerce commerce = new Commerce(currentPlayer, client, offeredProperty, requestedProperty,
+                        Integer.parseInt(isNumeric(offeredMoneyBox.getText()) ? offeredMoneyBox.getText() : "0"), Integer.parseInt(isNumeric(requestedMoneyBox.getText()) ? requestedMoneyBox.getText() : "0"));
+                if (commerce.exchange()){
+                    System.out.println("Exchange successfull");
+                }
+                else{
+                    System.out.println("Excahnge failed");
+                }
+            }
+            else{
+                System.out.println("Wrong password");
+            }
+        });
+        cancelTradeButton.setOnAction(eventCancelTrade -> {
+            // get a handle to the stage
+            Stage stage = (Stage) cancelTradeButton.getScene().getWindow();
+            // do what you have to do
+            stage.close();
+        });
+    }
+
     public void gameFlow(){
 
 
@@ -156,6 +343,24 @@ public class GameEngine {
             nextTurn();
             rollDice.setDisable(false);
             buyButton.setDisable(false);
+        });
+
+        tradeButton.setOnAction(event -> {
+
+            try {
+                openTradePopup(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        mortgageButton.setOnAction(event -> {
+
+            try {
+                openMortgagePopup(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         buyButton.setOnAction(event -> {
@@ -229,10 +434,6 @@ public class GameEngine {
             handleInfection();
         });
 
-
-        tradeButton.setOnAction( event -> {
-            System.out.println("trade");
-        });
 
     } //Update game state between turns
 
@@ -347,10 +548,10 @@ public class GameEngine {
             //String pieceName = sc.nextLine();
             pieces = new ArrayList<>(Arrays.asList(player_piece,player_piece_1,player_piece_2,player_piece_3,player_piece_4,player_piece_5));
             pieces.remove(player_piece);
-            players.add(new Player("playerName", player_piece, gameMap.getCells().get(0)));
+            players.add(new Player("playerName", player_piece, "1234", gameMap.getCells().get(0)));
         //}
         for(int i = 1; i <= botCount; i++){
-            players.add(new Bot("bot" + i, pieces.get(0) , gameMap.getCells().get(0)));
+            players.add(new Bot("bot" + i, pieces.get(0) , "1234", gameMap.getCells().get(0)));
             pieces.remove(pieces.get(0));
         }
 
@@ -428,8 +629,6 @@ public class GameEngine {
 
         moveUIPiece(currentPlayer.getPiece(),c.getX(),c.getY());
     }
-
-
 
     public void moveUIPiece(Pane piece,double x, double y){
         piece.setLayoutX(x);
@@ -538,7 +737,6 @@ public class GameEngine {
         window.show();
     }
 
-
     public void adjustSoundButtonPushed(){
 
 
@@ -552,6 +750,20 @@ public class GameEngine {
 
             }
         });
+    }
+
+    private boolean isNumeric(final String str) {
+
+        // null or empty
+        if (str == "" || str == null || str.length() == 0) {
+            return false;
+        }
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 

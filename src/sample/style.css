@@ -42,3 +42,9 @@
     -fx-color: white;
     -fx-border: 0;
 }
+
+.trade-button{
+    -fx-background-color: #00c500;
+    -fx-color: white;
+    -fx-border: 0;
+}

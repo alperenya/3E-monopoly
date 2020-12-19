@@ -17,10 +17,12 @@
    <children>
       <Pane layoutY="367.0" prefHeight="70.0" prefWidth="837.0" style="-fx-border-color: black;" styleClass="general-scene" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="303.0">
          <children>
+
             <Button fx:id="rollDice" layoutX="47.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="action-button" text="Roll Dice" textFill="WHITE" />
             <Button fx:id="buyButton" layoutX="180.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Buy" textFill="WHITE" />
             <Button fx:id="mortgageButton" layoutX="302.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Mortgage" textFill="WHITE" />
             <Button fx:id="skipbtn" layoutX="581.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Skip" textFill="WHITE" />
+
             <Button layoutX="711.0" layoutY="15.0" mnemonicParsing="false" onAction="#gamePausedButtonPushed" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Pause Game" textFill="WHITE" />
             <Button fx:id="tradeButton" layoutX="428.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Trade" textFill="WHITE" />
          </children>
