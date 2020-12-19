@@ -89,7 +89,7 @@ public class GameEngine {
     @FXML private Label hospitalCount;
     @FXML private ComboBox buildPropeties;
 
-    private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
+    private final int MAX_PLAYERS = 5; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
     private final int MAX_BAN_TURN = 3;
     private int playerCount;
@@ -744,7 +744,7 @@ public class GameEngine {
         gameMap.addCell(new Neighbourhood("Ulus", 3000, 400, 0.5, "green" , 755, 325 ));
         gameMap.addCell(new Transportation("AŞTİ", 2000, 300, 0.9, "black", 755, 395 ));
         gameMap.addCell(new CardCell("Chance","chance", 755, 460 ));
-        gameMap.addCell(new Neighbourhood("Kızılcahamam", 1400,200, 0.3, "darkblue", 755, 525 ));
+        gameMap.addCell(new Neighbourhood("Çankaya", 1400,200, 0.3, "darkblue", 755, 525 ));
         gameMap.addCell(new Taxation("Luxury Tax", 0.23, 755, 590 ));
         gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "darkblue", 755, 655 ));
 

@@ -30,7 +30,7 @@
       </Pane>
       <ImageView fitHeight="797.0" fitWidth="797.0" layoutX="21.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" smooth="false">
          <image>
-            <Image url="@../imgs/gamemap.png" />
+            <Image url="@../imgs/Web%201920%20–%201.png" />
          </image>
       </ImageView>
       <Label fx:id="turnlabel" layoutX="217.0" layoutY="225.0" prefHeight="60.0" prefWidth="135.0" text="Round: Osman" />
@@ -117,7 +117,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label prefHeight="17.0" prefWidth="138.0" text="Batıkent -&gt; Empty" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <Label prefHeight="17.0" prefWidth="138.0" text="Kolej -&gt; Empty" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Eryaman -&gt; Empty" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Esenboğa -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="YHT -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -143,7 +143,7 @@
                   <Label prefHeight="17.0" prefWidth="138.0" text="Aşti -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="TEDAŞ -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="ASKİ -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                  <Label prefHeight="17.0" prefWidth="138.0" text="Bahçelievler -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                  <Label prefHeight="17.0" prefWidth="138.0" text="Çankaya -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="8" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Altındağ -&gt; Empty" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                </children>
             </GridPane>
