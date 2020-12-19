@@ -364,6 +364,10 @@ public class GameEngine {
             if(currentPlayer.getBanTurn() > 0){
                 currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
                 nextTurn();
+                rollDice.setDisable(false);
+                buyButton.setDisable(false);
+                card_container.setVisible(false);
+                return;
             }
 
             rollDice.setDisable(false);
@@ -508,7 +512,7 @@ public class GameEngine {
                     currentPlayer.setPosition(gameMap.getCells().get(10));
                     currentPlayer.getPosition().addVisitor(currentPlayer);
                 }
-                currentPlayer.setBanTurn(MAX_BAN_TURN);
+                currentPlayer.setBanTurn(MAX_BAN_TURN * (MAX_PLAYERS - 1));
             }
 
             if(startCellPassed){
