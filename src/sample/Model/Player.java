@@ -120,17 +120,84 @@ public class Player {
         this.inQuarantine = inQuarantine;
     }
 
-    public Boolean canBuild(Property p){
-       /* if(money >= p.getPrice() && p.getAvailability()){
-            return true;
+    public ArrayList<Property> canBuild(){
+        ArrayList canBuild = new ArrayList<String>();
+        ArrayList canBuildings = new ArrayList<Property>();
+
+        //Check for brown
+        int brownCount = 0;
+        int purpleCount = 0;
+        int blueCount = 0;
+        int darkBlueCount = 0;
+        int yellowCount = 0;
+        int orangeCount = 0;
+        int redCount = 0;
+        int greenCount = 0;
+
+        for(Property p: properties){
+            if(p instanceof Neighbourhood){
+                if(p.getColor().equals("brown")){
+                    brownCount++;
+                }else if(p.getColor().equals("purple")){
+                    purpleCount++;
+                }else if(p.getColor().equals("blue")){
+                    blueCount++;
+                }else if(p.getColor().equals("darkblue")){
+                    darkBlueCount++;
+                }else if(p.getColor().equals("yellow")){
+                    yellowCount++;
+                }else if(p.getColor().equals("orange")){
+                    orangeCount++;
+                }else if(p.getColor().equals("red")){
+                    redCount++;
+                }else if(p.getColor().equals("green")){
+                    greenCount++;
+                }
+            }
         }
-        */
-        return false;
+
+        if(brownCount == 2){
+            canBuild.add("brown");
+        }
+        if(purpleCount == 3){
+            canBuild.add("purple");
+        }
+        if(blueCount == 3){
+            canBuild.add("blue");
+        }
+        if(darkBlueCount == 2){
+            canBuild.add("darkblue");
+        }
+        if(yellowCount == 3){
+            canBuild.add("yellow");
+        }
+        if(orangeCount == 3){
+            canBuild.add("orange");
+        }
+        if(redCount == 3){
+            canBuild.add("red");
+        }
+        if(greenCount == 3){
+            canBuild.add("green");
+        }
+
+        for(Property p: properties){
+            if(canBuild.contains(p.getColor()) && (p instanceof Neighbourhood) ){
+                canBuildings.add(p);
+            }
+        }
+
+        return canBuildings;
     }
 
     public Boolean buildHouse(Neighbourhood n){
-        if(n.getHouseCount() <= 3){
+
+        if ( buildHospital(n) ){
+            return true;
+        }else if(n.getHouseCount() < 4){
+
             n.setHouseCount(n.getHouseCount() + 1);
+            money = money - (int)(n.getPrice() * 0.2);
             return true;
         }
 
@@ -138,8 +205,10 @@ public class Player {
     }
 
     public Boolean buildHospital(Neighbourhood n){
-        if(n.getHouseCount() > 3){
+
+        if( n.getHouseCount() == 3 ){
             n.setHouseCount(n.getHouseCount() + 1);
+            money = money - (int)(n.getPrice() * 0.5);
             return true;
         }
 

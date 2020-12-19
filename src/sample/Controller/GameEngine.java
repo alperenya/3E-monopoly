@@ -54,6 +54,7 @@ public class GameEngine {
     @FXML private Label turnlabel;
     @FXML private Button rollDice;
     @FXML private Button mortgageButton;
+    @FXML private Button upgradeButton;
 
     //Trade popup elements
     @FXML private Button tradeButton;
@@ -80,6 +81,13 @@ public class GameEngine {
     @FXML private Label totalMortgagePayLabel;
     @FXML private ListView propertiesListView;
     @FXML private ListView mortgagedPropertiesListView;
+
+    //Build Popup elements
+    @FXML private Button buildButton;
+    @FXML private Button cancelButton;
+    @FXML private Label houseCount;
+    @FXML private Label hospitalCount;
+    @FXML private ComboBox buildPropeties;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
@@ -380,6 +388,14 @@ public class GameEngine {
             }
         });
 
+        upgradeButton.setOnAction(event -> {
+            try {
+                manageBuildings(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
         buyButton.setOnAction(event -> {
 
             manageProperties();
@@ -420,13 +436,6 @@ public class GameEngine {
                 buyButton.setDisable(true);
 
                 ((StartCell) currentPosition).payVisitors(currentPlayer);
-
-                updateMoneyUI();
-
-            }else if(startCellPassed){
-
-                startCellPassed = false;
-                currentPlayer.setMoney(currentPlayer.getMoney() + 200);
 
                 updateMoneyUI();
 
@@ -498,6 +507,15 @@ public class GameEngine {
                     currentPlayer.getPosition().addVisitor(currentPlayer);
                 }
                 currentPlayer.setBanTurn(MAX_BAN_TURN);
+            }
+
+            if(startCellPassed){
+
+                startCellPassed = false;
+                currentPlayer.setMoney(currentPlayer.getMoney() + 200);
+
+                updateMoneyUI();
+
             }
 
             handleInfection();
@@ -582,9 +600,47 @@ public class GameEngine {
 
         }
     } //Check the infection risk of the cell
-    public void manageBuildings(){
+
+    public void manageBuildings(javafx.event.ActionEvent event) throws IOException{
+        Stage buildingPopup = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/buildhouse.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        buildingPopup.setScene(new Scene(root));
+
+        buildingPopup.initModality(Modality.APPLICATION_MODAL);
+        buildingPopup.initOwner(tradeButton.getScene().getWindow());
+        buildingPopup.show();
+
+        for (Property p:currentPlayer.canBuild()) {
+            buildPropeties.getItems().add( p.getName() );
+        }
+
+        cancelButton.setOnAction( event1 -> {
+            buildingPopup.close();
+        });
+
+        buildButton.setOnAction( event1 -> {
+
+            String house = (String) buildPropeties.getSelectionModel().getSelectedItem();
+            Neighbourhood selectedProperty = null;
+
+            for( Property p : currentPlayer.getProperties() ){
+                if( p.getName().equals( house ) ){
+                    selectedProperty = ( Neighbourhood ) p;
+                }
+            }
+
+            if( currentPlayer.buildHouse( selectedProperty ) ){
+                updateMoneyUI();
+            }
+
+        });
+
 
     } //
+
+
     public void handleBankruptcy(){} //Check the bankruptcy status of players
     public void managePatients(){
 

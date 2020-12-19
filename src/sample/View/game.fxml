@@ -18,13 +18,14 @@
       <Pane layoutY="367.0" prefHeight="70.0" prefWidth="837.0" style="-fx-border-color: black;" styleClass="general-scene" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="303.0">
          <children>
 
-            <Button fx:id="rollDice" layoutX="47.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="action-button" text="Roll Dice" textFill="WHITE" />
-            <Button fx:id="buyButton" layoutX="180.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Buy" textFill="WHITE" />
-            <Button fx:id="mortgageButton" layoutX="302.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Mortgage" textFill="WHITE" />
-            <Button fx:id="skipbtn" layoutX="581.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Skip" textFill="WHITE" />
+            <Button fx:id="rollDice" layoutX="22.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="action-button" text="Roll Dice" textFill="WHITE" />
+            <Button fx:id="buyButton" layoutX="142.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Buy" textFill="WHITE" />
+            <Button fx:id="mortgageButton" layoutX="261.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Mortgage" textFill="WHITE" />
+            <Button fx:id="skipbtn" layoutX="606.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Skip" textFill="WHITE" />
 
-            <Button layoutX="711.0" layoutY="15.0" mnemonicParsing="false" onAction="#gamePausedButtonPushed" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Pause Game" textFill="WHITE" />
-            <Button fx:id="tradeButton" layoutX="428.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Trade" textFill="WHITE" />
+            <Button layoutX="720.0" layoutY="15.0" mnemonicParsing="false" onAction="#gamePausedButtonPushed" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Pause Game" textFill="WHITE" />
+            <Button fx:id="tradeButton" layoutX="376.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Trade" textFill="WHITE" />
+            <Button fx:id="upgradeButton" layoutX="492.0" layoutY="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="102.0" styleClass="entrance-button" text="Build" textFill="WHITE" />
          </children>
       </Pane>
       <ImageView fitHeight="797.0" fitWidth="797.0" layoutX="21.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" smooth="false">
