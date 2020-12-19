@@ -10,8 +10,8 @@ public abstract class Card{
     // abstract class has no constructers
 
     //methods
-    private String getMessage(){ return message;}
-    private String getCardFunction(){ return function;}
+    public String getMessage(){ return message;}
+    public String getCardFunction(){ return function;}
 
     public void setMessage(String message){ this.message = message;}
     public void setCardFunction(String cardFunction){ this.function = cardFunction;}

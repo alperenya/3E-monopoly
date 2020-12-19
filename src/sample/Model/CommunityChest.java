@@ -11,7 +11,7 @@ public class CommunityChest extends Card {
 
     public void getMoneyFromUser(Player visitor, int amount){
 
-        visitor.setMoney( visitor.getMoney() + amount );
+        visitor.setMoney( visitor.getMoney() - amount );
     }
 
     public void getMoneyFromUser(Player visitor, double rate){

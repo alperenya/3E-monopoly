@@ -8,9 +8,9 @@ public class CardCell extends Cell{
     private String type;
 
     //constructers
-    public CardCell( String name, double x , double y ){
+    public CardCell( String name, String type, double x , double y ){
         this.name = name;
-        this.type = "";
+        this.type = type;
         this.x = x;
         this.y = y;
         this.visitors = new ArrayList<>();
