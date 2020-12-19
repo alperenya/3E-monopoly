@@ -7,6 +7,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="547.0" prefWidth="732.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
     <children>
         <Label layoutX="246.0" layoutY="14.0" prefHeight="79.0" prefWidth="257.0" styleClass="normal-headings" text="Mortgage" textFill="#6b1515" />
         <Label layoutX="228.0" layoutY="93.0" prefHeight="17.0" prefWidth="135.0" text="Properties" textFill="WHITE" />
@@ -28,4 +29,5 @@
       <Label fx:id="totalMortgagePayLabel" layoutX="554.0" layoutY="344.0" prefHeight="17.0" prefWidth="135.0" text="0000" textFill="WHITE" />
       <Label layoutX="473.0" layoutY="93.0" prefHeight="17.0" prefWidth="135.0" text="Mortgaged Properties" textFill="WHITE" />
     </children>
+
 </AnchorPane>

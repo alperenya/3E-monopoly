@@ -18,21 +18,21 @@ public class Player {
     protected Boolean isBankrupt;
     protected int banTurn;
     protected String password;
-
-
+    protected int infectionTurn;
 
     //constructors
     public Player(String name, Pane piece, String password, Cell c){
         this.position = c;
         this.name = name;
         this.piece = piece;
-        this.health = false;
+        this.health = true;
         this.inQuarantine = false;
         this.isBankrupt = false;
         this.banTurn = 0;
         this.properties = new ArrayList<>();
         this.mortgagedProperties = new ArrayList<>();
         this.password = password;
+        this.infectionTurn = 0;
     }
 
     public Player(){
@@ -79,6 +79,7 @@ public class Player {
         return mortgagedProperties;
     }
 
+
     public String getPassword() {
         return password;
     }
@@ -101,9 +102,10 @@ public class Player {
     }
 
     public boolean buyProperty(Property p){
-        if(money > p.getPrice()){
+        if( money > p.getPrice() && p.getAvailability() ){
             properties.add(p);
-            //p.setAvailability(false);
+            p.setAvailability(false);
+            p.setOwner(this);
             money -= p.getPrice();
             return true;
         }
@@ -201,6 +203,14 @@ public class Player {
 
     public void setBanTurn(int banTurn) {
         this.banTurn = banTurn;
+    }
+
+    public int getInfectionTurn(){
+        return infectionTurn;
+    }
+
+    public void setInfectionTurn( int turn ){
+        infectionTurn = 0;
     }
 
 }
