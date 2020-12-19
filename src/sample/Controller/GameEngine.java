@@ -54,6 +54,7 @@ public class GameEngine {
     @FXML private Label turnlabel;
     @FXML private Button rollDice;
     @FXML private Button mortgageButton;
+    @FXML private Button upgradeButton;
 
     //Trade popup elements
     @FXML private Button tradeButton;
@@ -80,6 +81,13 @@ public class GameEngine {
     @FXML private Label totalMortgagePayLabel;
     @FXML private ListView propertiesListView;
     @FXML private ListView mortgagedPropertiesListView;
+
+    //Build Popup elements
+    @FXML private Button buildButton;
+    @FXML private Button cancelButton;
+    @FXML private Label houseCount;
+    @FXML private Label hospitalCount;
+    @FXML private ComboBox buildPropeties;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
@@ -380,6 +388,14 @@ public class GameEngine {
             }
         });
 
+        upgradeButton.setOnAction(event -> {
+            try {
+                manageBuildings(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
         buyButton.setOnAction(event -> {
 
             manageProperties();
@@ -582,7 +598,22 @@ public class GameEngine {
 
         }
     } //Check the infection risk of the cell
-    public void manageBuildings(){} //
+    public void manageBuildings(javafx.event.ActionEvent event) throws IOException{
+        Stage mortgagePopup = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/buildhouse.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        mortgagePopup.setScene(new Scene(root));
+
+        mortgagePopup.initModality(Modality.APPLICATION_MODAL);
+        mortgagePopup.initOwner(tradeButton.getScene().getWindow());
+        mortgagePopup.show();
+
+        for (Property p:currentPlayer.canBuild()) {
+            buildPropeties.getItems().add(p.getName());
+        }
+    } //
+
     public void handleBankruptcy(){} //Check the bankruptcy status of players
     public void managePatients(){
 
