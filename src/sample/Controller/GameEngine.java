@@ -130,7 +130,26 @@ public class GameEngine {
         turnlabel.setText("Round: " +  currentPlayer.getName());
         System.out.println("Piece 1 id = " + player_piece_1.getId());
     }
-    public void updateUI(){} //Update game ui between turns
+    public void updateUI(){
+        for (Node node : property.getChildren()) {
+            Label updateProperty =  (Label) node ;
+
+            for( Player player : players ){
+
+                for( Property p : player.getProperties() ){
+
+                    if ( updateProperty.getText().contains( p.getName() ) ){
+                        String updateLabel = p.getName() + " -> " + player.getName();
+                        updateProperty.setText( updateLabel );
+                    }
+
+                }
+
+            }
+
+            System.out.println(updateProperty.getText());
+        }
+    }
     public boolean finishGame(){
         int bankrupted = 0;
         for (Player p: players) {
@@ -154,19 +173,8 @@ public class GameEngine {
 
             int price = ((Property) currentPlayer.getPosition()).getPrice();
             if(currentPlayer.buyProperty( (Property) currentPosition )){
-                for (Node node : property.getChildren()) {
-                    Label updateProperty =  (Label) node ;
 
-                    if ( updateProperty.getText().contains( currentPlayer.getPosition().getName() ) ){
-                        String updateLabel = currentPlayer.getPosition().getName() + " -> " + currentPlayer.getName();
-                        updateProperty.setText( updateLabel );
-                    }
-
-                    System.out.println(updateProperty.getText());
-                    //System.out.println(GridPane.getColumnIndex(node));
-                    //System.out.println(GridPane.getRowIndex(node));
-                    //System.out.println(property.getId());
-                }
+                updateUI();
 
                 updateMoneyUI();
             }
@@ -318,6 +326,7 @@ public class GameEngine {
                 Commerce commerce = new Commerce(currentPlayer, client, offeredProperty, requestedProperty,
                         Integer.parseInt(isNumeric(offeredMoneyBox.getText()) ? offeredMoneyBox.getText() : "0"), Integer.parseInt(isNumeric(requestedMoneyBox.getText()) ? requestedMoneyBox.getText() : "0"));
                 if (commerce.exchange()){
+                    updateUI();
                     System.out.println("Exchange successfull");
                 }
                 else{
