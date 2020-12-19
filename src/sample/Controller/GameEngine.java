@@ -858,19 +858,29 @@ public class GameEngine {
 
     public void howToPlayButtonPushed(javafx.event.ActionEvent event) throws IOException{
 
-        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/howToPlay.fxml"));
+        //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/howToPlay.fxml"));
+        //Scene settingsScene = new Scene( settingsParent );
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/howToPlay.fxml"));
+        loader.setController(this);
+        Parent settingsParent = (Parent) loader.load();
         Scene settingsScene = new Scene( settingsParent );
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(settingsScene);
-        window.show();
+        if(window == null){
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(settingsScene);
+            window.show();
+        }else{
+            window.setScene(settingsScene);
+            window.show();
+        }
     }
 
     public void creditsButtonPushed(javafx.event.ActionEvent event) throws IOException{
 
         Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/credits.fxml"));
         Scene settingsScene = new Scene( settingsParent );
+
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -921,13 +931,24 @@ public class GameEngine {
 
     public void backButtonPushed(javafx.event.ActionEvent event) throws IOException {
 
-        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/sample.fxml"));
-        Scene settingsScene = new Scene( settingsParent );
+        //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/sample.fxml"));
+        //Scene settingsScene = new Scene( settingsParent );
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/sample.fxml"));
+        // loader.setController(this);
+        Parent settingsParent = (Parent) loader.load();
+        Scene mainScene = new Scene(settingsParent);
 
-        window.setScene(settingsScene);
-        window.show();
+        //window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        if(window == null){
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(mainScene);
+            window.show();
+        }else{
+            window.setScene(pauseScene);
+            window.show();
+        }
     }
 
     //@FXML private Button pauseContinueButton;
@@ -942,6 +963,8 @@ public class GameEngine {
 
         Parent settingsParent = (Parent) loader.load();
         pauseScene = new Scene( settingsParent );
+
+        //window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         window.setScene(pauseScene);
         window.show();
