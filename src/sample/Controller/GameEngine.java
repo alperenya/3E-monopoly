@@ -345,6 +345,8 @@ public class GameEngine {
 
     public void gameFlow(){
         card_container.setVisible(false);
+        card_text.setWrapText(true);
+        card_title.setWrapText(true);
 
         skipbtn.setOnAction(event -> {
             nextTurn();
