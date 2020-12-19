@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="547.0" prefWidth="732.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="256.0" layoutY="14.0" prefHeight="79.0" prefWidth="221.0" styleClass="normal-headings" text="TradING" textFill="#6b1515" />
+      <GridPane layoutX="37.0" layoutY="110.0" prefHeight="408.0" prefWidth="659.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="399.0" minWidth="10.0" prefWidth="329.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="330.0" minWidth="10.0" prefWidth="330.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="83.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ListView fx:id="buyerPropertiesListView" maxHeight="-Infinity" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+            <Label prefHeight="17.0" prefWidth="119.0" text="My Properties:" textFill="WHITE" />
+            <Label prefHeight="17.0" prefWidth="119.0" text="My money:  " textFill="WHITE" GridPane.rowIndex="1" />
+            <Label prefHeight="17.0" prefWidth="119.0" text="Password" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="offeredMoneyBox" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </TextField>
+            <PasswordField fx:id="sellerPasswordBox" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </PasswordField>
+            <Label prefHeight="17.0" prefWidth="119.0" text="Client Properties:" textFill="WHITE" GridPane.rowIndex="3" />
+            <ListView fx:id="sellerPropertiesListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label prefHeight="17.0" prefWidth="119.0" text="Client money:  " textFill="WHITE" GridPane.rowIndex="4" />
+            <TextField fx:id="requestedMoneyBox" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </TextField>
+            <Label prefHeight="17.0" prefWidth="119.0" text="Password" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <PasswordField fx:id="buyerPasswordBox" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </PasswordField>
+            <Button fx:id="completeTradeButton" mnemonicParsing="false" prefHeight="63.0" prefWidth="238.0" styleClass="trade-button" text="Trade" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+               <font>
+                  <Font size="28.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="cancelTradeButton" mnemonicParsing="false" prefHeight="63.0" prefWidth="238.0" styleClass="action-button" text="Cancel" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+               <font>
+                  <Font size="28.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Button>
+            <Label text="Clients:" textFill="WHITE" GridPane.rowIndex="2" />
+            <ComboBox fx:id="clientsComboBox" maxWidth="-Infinity" prefWidth="400.0" promptText="Available Clients" visibleRowCount="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </ComboBox>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
