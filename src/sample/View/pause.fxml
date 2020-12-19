@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.GameEngine">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane prefHeight="519.0" prefWidth="784.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -19,7 +19,7 @@
             </Label>
             <VBox alignment="TOP_CENTER" layoutX="62.0" layoutY="151.0" prefHeight="380.0" prefWidth="776.0">
                <children>
-                  <Button depthTest="DISABLE" mnemonicParsing="false" onAction="#singlePlayerButtonPushed" prefHeight="57.0" prefWidth="304.0" styleClass="action-button" text="Continue" textFill="WHITE" VBox.vgrow="ALWAYS">
+                  <Button fx:id="pauseContinueButton" depthTest="DISABLE" mnemonicParsing="false" onAction="#continueButtonPushed" prefHeight="57.0" prefWidth="304.0" styleClass="action-button" text="Continue" textFill="WHITE" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="15.0" />
                      </VBox.margin>
