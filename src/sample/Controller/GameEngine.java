@@ -1,6 +1,6 @@
 package sample.Controller;
 
-import com.sun.deploy.util.StringUtils;
+//import com.sun.deploy.util.StringUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -21,11 +21,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.Model.*;
 import sample.Model.Cell;
-import sun.plugin2.ipc.windows.WindowsNamedPipe;
+//import sun.plugin2.ipc.windows.WindowsNamedPipe;
 //import sun.security.jca.GetInstance;
 
 import javax.smartcardio.Card;
-import javax.xml.soap.Text;
+//import javax.xml.soap.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -328,6 +328,7 @@ public class GameEngine {
                 if (commerce.exchange()){
                     updateUI();
                     System.out.println("Exchange successfull");
+                    updateMoneyUI();
                 }
                 else{
                     System.out.println("Excahnge failed");
