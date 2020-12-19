@@ -27,6 +27,7 @@ import sample.Model.Cell;
 import javax.smartcardio.Card;
 //import javax.xml.soap.Text;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,13 +71,28 @@ public class GameEngine {
     @FXML private ListView sellerPropertiesListView;
     @FXML private ComboBox clientsComboBox;
 
-    //MOrtgage popup elements
+    //Mortgage popup elements
     @FXML private Button mortgageAcceptButton;
     @FXML private Button mortgageCancelButton;
     @FXML private Label totalMortgageEarnLabel;
     @FXML private Label totalMortgagePayLabel;
     @FXML private ListView propertiesListView;
     @FXML private ListView mortgagedPropertiesListView;
+
+    //Auction popup elements
+    @FXML private Button auctionCompleteButton;
+    @FXML private Label player1Label;
+    @FXML private Label player2Label;
+    @FXML private Label player3Label;
+    @FXML private Label player4Label;
+    @FXML private Label player1BidLabel;
+    @FXML private Label player2BidLabel;
+    @FXML private Label player3BidLabel;
+    @FXML private Label player4BidLabel;
+    @FXML private Slider player1BidSlider;
+    @FXML private Slider player2BidSlider;
+    @FXML private Slider player3BidSlider;
+    @FXML private Slider player4BidSlider;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
@@ -347,9 +363,121 @@ public class GameEngine {
         });
     }
 
+    private void auction() throws IOException {
+        Stage auctionPopup = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/auction.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        auctionPopup.setScene(new Scene(root));
+
+        auctionPopup.initModality(Modality.APPLICATION_MODAL);
+        auctionPopup.initOwner(tradeButton.getScene().getWindow());
+        auctionPopup.show();
+        ArrayList<Player> bidders = new ArrayList<>();
+        for (Player p: players) {
+            if (p != currentPlayer)
+                bidders.add(p);
+        }
+        switch(bidders.size()) {
+            case 4:
+                player1Label.setText(bidders.get(0).getName());
+                player2Label.setText(bidders.get(1).getName());
+                player3Label.setText(bidders.get(2).getName());
+                player4Label.setText(bidders.get(3).getName());
+                player1BidSlider.setMax(bidders.get(0).getMoney() - 1);
+                player2BidSlider.setMax(bidders.get(1).getMoney() - 1);
+                player3BidSlider.setMax(bidders.get(2).getMoney() - 1);
+                player4BidSlider.setMax(bidders.get(3).getMoney() - 1);
+                break;
+            case 3:
+                player1Label.setText(bidders.get(0).getName());
+                player2Label.setText(bidders.get(1).getName());
+                player3Label.setText(bidders.get(2).getName());
+                player1BidSlider.setMax(bidders.get(0).getMoney() - 1);
+                player2BidSlider.setMax(bidders.get(1).getMoney() - 1);
+                player3BidSlider.setMax(bidders.get(2).getMoney() - 1);
+                player4BidSlider.setMax(0);
+                player4Label.setText("-");
+                break;
+            case 2:
+                player1Label.setText(bidders.get(0).getName());
+                player2Label.setText(bidders.get(1).getName());
+                player1BidSlider.setMax(bidders.get(0).getMoney() - 1);
+                player2BidSlider.setMax(bidders.get(1).getMoney() - 1);
+                player3BidSlider.setMax(0);
+                player4BidSlider.setMax(0);
+                player3Label.setText("-");
+                player4Label.setText("-");
+                break;
+            case 1:
+                player1Label.setText(bidders.get(0).getName());
+                player1BidSlider.setMax(bidders.get(0).getMoney() - 1);
+                player2BidSlider.setMax(0);
+                player3BidSlider.setMax(0);
+                player4BidSlider.setMax(0);
+                player2Label.setText("-");
+                player3Label.setText("-");
+                player4Label.setText("-");
+                break;
+            default:
+                System.out.println("There is no player to bid?");
+        }
+
+        player1BidSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                player1BidLabel.setText(((int)player1BidSlider.getValue()) + "");
+            }
+        });
+
+        player2BidSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                player1BidLabel.setText(((int)player2BidSlider.getValue()) + "");
+            }
+        });
+
+        player3BidSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                player3BidLabel.setText(((int)player3BidSlider.getValue()) + "");
+            }
+        });
+
+        player4BidSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                player4BidLabel.setText(((int)player4BidSlider.getValue()) + "");
+            }
+        });
+        auctionCompleteButton.setOnAction(event -> {
+            int max = Math.max(Math.max((int)player1BidSlider.getValue(), (int)player2BidSlider.getValue()) ,Math.max((int)player3BidSlider.getValue(), (int)player4BidSlider.getValue()));
+            if(max == (int)player1BidSlider.getValue()){
+                System.out.println("Player 1 wins the auction");
+            }
+            else if(max == (int)player2BidSlider.getValue()){
+                System.out.println("Player 2 wins the auction");
+            }
+            else if(max == (int)player3BidSlider.getValue()){
+                System.out.println("Player 3 wins the auction");
+            }
+            else if(max == (int)player4BidSlider.getValue()){
+                System.out.println("Player 4 wins the auction");
+            }
+        });
+    }
     public void gameFlow(){
 
         skipbtn.setOnAction(event -> {
+            if (currentPlayer.getPosition() instanceof Property && !((Property) currentPlayer.getPosition()).hasOwner()){
+                try {
+                    auction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             nextTurn();
 
             if(currentPlayer.getBanTurn() > 0){
@@ -560,10 +688,8 @@ public class GameEngine {
         }
 
     } //Check the patient players
-
     public void handleCredits(){} //Go to credits scene
     public void handleSettings(){} //Go to settings menu
-
     public void updateMoneyUI(){
         int playerCounter = 0;
 
@@ -584,7 +710,6 @@ public class GameEngine {
         }
 
     }
-
     public void createPlayers(){
         //for(int i = 1; i <= playerCount; i++){
             //Scanner sc = new Scanner(System.in);
@@ -653,7 +778,6 @@ public class GameEngine {
         gameMap.addCell(new Taxation("Luxury Tax", 0.23, 755, 590 ));
         gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "orange", 755, 655 ));
     } //Initialize the map
-
     private  boolean startCellPassed = false;
     //double x, double y
     private void movePlayer(int amount){
@@ -675,12 +799,10 @@ public class GameEngine {
 
         moveUIPiece(currentPlayer.getPiece(),c.getX(),c.getY());
     }
-
     public void moveUIPiece(Pane piece,double x, double y){
         piece.setLayoutX(x);
         piece.setLayoutY(y);
     }
-
     public void playButtonPushed(javafx.event.ActionEvent event) throws IOException {
 
         Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/playGame.fxml"));
