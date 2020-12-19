@@ -847,13 +847,27 @@ public class GameEngine {
 
     public void settingsButtonPushed(javafx.event.ActionEvent event) throws IOException{
 
-        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/settings.fxml"));
+       /* Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/settings.fxml"));
         Scene settingsScene = new Scene( settingsParent );
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         window.setScene(settingsScene);
-        window.show();
+        window.show();*/
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/settings.fxml"));
+        loader.setController(this);
+        Parent settingsParent = (Parent) loader.load();
+        Scene settingsScene = new Scene( settingsParent );
+
+        if(window == null){
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(settingsScene);
+            window.show();
+        }else{
+            window.setScene(settingsScene);
+            window.show();
+        }
     }
 
     public void howToPlayButtonPushed(javafx.event.ActionEvent event) throws IOException{

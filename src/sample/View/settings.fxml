@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="700.0" prefWidth="850.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.GameEngine">
+<AnchorPane prefHeight="700.0" prefWidth="850.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <Label layoutX="307.0" layoutY="106.0" styleClass="normal-headings" text="Settings" textFill="#6b1515" />
       <Slider fx:id="soundControl" layoutX="474.0" layoutY="282.0" onDragDetected="#adjustSoundButtonPushed" />
