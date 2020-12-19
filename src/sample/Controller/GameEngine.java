@@ -439,6 +439,12 @@ public class GameEngine {
                 moveUIPiece(currentPlayer.getPiece(),65,735);
                 currentPlayer.setPosition(gameMap.getCells().get(10));
                 currentPlayer.getPosition().addVisitor(currentPlayer);
+            }else if( currentPosition instanceof CoronaTest ){
+                if ( !currentPlayer.isHealthy() ){
+                    moveUIPiece(currentPlayer.getPiece(),65,735);
+                    currentPlayer.setPosition(gameMap.getCells().get(10));
+                    currentPlayer.getPosition().addVisitor(currentPlayer);
+                }
             }
 
             handleInfection();
