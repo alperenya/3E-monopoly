@@ -159,13 +159,13 @@ public class Player {
 
     public Boolean mortgage(Property p){
         p.setMortgage(true);
-        money += p.getPrice()*0.7;
+        money += p.getPrice()*0.5;
         return true;
     }
 
     public Boolean cancelMortgage(Property p){
-        p.setMortgage(true);
-        money -= p.getPrice()*0.7;
+        p.setMortgage(false);
+        money -= p.getPrice()*0.55;
         return true;
     }
 
