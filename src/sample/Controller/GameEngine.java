@@ -25,7 +25,12 @@ import sun.plugin2.ipc.windows.WindowsNamedPipe;
 //import sun.security.jca.GetInstance;
 
 import javax.smartcardio.Card;
+<<<<<<< Updated upstream
 import javax.xml.soap.Text;
+=======
+import javax.xml.transform.Source;
+//import javax.xml.soap.Text;
+>>>>>>> Stashed changes
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -170,7 +175,6 @@ public class GameEngine {
         mortgagePopup.initModality(Modality.APPLICATION_MODAL);
         mortgagePopup.initOwner(tradeButton.getScene().getWindow());
         mortgagePopup.show();
-
         for (Property p:currentPlayer.getProperties()) {
             if (!p.getMortgage()){
                 propertiesListView.getItems().add(p.getName());
@@ -182,10 +186,17 @@ public class GameEngine {
         propertiesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if(propertiesListView.getSelectionModel().getSelectedItem() == null)
+                    return;
                 for (Property p: currentPlayer.getProperties()) {
                     if(p.getName().equals(propertiesListView.getSelectionModel().getSelectedItem())){
-                        totalMortgageEarnLabel.setText((int)(Integer.parseInt(totalMortgageEarnLabel.getText()) + p.getPrice()*0.5) + "");
-                        break;
+
+                        if(currentPlayer.getMortgagedProperties().contains(p)){
+                            totalMortgagePayLabel.setText((int)(Integer.parseInt(totalMortgagePayLabel.getText()) - p.getPrice()*0.55) + "");
+                        }
+                        else{
+                            totalMortgageEarnLabel.setText((int)(Integer.parseInt(totalMortgageEarnLabel.getText()) + p.getPrice()*0.5) + "");
+                        }
                     }
                 }
                 mortgagedPropertiesListView.getItems().add(propertiesListView.getSelectionModel().getSelectedItem());
@@ -195,9 +206,16 @@ public class GameEngine {
         mortgagedPropertiesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if(mortgagedPropertiesListView.getSelectionModel().getSelectedItem() == null)
+                    return;
                 for (Property p: currentPlayer.getProperties()) {
                     if(p.getName().equals(mortgagedPropertiesListView.getSelectionModel().getSelectedItem())){
-                        totalMortgagePayLabel.setText((int)(Integer.parseInt(totalMortgagePayLabel.getText()) + p.getPrice()*0.55) + "");
+                        if(currentPlayer.getMortgagedProperties().contains(p)){
+                            totalMortgagePayLabel.setText((int)(Integer.parseInt(totalMortgagePayLabel.getText()) + p.getPrice()*0.55) + "");
+                        }
+                        else{
+                            totalMortgageEarnLabel.setText((int)(Integer.parseInt(totalMortgageEarnLabel.getText()) - p.getPrice()*0.5) + "");
+                        }
                         break;
                     }
                 }
@@ -302,6 +320,11 @@ public class GameEngine {
                         Integer.parseInt(isNumeric(offeredMoneyBox.getText()) ? offeredMoneyBox.getText() : "0"), Integer.parseInt(isNumeric(requestedMoneyBox.getText()) ? requestedMoneyBox.getText() : "0"));
                 if (commerce.exchange()){
                     System.out.println("Exchange successfull");
+<<<<<<< Updated upstream
+=======
+                    updateMoneyUI();
+                    tradePopup.close();
+>>>>>>> Stashed changes
                 }
                 else{
                     System.out.println("Excahnge failed");
@@ -312,10 +335,7 @@ public class GameEngine {
             }
         });
         cancelTradeButton.setOnAction(eventCancelTrade -> {
-            // get a handle to the stage
-            Stage stage = (Stage) cancelTradeButton.getScene().getWindow();
-            // do what you have to do
-            stage.close();
+            tradePopup.close();
         });
     }
     public void gameFlow(){
