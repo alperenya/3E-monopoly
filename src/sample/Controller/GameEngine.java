@@ -241,6 +241,7 @@ public class GameEngine {
             // get a handle to the stage
             Stage stage = (Stage) mortgageAcceptButton.getScene().getWindow();
             // do what you have to do
+            updateMoneyUI();
             stage.close();
         });
         mortgageCancelButton.setOnAction(event1 -> {
@@ -331,6 +332,7 @@ public class GameEngine {
             else{
                 System.out.println("Wrong password");
             }
+            tradePopup.close();
         });
         cancelTradeButton.setOnAction(eventCancelTrade -> {
             // get a handle to the stage
