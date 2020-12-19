@@ -16,9 +16,12 @@ public class Player {
     protected Boolean inQuarantine;
     protected Boolean isBankrupt;
     protected int banTurn;
+    protected String password;
+
+
 
     //constructors
-    public Player(String name, Pane piece, Cell c){
+    public Player(String name, Pane piece, String password, Cell c){
         this.position = c;
         this.name = name;
         this.piece = piece;
@@ -27,6 +30,7 @@ public class Player {
         this.isBankrupt = false;
         this.banTurn = 0;
         this.properties = new ArrayList<>();
+        this.password = password;
     }
 
     public Player(){
@@ -67,6 +71,10 @@ public class Player {
 
     public ArrayList<Property> getProperties() {
         return properties;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public Boolean sellProperty(Property p){
@@ -151,13 +159,13 @@ public class Player {
 
     public Boolean mortgage(Property p){
         p.setMortgage(true);
-        money += p.getPrice()*0.7;
+        money += p.getPrice()*0.5;
         return true;
     }
 
     public Boolean cancelMortgage(Property p){
-        p.setMortgage(true);
-        money -= p.getPrice()*0.7;
+        p.setMortgage(false);
+        money -= p.getPrice()*0.55;
         return true;
     }
 

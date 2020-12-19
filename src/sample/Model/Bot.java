@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class Bot extends Player{
 
     //contructors
-    public Bot(String name, Pane piece, Cell c){
-        super(name, piece, c);
+    public Bot(String name, Pane piece, String password, Cell c){
+        super(name, piece, password, c);
     }
 
     //methods
