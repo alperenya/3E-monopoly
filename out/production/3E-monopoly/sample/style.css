@@ -48,3 +48,7 @@
     -fx-color: white;
     -fx-border: 0;
 }
+
+.community-chance-card{
+    -fx-background-color: #162447;
+}

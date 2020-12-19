@@ -24,7 +24,7 @@ import sample.Model.Cell;
 //import sun.plugin2.ipc.windows.WindowsNamedPipe;
 //import sun.security.jca.GetInstance;
 
-import javax.smartcardio.Card;
+//import javax.smartcardio.Card;
 //import javax.xml.soap.Text;
 import java.io.IOException;
 import java.net.URL;
@@ -45,6 +45,9 @@ public class GameEngine {
     @FXML private Pane player_piece_3;
     @FXML private Pane player_piece_4;
     @FXML private Pane player_piece_5;
+    @FXML private Pane card_container;
+    @FXML private Label card_title;
+    @FXML private Label card_text;
     @FXML private Button skipbtn;
     @FXML private Label diceLabel;
     @FXML private Button buyButton;
@@ -341,6 +344,9 @@ public class GameEngine {
     }
 
     public void gameFlow(){
+        card_container.setVisible(false);
+        card_text.setWrapText(true);
+        card_title.setWrapText(true);
 
         skipbtn.setOnAction(event -> {
             nextTurn();
@@ -352,6 +358,7 @@ public class GameEngine {
 
             rollDice.setDisable(false);
             buyButton.setDisable(false);
+            card_container.setVisible(false);
 
         });
 
@@ -424,9 +431,46 @@ public class GameEngine {
                 updateMoneyUI();
 
             }else if( currentPosition instanceof CardCell ){
-
                 buyButton.setDisable(true);
 
+                if(((CardCell) currentPosition).getType().equals("chance") ){
+                    Card randomCard = gameMap.drawCard("Chance");
+                    card_title.setText("Chance Card");
+                    card_text.setText(randomCard.getMessage());
+
+                    if(randomCard.getCardFunction().equals("payVisitor")){
+                        randomCard.payVisitor(currentPlayer,200);
+                    }else if(randomCard.getCardFunction().equals("getMoney")){
+                        randomCard.getMoneyFromUser(currentPlayer,200);
+                    }else if(randomCard.getCardFunction().equals("getPercent")){
+                        randomCard.getMoneyFromUser(currentPlayer,0.10);
+                    }else if(randomCard.getCardFunction().equals("vaccinate")){
+                        randomCard.vaccinate(currentPlayer);
+                    }else if(randomCard.getCardFunction().equals("infect")){
+                        randomCard.makeInfected(currentPlayer);
+                    }
+                }
+
+                if(((CardCell) currentPosition).getType().equals("community") ){
+                    Card randomCard = gameMap.drawCard("CommunityChest");
+                    card_title.setText("Community Chest Card");
+                    card_text.setText(randomCard.getMessage());
+
+                    if(randomCard.getCardFunction().equals("payVisitor")){
+                        randomCard.payVisitor(currentPlayer,200);
+                    }else if(randomCard.getCardFunction().equals("getMoney")){
+                        randomCard.getMoneyFromUser(currentPlayer,200);
+                    }else if(randomCard.getCardFunction().equals("getPercent")){
+                        randomCard.getMoneyFromUser(currentPlayer,0.10);
+                    }else if(randomCard.getCardFunction().equals("vaccinate")){
+                        randomCard.vaccinate(currentPlayer);
+                    }else if(randomCard.getCardFunction().equals("infect")){
+                        randomCard.makeInfected(currentPlayer);
+                    }
+                }
+
+                updateMoneyUI();
+                card_container.setVisible(true);
             }else if( currentPosition instanceof Neighbourhood && ((Neighbourhood)currentPosition).hasOwner() ){
 
                 int rent = ((Neighbourhood) currentPosition).calculateRent();
@@ -538,7 +582,9 @@ public class GameEngine {
 
         }
     } //Check the infection risk of the cell
-    public void manageBuildings(){} //
+    public void manageBuildings(){
+
+    } //
     public void handleBankruptcy(){} //Check the bankruptcy status of players
     public void managePatients(){
 
@@ -606,45 +652,99 @@ public class GameEngine {
     public void createMap(){
         gameMap.newMap();
         gameMap.addCell(new StartCell(735,735));
-        gameMap.addCell(new Neighbourhood("Altındağ", 1000,130, 0.5, "purple", 655, 755 ));
-        gameMap.addCell(new CardCell("Community Chest", 590, 755 ));
+        gameMap.addCell(new Neighbourhood("Altındağ", 1000,130, 0.5, "brown", 655, 755 ));
+        gameMap.addCell(new CardCell("Community Chest","community", 590, 755 ));
         gameMap.addCell(new Neighbourhood("Sincan", 600,80, 0.65, "brown", 525, 755 ) );
         gameMap.addCell(new Taxation("Income Tax", 0.23, 460, 755 ));
         gameMap.addCell(new Transportation("Railroad", 2000, 300, 0.9, "black", 395, 755 ));
-        gameMap.addCell(new Neighbourhood("Kolej", 1800,250, 0.55, "orange", 330, 755 ));
-        gameMap.addCell(new CardCell("Chance", 265, 755 ));
-        gameMap.addCell(new Neighbourhood("Beşevler", 2800, 380, 0.3, "yellow" , 195, 755 ));
+        gameMap.addCell(new Neighbourhood("Kolej", 1800,250, 0.55, "blue", 330, 755 ));
+        gameMap.addCell(new CardCell("Chance","chance", 265, 755 ));
+        gameMap.addCell(new Neighbourhood("Beşevler", 2800, 380, 0.3, "blue" , 195, 755 ));
         gameMap.addCell(new Neighbourhood("Çayyolu", 3500, 460, 0.1, "blue" , 135, 755 ));
         gameMap.addCell(new Quarantine("Quarantine" , 65, 730 ));
-        gameMap.addCell(new Neighbourhood("Eryaman", 2600, 350, 0.5, "yellow" , 40, 655 ));
+        gameMap.addCell(new Neighbourhood("Eryaman", 2600, 350, 0.5, "purple" , 40, 655 ));
         gameMap.addCell(new PublicService("TEDAŞ", 1500, 200, "white", 40, 590 ));
-        gameMap.addCell(new Neighbourhood("Ostim", 2600, 350, 0.6, "yellow" , 40, 525 ));
+        gameMap.addCell(new Neighbourhood("Ostim", 2600, 350, 0.6, "purple" , 40, 525 ));
         gameMap.addCell(new Neighbourhood("Beypazarı", 1200,180, 0.4, "purple", 40, 460 ));
         gameMap.addCell(new Transportation("YHT", 2000, 300, 0.5, "black", 40, 395));
         gameMap.addCell(new Neighbourhood("Dikmen", 2000,280, 0.25, "orange", 40, 325 ));
-        gameMap.addCell(new CardCell("Community Chest", 40, 265 ));
-        gameMap.addCell(new Neighbourhood("Etimesgut", 1000,130, 0.55, "purple", 40, 195 ));
-        gameMap.addCell(new Neighbourhood("Gölbaşı", 1400,200, 0.8, "pink", 40, 130 ));
+        gameMap.addCell(new CardCell("Community Chest","community", 40, 265 ));
+        gameMap.addCell(new Neighbourhood("Etimesgut", 1000,130, 0.55, "orange", 40, 195 ));
+        gameMap.addCell(new Neighbourhood("Gölbaşı", 1400,200, 0.8, "orange", 40, 130 ));
         gameMap.addCell(new CoronaTest("Test Center" , 50, 50 ));
         gameMap.addCell(new Neighbourhood("Batıkent", 2200, 300, 0.45, "red" , 135, 35 ));
-        gameMap.addCell(new CardCell("Chance", 195, 35 ));
+        gameMap.addCell(new CardCell("Chance","chance", 195, 35 ));
         gameMap.addCell(new Neighbourhood("Yenimahalle", 2400, 320, 0.3, "red", 260, 35  ));
-        gameMap.addCell(new Neighbourhood("Mamak", 600, 80, 0.7, "brown", 330, 35 ));
+        gameMap.addCell(new Neighbourhood("Mamak", 600, 80, 0.7, "red", 330, 35 ));
         gameMap.addCell(new Transportation("Esenboga Airport", 2000, 300, 0.6, "black", 395, 35 ));
-        gameMap.addCell(new Neighbourhood("Sıhhiye", 3200, 440, 0.6, "green", 460, 35  ));
-        gameMap.addCell(new Neighbourhood("Emek", 2200,300, 0.55, "red", 525, 35 ));
+        gameMap.addCell(new Neighbourhood("Sıhhiye", 3200, 440, 0.6, "yellow", 460, 35  ));
+        gameMap.addCell(new Neighbourhood("Emek", 2200,300, 0.55, "yellow", 525, 35 ));
         gameMap.addCell(new PublicService("ASKİ", 1500, 200, "white", 590, 35 ));
-        gameMap.addCell(new Neighbourhood("Bilkent", 4000, 500, 0.05, "blue" , 655, 35 ));
+        gameMap.addCell(new Neighbourhood("Bilkent", 4000, 500, 0.05, "yellow" , 655, 35 ));
         gameMap.addCell(new BeInfected("Go To Quarantine", 755, 35));
         gameMap.addCell(new Neighbourhood("Bahçelievler", 3000, 400, 0.45, "green", 755, 135  ));
-        gameMap.addCell(new Neighbourhood("Cebeci", 1600,220, 0.75, "pink", 755, 200 ));
-        gameMap.addCell(new CardCell("Community Chest", 755, 260 ));
+        gameMap.addCell(new Neighbourhood("Cebeci", 1600,220, 0.75, "green", 755, 200 ));
+        gameMap.addCell(new CardCell("Community Chest","community", 755, 260 ));
         gameMap.addCell(new Neighbourhood("Ulus", 3000, 400, 0.5, "green" , 755, 325 ));
         gameMap.addCell(new Transportation("AŞTİ", 2000, 300, 0.9, "black", 755, 395 ));
-        gameMap.addCell(new CardCell("Chance", 755, 460 ));
-        gameMap.addCell(new Neighbourhood("Kızılcahamam", 1400,200, 0.3, "pink", 755, 525 ));
+        gameMap.addCell(new CardCell("Chance","chance", 755, 460 ));
+        gameMap.addCell(new Neighbourhood("Kızılcahamam", 1400,200, 0.3, "darkblue", 755, 525 ));
         gameMap.addCell(new Taxation("Luxury Tax", 0.23, 755, 590 ));
-        gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "orange", 755, 655 ));
+        gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "darkblue", 755, 655 ));
+
+        Chance payVisitorsCard = new Chance();
+        payVisitorsCard.setMessage("Bank Pays 200 TL to the Visitor.");
+        payVisitorsCard.setCardFunction("payVisitor");
+
+        Chance getMoneyCard = new Chance();
+        getMoneyCard.setMessage("Visitor pays 200 TL to the Bank.");
+        getMoneyCard.setCardFunction("getMoney");
+
+        Chance getPercentCard = new Chance();
+        getPercentCard.setMessage("Visitor pays 10% of their money to the Bank.");
+        getPercentCard.setCardFunction("getPercent");
+
+        Chance vaccinateCard = new Chance();
+        vaccinateCard.setMessage("Player is now vaccinated and healthy.");
+        vaccinateCard.setCardFunction("vaccinate");
+
+        Chance infectCard = new Chance();
+        infectCard.setMessage("Player is now infected and not healthy.");
+        infectCard.setCardFunction("infect");
+
+        gameMap.addCards(payVisitorsCard);
+        gameMap.addCards(getMoneyCard);
+        gameMap.addCards(getPercentCard);
+        gameMap.addCards(vaccinateCard);
+        gameMap.addCards(infectCard);
+
+        CommunityChest payVisitorsCardCommunity = new CommunityChest();
+        payVisitorsCardCommunity.setMessage("Bank Pays 200 TL to the Visitor.");
+        payVisitorsCardCommunity.setCardFunction("payVisitor");
+
+        CommunityChest getMoneyCardCommunity = new CommunityChest();
+        getMoneyCardCommunity.setMessage("Visitor pays 200 TL to the Bank.");
+        getMoneyCardCommunity.setCardFunction("getMoney");
+
+        CommunityChest getPercentCardCommunity = new CommunityChest();
+        getPercentCardCommunity.setMessage("Visitor pays 10% of their money to the Bank.");
+        getPercentCardCommunity.setCardFunction("getPercent");
+
+        CommunityChest vaccinateCardCommunity = new CommunityChest();
+        vaccinateCardCommunity.setMessage("Player is now vaccinated and healthy.");
+        vaccinateCardCommunity.setCardFunction("vaccinate");
+
+        CommunityChest infectCardCommunity = new CommunityChest();
+        infectCardCommunity.setMessage("Player is now infected and not healthy.");
+        infectCardCommunity.setCardFunction("infect");
+
+        gameMap.addCards(payVisitorsCardCommunity);
+        gameMap.addCards(getMoneyCardCommunity);
+        gameMap.addCards(getPercentCardCommunity);
+        gameMap.addCards(vaccinateCardCommunity);
+        gameMap.addCards(infectCardCommunity);
+
+        gameMap.shuffleCards();
     } //Initialize the map
 
     private  boolean startCellPassed = false;
