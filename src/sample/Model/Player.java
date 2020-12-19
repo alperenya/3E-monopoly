@@ -197,7 +197,8 @@ public class Player {
         }else if(n.getHouseCount() < 4){
 
             n.setHouseCount(n.getHouseCount() + 1);
-            money = money - (int)(n.getPrice() * 0.2);
+            if(money >= (int)(n.getPrice() * 0.2))
+                money -= (int)(n.getPrice() * 0.2);
             return true;
         }
 
@@ -208,7 +209,8 @@ public class Player {
 
         if( n.getHouseCount() == 3 ){
             n.setHouseCount(n.getHouseCount() + 1);
-            money = money - (int)(n.getPrice() * 0.5);
+            if(money >= (int)(n.getPrice() * 0.5))
+                money -= (int)(n.getPrice() * 0.5);
             return true;
         }
 
@@ -230,6 +232,7 @@ public class Player {
     }
 
     public Boolean mortgage(Property p){
+
         p.setMortgage(true);
         money += p.getPrice()*0.5;
         return true;
@@ -254,6 +257,7 @@ public class Player {
         if(requestedProperty != null){
             otherPlayer.removeProperty(requestedProperty);
             properties.add(requestedProperty);
+            requestedProperty.setOwner(this);
         }
         otherPlayer.setMoney(otherPlayer.getMoney() - requestedMoney);
         money += requestedMoney;
