@@ -112,6 +112,16 @@ public class Player {
         return false;
     }
 
+    public Boolean buyAuction(Property p, int price){
+
+        properties.add(p);
+        p.setAvailability(false);
+        p.setOwner(this);
+        money -= price;
+        return true;
+
+    }
+
     public void addProperty(Property p){
         properties.add(p);
         p.setAvailability(false);

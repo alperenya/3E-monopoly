@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.Model.*;
@@ -81,20 +82,20 @@ public class GameEngine {
 
     //Auction popup elements
     @FXML private Button auctionCompleteButton;
-    @FXML private Label player1Label;
-    @FXML private Label player2Label;
-    @FXML private Label player3Label;
-    @FXML private Label player4Label;
-    @FXML private Label player1BidLabel;
-    @FXML private Label player2BidLabel;
-    @FXML private Label player3BidLabel;
-    @FXML private Label player4BidLabel;
+    @FXML private Text player1Label;
+    @FXML private Text player2Label;
+    @FXML private Text player3Label;
+    @FXML private Text player4Label;
+    @FXML private Text player1BidLabel;
+    @FXML private Text player2BidLabel;
+    @FXML private Text player3BidLabel;
+    @FXML private Text player4BidLabel;
     @FXML private Slider player1BidSlider;
     @FXML private Slider player2BidSlider;
     @FXML private Slider player3BidSlider;
     @FXML private Slider player4BidSlider;
 
-    private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
+    private final int MAX_PLAYERS = 5; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
     private final int MAX_BAN_TURN = 3;
     private int playerCount;
@@ -423,6 +424,7 @@ public class GameEngine {
                 System.out.println("There is no player to bid?");
         }
 
+
         player1BidSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
@@ -433,7 +435,7 @@ public class GameEngine {
         player2BidSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
-                player1BidLabel.setText(((int)player2BidSlider.getValue()) + "");
+                player2BidLabel.setText(((int)player2BidSlider.getValue()) + "");
             }
         });
 
@@ -451,20 +453,46 @@ public class GameEngine {
                 player4BidLabel.setText(((int)player4BidSlider.getValue()) + "");
             }
         });
+        Cell currentPosition = currentPlayer.getPosition();
         auctionCompleteButton.setOnAction(event -> {
             int max = Math.max(Math.max((int)player1BidSlider.getValue(), (int)player2BidSlider.getValue()) ,Math.max((int)player3BidSlider.getValue(), (int)player4BidSlider.getValue()));
-            if(max == (int)player1BidSlider.getValue()){
-                System.out.println("Player 1 wins the auction");
+            if(max == 0)
+                System.out.println("Nobody buy this property");
+            else{
+                if(max == (int)player1BidSlider.getValue()){
+                    if(bidders.get(0).buyAuction( (Property) currentPosition, max )){
+
+                        updateUI();
+                        updateMoneyUI();
+                    }
+                    System.out.println("Player 1 wins the auction");
+                }
+                else if(max == (int)player2BidSlider.getValue()){
+                    if(bidders.get(1).buyAuction( (Property) currentPosition, max )){
+
+                        updateUI();
+                        updateMoneyUI();
+                    }
+                    System.out.println("Player 2 wins the auction");
+                }
+                else if(max == (int)player3BidSlider.getValue()){
+                    if(bidders.get(2).buyAuction( (Property) currentPosition, max )){
+
+                        updateUI();
+                        updateMoneyUI();
+                    }
+                    System.out.println("Player 3 wins the auction");
+                }
+                else if(max == (int)player4BidSlider.getValue()){
+                    if(bidders.get(3).buyAuction( (Property) currentPosition, max )){
+
+                        updateUI();
+                        updateMoneyUI();
+                    }
+                    System.out.println("Player 4 wins the auction");
+                }
             }
-            else if(max == (int)player2BidSlider.getValue()){
-                System.out.println("Player 2 wins the auction");
-            }
-            else if(max == (int)player3BidSlider.getValue()){
-                System.out.println("Player 3 wins the auction");
-            }
-            else if(max == (int)player4BidSlider.getValue()){
-                System.out.println("Player 4 wins the auction");
-            }
+            auctionPopup.close();
         });
     }
     public void gameFlow(){
