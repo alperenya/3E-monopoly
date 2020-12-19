@@ -66,6 +66,7 @@ public class GameMap {
 
         return c;
     }
+
     public void shuffleCards(String type){ //shuffle card before starting the game
         Collections.shuffle(chanceCards);
         Collections.shuffle(communityCards);

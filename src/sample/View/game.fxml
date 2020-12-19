@@ -33,7 +33,7 @@
          </image>
       </ImageView>
       <Label fx:id="turnlabel" layoutX="217.0" layoutY="225.0" prefHeight="60.0" prefWidth="135.0" text="Round: Osman" />
-      <Label fx:id="diceLabel" layoutX="505.0" layoutY="560.0" prefHeight="60.0" prefWidth="135.0" text="Dice: 8" />
+      <Label fx:id="diceLabel" layoutX="505.0" layoutY="560.0" prefHeight="60.0" prefWidth="135.0" text="Dice: -" />
       <VBox layoutX="823.0" prefHeight="246.0" prefWidth="318.0" styleClass="general-scene">
          <children>
             <Label alignment="CENTER" prefHeight="31.0" prefWidth="288.0" style="-fx-font-weight: bold;" text="Players" textFill="WHITE">
