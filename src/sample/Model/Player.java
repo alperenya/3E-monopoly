@@ -17,6 +17,7 @@ public class Player {
     protected Boolean isBankrupt;
     protected int banTurn;
     protected String password;
+    protected int infectionTurn;
 
 
 
@@ -31,6 +32,7 @@ public class Player {
         this.banTurn = 0;
         this.properties = new ArrayList<>();
         this.password = password;
+        this.infectionTurn = 0;
     }
 
     public Player(){
@@ -194,6 +196,14 @@ public class Player {
 
     public void setBanTurn(int banTurn) {
         this.banTurn = banTurn;
+    }
+
+    public int getInfectionTurn(){
+        return infectionTurn;
+    }
+
+    public void setInfectionTurn( int turn ){
+        infectionTurn = 0;
     }
 
 }

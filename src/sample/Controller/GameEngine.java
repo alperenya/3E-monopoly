@@ -145,12 +145,10 @@ public class GameEngine {
                     }
 
                 }
-
             }
-
-            System.out.println(updateProperty.getText());
         }
-    }
+    } // Updates the Property section
+
     public boolean finishGame(){
         int bankrupted = 0;
         for (Player p: players) {
@@ -166,7 +164,7 @@ public class GameEngine {
         gameVolume = 0;
     } //Make the volume 0
 
-    public boolean manageProperties(){
+    public void manageProperties(){
 
         Cell currentPosition = currentPlayer.getPosition();
 
@@ -176,14 +174,9 @@ public class GameEngine {
             if(currentPlayer.buyProperty( (Property) currentPosition )){
 
                 updateUI();
-
                 updateMoneyUI();
             }
-            //gameUI.buyProperty( currentPlayer, (Property) currentPosition );
-
-            return true;
         }
-        return false;
     }
 
     private void openMortgagePopup(javafx.event.ActionEvent event) throws IOException {
@@ -381,15 +374,12 @@ public class GameEngine {
         });
 
         buyButton.setOnAction(event -> {
-            if ( manageProperties() ){
-                for ( Property pro :  currentPlayer.getProperties() ){
-                    System.out.println( pro.getName() + " -> " + pro.getPrice() );
-                }
-                System.out.println( currentPlayer.getMoney() );
-            }
+
+            manageProperties();
         });
 
         rollDice.setOnAction( event -> {
+
             movePlayer(dice.roll());
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
@@ -401,54 +391,65 @@ public class GameEngine {
                 ((PublicService) currentPosition).setMultiplier( diceValue );
                 int rent = ((PublicService) currentPosition).calculateRent();
 
-                //System.out.println( "Retrieved money: " + rent );
 
                 currentPlayer.setMoney( currentPlayer.getMoney() - rent );
 
                 Player owner = ((PublicService) currentPosition).getOwner();
                 owner.setMoney(owner.getMoney() + rent);
 
-                System.out.println( "CurrentPlayer money: " + currentPlayer.getMoney() );
                 updateMoneyUI();
                 diceLabel.setText( "Dice: " + dice.roll() );
             }
             else if(currentPosition instanceof Taxation){
+
                 buyButton.setDisable(true);
+
                 ((Taxation) currentPosition).getMoneyFromUser(currentPlayer);
+
                 updateMoneyUI();
-                System.out.println( currentPlayer.getName() + ": " + currentPlayer.getMoney());
+
             }else if(currentPosition instanceof StartCell){
+
                 buyButton.setDisable(true);
+
                 ((StartCell) currentPosition).payVisitors(currentPlayer);
+
                 updateMoneyUI();
-                System.out.println( currentPlayer.getName() + ": " + currentPlayer.getMoney());
+
             }else if(startCellPassed){
+
                 startCellPassed = false;
                 currentPlayer.setMoney(currentPlayer.getMoney() + 200);
+
                 updateMoneyUI();
+
             }else if( currentPosition instanceof CardCell ){
+
                 buyButton.setDisable(true);
+
             }else if( currentPosition instanceof Neighbourhood && ((Neighbourhood)currentPosition).hasOwner() ){
-                //int diceValue = dice.roll();
 
                 int rent = ((Neighbourhood) currentPosition).calculateRent();
-
-                //System.out.println( "Retrieved money: " + rent );
-
                 currentPlayer.setMoney( currentPlayer.getMoney() - rent );
 
                 Player owner = ((Neighbourhood) currentPosition).getOwner();
                 owner.setMoney(owner.getMoney() + rent);
-                System.out.println( "CurrentPlayer money: " + currentPlayer.getMoney() );
+
                 updateMoneyUI();
                 diceLabel.setText( "Dice: " + dice.roll() );
+
             }else if( currentPosition instanceof BeInfected){
+
                 moveUIPiece(currentPlayer.getPiece(),65,735);
+
                 currentPlayer.setPosition(gameMap.getCells().get(10));
                 currentPlayer.getPosition().addVisitor(currentPlayer);
+
             }else if( currentPosition instanceof CoronaTest ){
                 if ( !currentPlayer.isHealthy() ){
+
                     moveUIPiece(currentPlayer.getPiece(),65,735);
+
                     currentPlayer.setPosition(gameMap.getCells().get(10));
                     currentPlayer.getPosition().addVisitor(currentPlayer);
                 }
@@ -456,6 +457,7 @@ public class GameEngine {
             }
 
             handleInfection();
+            managePatients();
         });
 
 
@@ -485,7 +487,7 @@ public class GameEngine {
                     break;
                 }
             }
-            System.out.println( virusExist );
+
             if ( virusExist ){
                 for ( Player player : currentPosition.getVisitors() ) {
                     player.setHealth( false );
@@ -497,16 +499,17 @@ public class GameEngine {
 
         if( currentPosition instanceof Neighbourhood ){
             Neighbourhood neighbourhood = (Neighbourhood)currentPosition;
-            if( !(neighbourhood.getCoronaRisk() < Math.random()) )
+            if( !(neighbourhood.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
-            System.out.println( currentPlayer.getName() + " neig " + neighbourhood.getCoronaRisk() + " " + currentPlayer.isHealthy() );
+                currentPlayer.setInfectionTurn( turns );
+            }
         }
         else if( currentPosition instanceof Transportation ){
             Transportation transportation = (Transportation) currentPosition;
-            if( !(transportation.getCoronaRisk() < Math.random()) )
+            if( !(transportation.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
-
-            System.out.println( currentPlayer.getName() + " trnas " + transportation.getCoronaRisk() + " " + currentPlayer.isHealthy());
+                currentPlayer.setInfectionTurn( turns );
+            }
         }
 
         int counter = 0;
@@ -528,19 +531,29 @@ public class GameEngine {
                 }else{
                     updateLabel = updateLabel + "Healhty";
                 }
-                System.out.println( updateLabel );
                 updateHealth.setText( updateLabel );
             }
 
             counter++;
 
         }
-
-
     } //Check the infection risk of the cell
     public void manageBuildings(){} //
     public void handleBankruptcy(){} //Check the bankruptcy status of players
-    public void managePatients(){} //Check the patient players
+    public void managePatients(){
+
+        for( Player player :  players){
+
+            if ( (turns == player.getInfectionTurn() + 3) && !player.isInQuarantine() && !player.isHealthy() ){
+                player.setBanTurn( 3 );
+                moveUIPiece(player.getPiece(),65,735);
+                player.setPosition(gameMap.getCells().get(10));
+                player.getPosition().addVisitor(player);
+            }
+        }
+
+    } //Check the patient players
+
     public void handleCredits(){} //Go to credits scene
     public void handleSettings(){} //Go to settings menu
 
