@@ -716,6 +716,7 @@ public class GameEngine {
                 currentPlayer.setBanTurn(MAX_BAN_TURN);
                 currentPlayer.setQuarantine(true);
                 updateHealthUI();
+
             }else if( currentPosition instanceof CoronaTest ){
                 if ( !currentPlayer.isHealthy() ){
 
@@ -793,15 +794,34 @@ public class GameEngine {
             Neighbourhood neighbourhood = (Neighbourhood)currentPosition;
             if( !(neighbourhood.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
-                currentPlayer.setInfectionTurn( MAX_BAN_TURN * (MAX_PLAYERS - 1) );
+                currentPlayer.setInfectionTurn( turns );
+                System.out.println( turns );
             }
         }
         else if( currentPosition instanceof Transportation ){
             Transportation transportation = (Transportation) currentPosition;
             if( !(transportation.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
-                currentPlayer.setInfectionTurn( MAX_BAN_TURN * (MAX_PLAYERS - 1)  );
+                currentPlayer.setInfectionTurn( turns );
+                System.out.println( turns );
             }
+        }
+
+        for ( Player player : players ){
+
+            if( MAX_BAN_TURN * (MAX_PLAYERS - 1) + player.getInfectionTurn() <= turns ){
+
+                System.out.println( player.getName() + " bura " + player.getInfectionTurn() + " " + turns);
+
+                moveUIPiece(player.getPiece(),65 + players.indexOf(player) * 10 - 6,735 +  players.indexOf(player) * 10 - 15);
+                player.setPosition(gameMap.getCells().get(10));
+                player.getPosition().addVisitor(player);
+                player.setBanTurn(MAX_BAN_TURN);
+                player.setQuarantine(true);
+                updateHealthUI();
+
+            }
+
         }
 
        updateHealthUI();
