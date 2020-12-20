@@ -13,7 +13,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
@@ -26,7 +29,10 @@ import sample.Model.Cell;
 
 //import javax.smartcardio.Card;
 //import javax.xml.soap.Text;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,6 +94,9 @@ public class GameEngine {
     @FXML private Label houseCount;
     @FXML private Label hospitalCount;
     @FXML private ComboBox buildPropeties;
+
+    //Build house
+    @FXML private AnchorPane gamePlay;
 
     private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
@@ -356,6 +365,7 @@ public class GameEngine {
         card_text.setWrapText(true);
         card_title.setWrapText(true);
 
+
         skipbtn.setOnAction(event -> {
             nextTurn();
 
@@ -413,7 +423,6 @@ public class GameEngine {
 
                 ((PublicService) currentPosition).setMultiplier( diceValue );
                 int rent = ((PublicService) currentPosition).calculateRent();
-
 
                 currentPlayer.setMoney( currentPlayer.getMoney() - rent );
 
@@ -520,6 +529,7 @@ public class GameEngine {
 
             handleInfection();
             managePatients();
+
         });
 
 
@@ -601,6 +611,97 @@ public class GameEngine {
         }
     } //Check the infection risk of the cell
 
+    public void manageBuildings( Neighbourhood neighbour ){
+        InputStream stream = null;
+        try {
+            if( neighbour.getHouseCount() == 4 ){
+                stream = new FileInputStream("/Users/welcome/Desktop/dersler/ucun-biri/cs319/proje/src/sample/imgs/hospital.png");
+                neighbour.setCoronaRisk( neighbour.getCoronaRisk() * 0.5 );
+            }
+            else
+                stream = new FileInputStream("/Users/welcome/Desktop/dersler/ucun-biri/cs319/proje/src/sample/imgs/house.png");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Image image = new Image(stream);
+        //Creating the image view
+        ImageView imageView = new ImageView();
+        //Setting image to the image view
+        imageView.setImage(image);
+        imageView.toFront();
+        //Setting the image view parameters
+
+        int appendSizeForY = 0;
+        int appendSizeForX = 0;
+
+        if( neighbour.getHouseCount() == 4 ){
+            appendSizeForY = (int) neighbour.getY() + 10;
+            appendSizeForX = (int) neighbour.getX() + 15;
+
+        }else{
+            appendSizeForY = (int) (neighbour.getHouseCount() * 20 + neighbour.getY() - 30);
+            appendSizeForX = (int) (neighbour.getHouseCount() * 20 + neighbour.getX() - 25);
+        }
+
+
+        if( neighbour.getX() == 40 ){ // sol
+
+            //Setting the image view parameters
+            imageView.setX( 103 );
+            imageView.setY( appendSizeForY );
+
+            imageView.setRotate( 90 );
+            System.out.println( "sol" );
+
+        }else if( neighbour.getX() == 755 ){ // sağ
+
+            //Setting the image view parameters
+            imageView.setX( 715 );
+            imageView.setY( appendSizeForY );
+
+            imageView.setRotate( 270 );
+            System.out.println( "sağ" );
+
+        }else if( neighbour.getY() == 755 ){ // alt
+
+            //Setting the image view parameters
+            imageView.setX( appendSizeForX );
+            imageView.setY( 708 );
+            System.out.println( "alt" );
+
+        }else if( neighbour.getY() == 35 ){ // üst
+
+            //Setting the image view parameters
+            imageView.setX( appendSizeForX );
+            imageView.setY( 98 );
+
+            imageView.setRotate( 180 );
+            System.out.println( "üst" );
+        }
+
+        imageView.setFitHeight(17);
+        imageView.setFitWidth(17);
+        imageView.setPreserveRatio(true);
+
+        if ( neighbour.getHouseCount() == 4 ){
+            int counter = 0;
+            for( Node node : gamePlay.getChildren() ){
+                if( node.getClass().toString().equals("image-view") ){
+                    if( counter >= 13)
+                        gamePlay.getChildren().remove( counter );
+                }
+                counter++;
+            }
+        }
+        gamePlay.getChildren().add(imageView);
+
+        for( Node node : gamePlay.getChildren() ){
+            System.out.println(node.toString());
+        }
+
+    }
+
     public void manageBuildings(javafx.event.ActionEvent event) throws IOException{
         Stage buildingPopup = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/buildhouse.fxml"));
@@ -613,7 +714,8 @@ public class GameEngine {
         buildingPopup.show();
 
         for (Property p:currentPlayer.canBuild()) {
-            buildPropeties.getItems().add( p.getName() );
+            if ( ((Neighbourhood)p).getHouseCount() != 4 )
+                buildPropeties.getItems().add( p.getName() );
         }
 
         cancelButton.setOnAction( event1 -> {
@@ -633,6 +735,8 @@ public class GameEngine {
 
             if( currentPlayer.buildHouse( selectedProperty ) ){
                 updateMoneyUI();
+                manageBuildings( selectedProperty );
+                buildingPopup.close();
             }
 
         });
