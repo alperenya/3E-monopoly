@@ -1,5 +1,8 @@
 package sample.Model;
 
+/**
+ * This is the Community Chest Card Class
+ */
 public class CommunityChest extends Card {
 
     public CommunityChest(){ }
