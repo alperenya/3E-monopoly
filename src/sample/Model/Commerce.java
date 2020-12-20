@@ -20,6 +20,10 @@ public class  Commerce {
     }
     //Methods
     public boolean exchange(){
+        if(seller instanceof Bot){
+            if(!(((Bot) seller).decideTrading(requestedProperty, offeredProperty, requestedMoney, offeredMoney)))
+                return false;
+        }
         if(offeredProperty != null && buyer.getProperties().contains(offeredProperty) && buyer.getMoney() > offeredMoney){
             if(requestedProperty != null && seller.getProperties().contains(requestedProperty) && seller.getMoney() > requestedMoney){
                 buyer.trade(seller, offeredMoney, offeredProperty, requestedMoney, requestedProperty);
