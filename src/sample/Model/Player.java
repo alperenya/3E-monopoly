@@ -38,6 +38,11 @@ public class Player {
     public Player(){
     }
 
+    public Player(String name, String password){
+        this.name = name;
+        this.password = password;
+    }
+
     //methods
     public String getName() {
         return name;

@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -18,22 +23,18 @@
             <Font name="System Bold" size="66.0" />
          </font>
       </Label>
-      <Button layoutX="160.0" layoutY="494.0" mnemonicParsing="false" onAction="#singlePlayerButtonPushed" prefHeight="63.0" prefWidth="238.0" styleClass="action-button" text="Start" textFill="WHITE">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Button>
-      <Button layoutX="520.0" layoutY="494.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="238.0" styleClass="entrance-button" text="Ready" textFill="WHITE">
+      <Button fx:id="multiplayerStartButton" layoutX="162.0" layoutY="458.0" mnemonicParsing="false" onAction="#multiPlayerButtonPushed" prefHeight="63.0" prefWidth="238.0" styleClass="action-button" text="Start" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="36.0" />
          </font>
       </Button>
       <GridPane alignment="CENTER" layoutX="40.0" layoutY="108.0" prefHeight="317.0" prefWidth="806.0">
          <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="326.0" minWidth="10.0" prefWidth="131.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="213.0" minWidth="1.0" prefWidth="213.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="173.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="333.0" minWidth="10.0" prefWidth="140.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="75.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="1.0" prefWidth="200.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="75.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="172.0" minWidth="0.0" prefWidth="129.0" />
          </columnConstraints>
          <rowConstraints>
@@ -45,37 +46,142 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <TextField promptText="Player Name" GridPane.rowIndex="1" />
-            <ChoiceBox prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ChoiceBox prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label styleClass="ready-text" text="Ready" textFill="#61f1a9" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-            <TextField promptText="Player Name" GridPane.rowIndex="2" />
-            <ChoiceBox prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <ChoiceBox prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label styleClass="ready-text" text="Not Ready" textFill="#ddd05c" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-            <TextField promptText="Player Name" GridPane.rowIndex="4" />
-            <TextField promptText="Player Name" GridPane.rowIndex="3" />
-            <ChoiceBox prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <ChoiceBox prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <ChoiceBox prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <ChoiceBox prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label styleClass="ready-text" text="Ready" textFill="#61f1a9" GridPane.columnIndex="4" GridPane.rowIndex="4" />
-            <Label styleClass="ready-text" text="Not Ready" textFill="#ddd05c" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <TextField promptText="Player Name" GridPane.rowIndex="5" />
-            <ChoiceBox prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <ChoiceBox prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <Label styleClass="ready-text" text="Ready" textFill="#61f1a9" GridPane.columnIndex="4" GridPane.rowIndex="5" />
-            <Label prefHeight="17.0" prefWidth="119.0" text="Player Names" textFill="WHITE" />
-            <Label prefHeight="17.0" prefWidth="119.0" text="Player or Bot" textFill="WHITE" GridPane.columnIndex="1" />
-            <Label prefHeight="17.0" prefWidth="119.0" text="Difficulty Level" textFill="WHITE" GridPane.columnIndex="2" />
-            <Label prefHeight="17.0" prefWidth="119.0" text="Ready Status" textFill="WHITE" GridPane.columnIndex="4" />
-            <Label prefHeight="17.0" prefWidth="119.0" text="Password" textFill="WHITE" GridPane.columnIndex="3" />
-            <PasswordField prefHeight="20.0" prefWidth="101.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <PasswordField prefHeight="20.0" prefWidth="101.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-            <PasswordField prefHeight="20.0" prefWidth="101.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <PasswordField prefHeight="20.0" prefWidth="101.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <PasswordField prefHeight="20.0" prefWidth="101.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextField fx:id="player1NameTextField" promptText="Player Name" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></TextField>
+            <ChoiceBox fx:id="player1TypeChoiceBox" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Player" />
+                     <String fx:value="Bot" />
+                  </FXCollections>
+               </items>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </ChoiceBox>
+            <Label fx:id="player1ReadyStatusLabel" styleClass="ready-text" text="Not Ready" textFill="#ddd05c" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <TextField fx:id="player2NameTextField" promptText="Player Name" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></TextField>
+            <ChoiceBox fx:id="player2TypeChoiceBox" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Player" />
+                     <String fx:value="Bot" />
+                  </FXCollections>
+               </items>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></ChoiceBox>
+            <Label fx:id="player2ReadyStatusLabel" styleClass="ready-text" text="Not Ready" textFill="#ddd05c" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <TextField fx:id="player4NameTextField" promptText="Player Name" GridPane.columnIndex="2" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="player3NameTextField" promptText="Player Name" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></TextField>
+            <ChoiceBox fx:id="player4TypeChoiceBox" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Player" />
+                     <String fx:value="Bot" />
+                  </FXCollections>
+               </items>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></ChoiceBox>
+            <ChoiceBox fx:id="player3TypeChoiceBox" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Player" />
+                     <String fx:value="Bot" />
+                  </FXCollections>
+               </items>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></ChoiceBox>
+            <Label fx:id="player4ReadyStatusLabel" styleClass="ready-text" text="Not Ready" textFill="#ddd05c" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Label fx:id="player3ReadyStatusLabel" styleClass="ready-text" text="Not Ready" textFill="#ddd05c" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <TextField fx:id="player5NameTextField" promptText="Player Name" GridPane.columnIndex="2" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></TextField>
+            <ChoiceBox fx:id="player5TypeChoiceBox" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Player" />
+                     <String fx:value="Bot" />
+                  </FXCollections>
+               </items>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></ChoiceBox>
+            <Label fx:id="player5ReadyStatusLabel" styleClass="ready-text" text="Not Ready" textFill="#ddd05c" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+            <Label prefHeight="17.0" prefWidth="76.0" text="Player Names" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Label prefHeight="17.0" prefWidth="70.0" text="Player or Bot" textFill="WHITE" GridPane.columnIndex="1" />
+            <Label prefHeight="17.0" prefWidth="70.0" text="Ready Status" textFill="WHITE" GridPane.columnIndex="5" />
+            <Label prefHeight="17.0" prefWidth="53.0" text="Password" textFill="WHITE" GridPane.columnIndex="3" />
+            <PasswordField fx:id="player1PasswordBox" prefHeight="20.0" prefWidth="101.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></PasswordField>
+            <PasswordField fx:id="player5PasswordBox" prefHeight="20.0" prefWidth="101.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></PasswordField>
+            <PasswordField fx:id="player4PasswordBox" prefHeight="20.0" prefWidth="101.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></PasswordField>
+            <PasswordField fx:id="player3PasswordBox" prefHeight="20.0" prefWidth="101.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></PasswordField>
+            <PasswordField fx:id="player2PasswordBox" prefHeight="20.0" prefWidth="101.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></PasswordField>
+            <Button fx:id="player1ReadyButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" styleClass="entrance-button" text="Ready" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Button fx:id="player2ReadyButton" alignment="CENTER" layoutX="623.0" layoutY="77.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" styleClass="entrance-button" text="Ready" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Button fx:id="player3ReadyButton" alignment="CENTER" layoutX="623.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" styleClass="entrance-button" text="Ready" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <Button fx:id="player4ReadyButton" alignment="CENTER" layoutX="623.0" layoutY="183.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" styleClass="entrance-button" text="Ready" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <Button fx:id="player5ReadyButton" alignment="CENTER" layoutX="623.0" layoutY="236.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" styleClass="entrance-button" text="Ready" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../imgs/hat.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="16.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../imgs/car.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="16.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+               <image>
+                  <Image url="@../imgs/dog.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="16.0" layoutY="177.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@../imgs/iron.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="16.0" layoutY="230.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
+               <image>
+                  <Image url="@../imgs/ship.png" />
+               </image>
+            </ImageView>
          </children>
       </GridPane>
+      <Button fx:id="multiplayerBackButton" alignment="CENTER" layoutX="487.0" layoutY="458.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="238.0" styleClass="entrance-button" text="Back" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
