@@ -533,7 +533,10 @@ public class GameEngine {
                 }
             }
 
-
+            //Skips bankrupt player
+            if(currentPlayer.getMoney() < 0){
+                currentPlayer.setBankrupt();
+            }
 
             nextTurn();
 
@@ -556,7 +559,7 @@ public class GameEngine {
             rollDice.setDisable(false);
             buyButton.setDisable(false);
             card_container.setVisible(false);
-            //handleBankruptcy();
+            handleBankruptcy();
 
         });
 
@@ -597,7 +600,6 @@ public class GameEngine {
         });
 
         rollDice.setOnAction( event -> {
-
             System.out.println("Roll dice: ");
             Scanner sc = new Scanner(System.in);
             //sc.nextInt();
@@ -944,7 +946,35 @@ public class GameEngine {
 
 
     public void handleBankruptcy(){
+        int bankruptCount = 0;
+        Player p = null;
+
+        for(int i = 0; i < players.size(); i++){
+            System.out.println(players.get(i).getName() +" "+ players.get(i).isBankrupt());
+            if(players.get(i).isBankrupt()){
+                bankruptCount++;
+            }else{
+                p = players.get(i);
+            }
+        }
+
+        if(bankruptCount == (MAX_PLAYERS - 1)){
+            EndGame(p);
+        }
     } //Check the bankruptcy status of players
+
+    private void EndGame(Player player) {
+        System.out.println("Game Over");
+        System.out.println(player.getName() + " WINS THIS GAME!");
+
+        buyButton.setDisable(true);
+        rollDice.setDisable(true);
+        skipbtn.setDisable(true);
+        mortgageButton.setDisable(true);
+        upgradeButton.setDisable(true);
+        tradeButton.setDisable(true);
+
+    }
 
     public void managePatients(){
         for( Player player :  players){
