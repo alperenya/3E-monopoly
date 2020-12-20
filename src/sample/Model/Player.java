@@ -233,7 +233,7 @@ public class Player {
     }
 
     public Boolean setBankrupt(){
-        if(money <= 0){
+        if(money < 0){
             isBankrupt = true;
             return true;
         }

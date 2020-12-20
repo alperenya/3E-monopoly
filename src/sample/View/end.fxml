@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="594.0" styleClass="general-scene" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="winnerLabel" alignment="CENTER" layoutX="78.0" layoutY="77.0" prefHeight="45.0" prefWidth="190.0" text="Player" textFill="WHITE">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="281.0" layoutY="77.0" prefHeight="45.0" prefWidth="235.0" text="WINS THE GAME!" textFill="WHITE">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Button layoutX="213.0" layoutY="212.0" mnemonicParsing="false" prefHeight="45.0" onAction="#closeButtonAction" prefWidth="168.0" styleClass="trade-button" stylesheets="@../style.css" text="EXIT" textFill="WHITE">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
