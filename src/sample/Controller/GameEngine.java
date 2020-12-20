@@ -1,6 +1,9 @@
 package sample.Controller;
 
 //import com.sun.deploy.util.StringUtils;
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -20,9 +23,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import sample.Model.*;
 import sample.Model.Cell;
 import sample.Controller.GameUI;
@@ -108,6 +115,10 @@ public class GameEngine {
     @FXML private Slider player2BidSlider;
     @FXML private Slider player3BidSlider;
     @FXML private Slider player4BidSlider;
+
+    //draggable game screen
+    double xOffset = 0;
+    double yOffset = 0;
 
 
     private final int MAX_PLAYERS = 5; //Will be decided after pressing create game button
@@ -519,6 +530,7 @@ public class GameEngine {
         card_container.setVisible(false);
         card_text.setWrapText(true);
         card_title.setWrapText(true);
+        skipbtn.setDisable( true );
 
         skipbtn.setOnAction(event -> {
             if ( (currentPlayer.getPosition() instanceof Transportation || currentPlayer.getPosition() instanceof PublicService ) && !((Property) currentPlayer.getPosition()).hasOwner()){
@@ -583,7 +595,7 @@ public class GameEngine {
         });
 
         rollDice.setOnAction( event -> {
-
+            skipbtn.setDisable( false );
             movePlayer(dice.roll());
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
@@ -720,6 +732,7 @@ public class GameEngine {
         currentPlayer = players.get((players.indexOf(currentPlayer) + 1)%players.size());
         turnlabel.setText("Round: " +  currentPlayer.getName());
         turns++;
+        skipbtn.setDisable( true );
     } //Get to the next turn. Triggered by pressing next turn button.
 
     public void createPopup(){} //Create pop up to confirm or to get user interaction
@@ -926,7 +939,10 @@ public class GameEngine {
     } //
 
 
-    public void handleBankruptcy(){} //Check the bankruptcy status of players
+    public void handleBankruptcy(){
+
+    } //Check the bankruptcy status of players
+
     public void managePatients(){
 
         for( Player player :  players){
@@ -953,6 +969,7 @@ public class GameEngine {
             Label label = (Label) node;
 
             label.setText(players.get(playerCounter).getMoney() + "");
+            label.setTextFill(Color.web("#0076a3"));
             playerCounter++;
         }
 
@@ -984,7 +1001,7 @@ public class GameEngine {
 
         updateMoneyUI();
         gameMap.getCells().get(0).setVisitors(players);
-    } //Initialize the given amount of players
+    }
 
     public void createMap(){
         gameMap.newMap();
@@ -1097,15 +1114,15 @@ public class GameEngine {
         Cell c = gameMap.getCells().get(position);
         currentPlayer.getPosition().getVisitors().remove(currentPlayer);
         currentPlayer.setPosition(c);
-        System.out.println(c.getName());
+
         c.addVisitor(currentPlayer);
-        System.out.println("Dice: " + amount);
 
         diceLabel.setText( "Dice: " + amount );
 
         moveUIPiece( currentPlayer.getPiece(), c.getX() + players.indexOf(currentPlayer) * 10 - 6, c.getY() + players.indexOf(currentPlayer) * 10 - 15);
     }
     public void moveUIPiece(Pane piece,double x, double y){
+
         piece.setLayoutX(x);
         piece.setLayoutY(y);
     }
@@ -1126,14 +1143,6 @@ public class GameEngine {
     }
 
     public void settingsButtonPushed(javafx.event.ActionEvent event) throws IOException{
-
-       /* Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/settings.fxml"));
-        Scene settingsScene = new Scene( settingsParent );
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(settingsScene);
-        window.show();*/
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/settings.fxml"));
         loader.setController(this);
@@ -1203,7 +1212,24 @@ public class GameEngine {
             //window.setScene(settingsScene);
             window.setScene(gameScene);
             window.show();
-        System.out.println("start: " + loader.getController().toString());
+
+
+            settingsParent.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+
+            settingsParent.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    window.setX(event.getScreenX() - xOffset);
+                    window.setY(event.getScreenY() - yOffset);
+                }
+            });
+
             this.startGame(1);
             this.gameFlow();
     }
