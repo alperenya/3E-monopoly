@@ -2,11 +2,20 @@ package sample.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This is the StartCell Class that extends the abstract class Cell
+ */
 public class StartCell extends Cell{
     //properties
     private final int STARTINGMONEY = 200;
 
     //constructor
+
+    /**
+     * This constructor initializes the cell
+     * @param x Is the X position of the cell
+     * @param y Is the Y position of the cell
+     */
     public StartCell( double x, double y ){
         this.name = "Start";
         this.visitors = new ArrayList<>();
@@ -19,6 +28,11 @@ public class StartCell extends Cell{
     }
 
     //methods
+
+    /**
+     * This method is used to pay to the visitiors of a cell
+     * @param player
+     */
     public void payVisitors(Player player){
        // int counter;
 
