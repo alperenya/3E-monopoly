@@ -4,7 +4,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements Iterator{
 
     //properties
     protected String name;
@@ -299,4 +299,13 @@ public class Player {
         infectionTurn = 0;
     }
 
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public Object Next() {
+        return null;
+    }
 }

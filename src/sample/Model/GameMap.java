@@ -3,7 +3,7 @@ package sample.Model;
 
 import java.util.*;
 
-public class GameMap {
+public class GameMap implements Iterator{
     private static GameMap instance;
     private ArrayList<Cell> cells; //Will be initialized when start game button is pressed
     private ArrayList<CommunityChest> communityCards;
@@ -74,4 +74,13 @@ public class GameMap {
 
     }
 
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public Object Next() {
+        return null;
+    }
 }

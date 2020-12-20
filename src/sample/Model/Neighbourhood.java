@@ -49,6 +49,9 @@ public class Neighbourhood extends Property {
 
     public int calculateRent( ) {
 
+        if ( onMortgage )
+            return 0;
+
         if ( houseCount == 1 ){
 
             return (int)(rent * 1.3);
