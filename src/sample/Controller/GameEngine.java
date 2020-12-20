@@ -589,10 +589,10 @@ public class GameEngine {
 
         rollDice.setOnAction( event -> {
 
-            System.out.println("Roll dice: ");
-            Scanner sc = new Scanner(System.in);
+            //System.out.println("Roll dice: ");
+            //Scanner sc = new Scanner(System.in);
             //sc.nextInt();
-            movePlayer(sc.nextInt());//dice.roll());
+            movePlayer(dice.roll());
 
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
