@@ -1381,11 +1381,10 @@ public class GameEngine {
         GameEngine engine = new GameEngine();
         loader.setController(this);
         Parent settingsParent = (Parent) loader.load();
-        Scene settingsScene = new Scene( settingsParent );
+        gameScene = new Scene( settingsParent );
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(settingsScene);
+        window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(gameScene);
         window.show();
         System.out.println("Başladı: " + property);
 
