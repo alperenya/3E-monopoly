@@ -7,7 +7,8 @@ import java.util.*;
  * This is the class for the gamemap
  * @author Group3E
  */
-public class GameMap {
+public class GameMap implements Iterator{
+
     private static GameMap instance;
     private ArrayList<Cell> cells; //Will be initialized when start game button is pressed
     private ArrayList<CommunityChest> communityCards;
@@ -116,4 +117,13 @@ public class GameMap {
 
     }
 
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public Object Next() {
+        return null;
+    }
 }

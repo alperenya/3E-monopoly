@@ -52,3 +52,9 @@
 .community-chance-card{
     -fx-background-color: #162447;
 }
+
+.round-dice{
+    -fx-font-family: 'Major Mono Display', monospace;
+    -fx-font-size: 25px;
+    -fx-color: #1b1b2f;
+}

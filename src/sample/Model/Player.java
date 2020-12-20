@@ -4,15 +4,18 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
+<<<<<<< HEAD
 /**
  * This is the Player class that defines the users
  */
 public class Player {
+=======
+public class Player implements Iterator{
+>>>>>>> e9e386e4a17a633605f79e4d4bc61abdc6c0acd3
 
     //properties
     protected String name;
     protected int money;
-    protected Pane piece;
     protected ArrayList<Property> properties;
     protected ArrayList<Property> mortgagedProperties;
     protected Cell position;
@@ -22,9 +25,17 @@ public class Player {
     protected int banTurn;
     protected String password;
     protected int infectionTurn;
+    protected Moveable move;
+
+    // it is string representation pf piece
+    protected String shape;
+
+    // it is for fxml to add
+    protected Pane piece;
+
 
     //constructors
-    public Player(String name, Pane piece, String password, Cell c){
+    public Player(String name, Pane piece, String shape,String password, Cell c){
         this.position = c;
         this.name = name;
         this.piece = piece;
@@ -36,6 +47,8 @@ public class Player {
         this.mortgagedProperties = new ArrayList<>();
         this.password = password;
         this.infectionTurn = 0;
+        this.move = new Healthy();
+        this.shape = shape;
     }
 
     public Player(){
@@ -274,7 +287,7 @@ public class Player {
      * @return Boolean Returns the success of the process
      */
     public Boolean setBankrupt(){
-        if(money <= 0){
+        if(money < 0){
             isBankrupt = true;
             return true;
         }
@@ -344,4 +357,21 @@ public class Player {
         infectionTurn = 0;
     }
 
+    public void setShape( String shape ){
+        this.shape = shape;
+    }
+
+    public String getShape(){
+        return this.shape;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public Object Next() {
+        return null;
+    }
 }

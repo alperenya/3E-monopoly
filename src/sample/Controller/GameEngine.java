@@ -1,6 +1,9 @@
 package sample.Controller;
 
 //import com.sun.deploy.util.StringUtils;
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -21,9 +24,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import sample.Model.*;
 import sample.Model.Cell;
 import sample.Controller.GameUI;
@@ -35,6 +43,7 @@ import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class GameEngine {
     //Properties
@@ -110,6 +119,10 @@ public class GameEngine {
     @FXML private Slider player3BidSlider;
     @FXML private Slider player4BidSlider;
 
+    //draggable game screen
+    double xOffset = 0;
+    double yOffset = 0;
+
     //Multiplayer scene elements
     @FXML private ChoiceBox player1TypeChoiceBox;
     @FXML private ChoiceBox player2TypeChoiceBox;
@@ -141,7 +154,7 @@ public class GameEngine {
 
 
     private final int MAX_PLAYERS = 5; //Will be decided after pressing create game button
-    private final int STARTING_MONEY = 100000;
+    private final int STARTING_MONEY = 1000000;
     private final int MAX_BAN_TURN = 3;
     private int playerCount;
     private int botCount; //Newly added. Will be decided after pressing create game button
@@ -320,6 +333,15 @@ public class GameEngine {
         mortgageCancelButton.setOnAction(event1 -> {
             mortgagePopup.close();
         });
+    }
+
+    @FXML private Label winnerLabel;
+    private void openWinPopup() throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/end.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        window.setScene(new Scene(root));
+
     }
 
     private void openTradePopup(javafx.event.ActionEvent event) throws IOException {
@@ -511,7 +533,6 @@ public class GameEngine {
                         updateUI();
                         updateMoneyUI();
                     }
-                    System.out.println("Player 1 wins the auction");
                 }
                 else if(max == (int)player2BidSlider.getValue()){
                     if(bidders.get(1).buyAuction( (Property) currentPosition, max )){
@@ -519,7 +540,6 @@ public class GameEngine {
                         updateUI();
                         updateMoneyUI();
                     }
-                    System.out.println("Player 2 wins the auction");
                 }
                 else if(max == (int)player3BidSlider.getValue()){
                     if(bidders.get(2).buyAuction( (Property) currentPosition, max )){
@@ -527,7 +547,6 @@ public class GameEngine {
                         updateUI();
                         updateMoneyUI();
                     }
-                    System.out.println("Player 3 wins the auction");
                 }
                 else if(max == (int)player4BidSlider.getValue()){
                     if(bidders.get(3).buyAuction( (Property) currentPosition, max )){
@@ -535,7 +554,6 @@ public class GameEngine {
                         updateUI();
                         updateMoneyUI();
                     }
-                    System.out.println("Player 4 wins the auction");
                 }
             }
             auctionPopup.close();
@@ -547,8 +565,12 @@ public class GameEngine {
         card_container.setVisible(false);
         card_text.setWrapText(true);
         card_title.setWrapText(true);
+        skipbtn.setDisable( true );
 
         skipbtn.setOnAction(event -> {
+
+            diceLabel.setText( "Dice: -" );
+
             if ( (currentPlayer.getPosition() instanceof Transportation || currentPlayer.getPosition() instanceof PublicService ) && !((Property) currentPlayer.getPosition()).hasOwner()){
                 try {
                     auction();
@@ -557,15 +579,29 @@ public class GameEngine {
                 }
             }
 
+            //Skips bankrupt player
+            if(currentPlayer.getMoney() < 0){
+                currentPlayer.setBankrupt();
+            }
+
             nextTurn();
 
+            //Skips quarantined player
             if(currentPlayer.getBanTurn() > 0){
                 currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
                 nextTurn();
-                rollDice.setDisable(false);
-                buyButton.setDisable(false);
-                card_container.setVisible(false);
-                return;
+                //rollDice.setDisable(false);
+                //buyButton.setDisable(false);
+                //card_container.setVisible(false);
+                //return;
+            }else{
+                currentPlayer.setQuarantine(false);
+                updateHealthUI();
+            }
+
+            //Skips bankrupt player
+            if(currentPlayer.getMoney() < 0){
+                nextTurn();
             }
 
             if(currentPlayer instanceof Bot)
@@ -574,6 +610,7 @@ public class GameEngine {
             rollDice.setDisable(false);
             buyButton.setDisable(false);
             card_container.setVisible(false);
+            handleBankruptcy();
 
         });
 
@@ -615,6 +652,7 @@ public class GameEngine {
 
         rollDice.setOnAction( event -> {
 
+            skipbtn.setDisable( false );
             movePlayer(dice.roll());
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
@@ -632,7 +670,6 @@ public class GameEngine {
                 owner.setMoney(owner.getMoney() + rent);
 
                 updateMoneyUI();
-                diceLabel.setText( "Dice: " + dice.roll() );
             }
             else if(currentPosition instanceof Taxation){
 
@@ -704,10 +741,12 @@ public class GameEngine {
 
             }else if( currentPosition instanceof BeInfected){
 
-                moveUIPiece(currentPlayer.getPiece(),65,735);
-
+                moveUIPiece(currentPlayer.getPiece(),65 + players.indexOf(currentPlayer) * 10 - 6,735 +  players.indexOf(currentPlayer) * 10 - 15);
                 currentPlayer.setPosition(gameMap.getCells().get(10));
                 currentPlayer.getPosition().addVisitor(currentPlayer);
+                currentPlayer.setBanTurn(MAX_BAN_TURN);
+                currentPlayer.setQuarantine(true);
+                updateHealthUI();
 
             }else if( currentPosition instanceof CoronaTest ){
                 if ( !currentPlayer.isHealthy() ){
@@ -716,8 +755,8 @@ public class GameEngine {
 
                     currentPlayer.setPosition(gameMap.getCells().get(10));
                     currentPlayer.getPosition().addVisitor(currentPlayer);
+                    currentPlayer.setBanTurn(MAX_BAN_TURN);
                 }
-                currentPlayer.setBanTurn(MAX_BAN_TURN * (MAX_PLAYERS - 1));
             }else if(currentPosition instanceof Transportation && ((Transportation) currentPosition).hasOwner()){
                 int rent = ((Transportation) currentPosition).calculateRent();
                 currentPlayer.setMoney( currentPlayer.getMoney() - rent );
@@ -740,8 +779,7 @@ public class GameEngine {
             }
 
             handleInfection();
-            managePatients();
-
+            //managePatients();
         });
 
     }//Update game state between turns
@@ -901,6 +939,7 @@ public class GameEngine {
 
         }
         turns++;
+        skipbtn.setDisable( true );
     } //Get to the next turn. Triggered by pressing next turn button.
 
     public void createPopup(){} //Create pop up to confirm or to get user interaction
@@ -937,6 +976,7 @@ public class GameEngine {
             if( !(neighbourhood.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
                 currentPlayer.setInfectionTurn( turns );
+                System.out.println( turns );
             }
         }
         else if( currentPosition instanceof Transportation ){
@@ -944,9 +984,31 @@ public class GameEngine {
             if( !(transportation.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
                 currentPlayer.setInfectionTurn( turns );
+                System.out.println( turns );
             }
         }
 
+        for ( Player player : players ){
+
+            if( MAX_BAN_TURN * (MAX_PLAYERS - 1) + player.getInfectionTurn() <= turns ){
+
+                System.out.println( player.getName() + " bura " + player.getInfectionTurn() + " " + turns);
+
+                moveUIPiece(player.getPiece(),65 + players.indexOf(player) * 10 - 6,735 +  players.indexOf(player) * 10 - 15);
+                player.setPosition(gameMap.getCells().get(10));
+                player.getPosition().addVisitor(player);
+                player.setBanTurn(MAX_BAN_TURN);
+                player.setQuarantine(true);
+                updateHealthUI();
+
+            }
+
+        }
+
+       updateHealthUI();
+    } //Check the infection risk of the cell
+
+    private void updateHealthUI() {
         int counter = 0;
 
 
@@ -972,7 +1034,7 @@ public class GameEngine {
             counter++;
 
         }
-    } //Check the infection risk of the cell
+    }
 
     public void manageBuildings( Neighbourhood neighbour ){
         InputStream stream = null;
@@ -1107,16 +1169,55 @@ public class GameEngine {
     } //
 
 
-    public void handleBankruptcy(){} //Check the bankruptcy status of players
-    public void managePatients(){
+    public void handleBankruptcy(){
 
+        int bankruptCount = 0;
+        Player p = null;
+
+        for(int i = 0; i < players.size(); i++){
+            System.out.println(players.get(i).getName() +" "+ players.get(i).isBankrupt());
+            if(players.get(i).isBankrupt()){
+                bankruptCount++;
+            }else{
+                p = players.get(i);
+            }
+        }
+
+        if(bankruptCount == (MAX_PLAYERS - 1)){
+            EndGame(p);
+        }
+    } //Check the bankruptcy status of players
+
+    private void EndGame(Player player) {
+        System.out.println("Game Over");
+        System.out.println(player.getName() + " WINS THIS GAME!");
+
+        buyButton.setDisable(true);
+        rollDice.setDisable(true);
+        skipbtn.setDisable(true);
+        mortgageButton.setDisable(true);
+        upgradeButton.setDisable(true);
+        tradeButton.setDisable(true);
+
+
+        try {
+            openWinPopup();
+            winnerLabel.setText(player.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void managePatients(){
         for( Player player :  players){
 
-            if ( (turns == player.getInfectionTurn() + 3) && !player.isInQuarantine() && !player.isHealthy() ){
+            if ( (MAX_BAN_TURN * (MAX_PLAYERS - 1) <= player.getInfectionTurn() + 3) && !player.isInQuarantine() && !player.isHealthy() ){
                 player.setBanTurn( 3 );
                 moveUIPiece(player.getPiece(),65,735);
                 player.setPosition(gameMap.getCells().get(10));
                 player.getPosition().addVisitor(player);
+            }else if( player.isInQuarantine() ){
+                player.setBanTurn( player.getBanTurn() - 1 );
             }
         }
 
@@ -1131,7 +1232,12 @@ public class GameEngine {
         for (Node node : money_grid.getChildren()) {
             Label label = (Label) node;
 
-            label.setText(players.get(playerCounter).getMoney() + "");
+            if(players.get(playerCounter).getMoney() >= 0){
+                label.setText(players.get(playerCounter).getMoney() + "");
+            }else{
+                label.setText("Bankrupt");
+            }
+
             playerCounter++;
         }
 
@@ -1140,36 +1246,40 @@ public class GameEngine {
         for (Node node : name_grid.getChildren()) {
             Label label = (Label) node;
 
-            label.setText(players.get(playerCounter).getName() + "");
+            label.setText(players.get(playerCounter).getName() + " (" + players.get(playerCounter).getShape() + ") ");
             playerCounter++;
         }
 
     }
 
+
     public void createPlayers(ArrayList<Player> createPlayer){
         pieces = new ArrayList<>(Arrays.asList(player_piece,player_piece_1,player_piece_2,player_piece_3,player_piece_4,player_piece_5));
         playerCount = createPlayer.size();
         botCount = MAX_PLAYERS - playerCount;
+        ArrayList<String> shapes = new ArrayList<>( Arrays.asList( "hat", "car", "dog", "iron", "ship"));
+
+        int counter = 0;
         for (Player p:createPlayer) {
-            players.add(new Player(p.getName(), pieces.get(0), p.getPassword(), gameMap.getCells().get(0)));
+            players.add(new Player(p.getName(), pieces.get(0), shapes.get(counter), p.getPassword(), gameMap.getCells().get(0)));
             pieces.remove(pieces.get(0));
+            counter++;
         }
 
         for(int i = 1; i <= botCount; i++){
-            players.add(new Bot("bot" + i, pieces.get(0) , "1234", gameMap.getCells().get(0)));
+            players.add(new Bot("bot" + i, pieces.get(0) , shapes.get(i), "1234", gameMap.getCells().get(0)));
             pieces.remove(pieces.get(0));
-
         }
 
 
         for(int i = 0; i <= players.size() - 1; i++){
             players.get(i).setMoney(STARTING_MONEY);
-            moveUIPiece(players.get(i).getPiece(),gameMap.getCells().get(0).getX(),gameMap.getCells().get(0).getY());
+            moveUIPiece( players.get(i).getPiece(),gameMap.getCells().get(0).getX() + i * 10 - 6, gameMap.getCells().get(0).getY() + i * 10 );
         }
 
         updateMoneyUI();
         gameMap.getCells().get(0).setVisitors(players);
-    } //Initialize the given amount of players
+    }
 
     public void createMap(){
         gameMap.newMap();
@@ -1198,7 +1308,7 @@ public class GameEngine {
         gameMap.addCell(new CardCell("Chance","chance", 195, 35 ));
         gameMap.addCell(new Neighbourhood("Yenimahalle", 2400, 320, 0.3, "red", 260, 35  ));
         gameMap.addCell(new Neighbourhood("Mamak", 600, 80, 0.7, "red", 330, 35 ));
-        gameMap.addCell(new Transportation("Esenboga Airport", 2000, 300, 0.6, "black", 395, 35 ));
+        gameMap.addCell(new Transportation("Esenboğa", 2000, 300, 0.6, "black", 395, 35 ));
         gameMap.addCell(new Neighbourhood("Sıhhiye", 3200, 440, 0.6, "yellow", 460, 35  ));
         gameMap.addCell(new Neighbourhood("Emek", 2200,300, 0.55, "yellow", 525, 35 ));
         gameMap.addCell(new PublicService("ASKİ", 1500, 200, "white", 590, 35 ));
@@ -1208,7 +1318,7 @@ public class GameEngine {
         gameMap.addCell(new Neighbourhood("Cebeci", 1600,220, 0.75, "green", 755, 200 ));
         gameMap.addCell(new CardCell("Community Chest","community", 755, 260 ));
         gameMap.addCell(new Neighbourhood("Ulus", 3000, 400, 0.5, "green" , 755, 325 ));
-        gameMap.addCell(new Transportation("AŞTİ", 2000, 300, 0.9, "black", 755, 395 ));
+        gameMap.addCell(new Transportation("Aşti", 2000, 300, 0.9, "black", 755, 395 ));
         gameMap.addCell(new CardCell("Chance","chance", 755, 460 ));
         gameMap.addCell(new Neighbourhood("Çankaya", 1400,200, 0.3, "darkblue", 755, 525 ));
         gameMap.addCell(new Taxation("Luxury Tax", 0.23, 755, 590 ));
@@ -1282,15 +1392,15 @@ public class GameEngine {
         Cell c = gameMap.getCells().get(position);
         currentPlayer.getPosition().getVisitors().remove(currentPlayer);
         currentPlayer.setPosition(c);
-        System.out.println(c.getName());
+
         c.addVisitor(currentPlayer);
-        System.out.println("Dice: " + amount);
 
         diceLabel.setText( "Dice: " + amount );
 
-        moveUIPiece(currentPlayer.getPiece(),c.getX(),c.getY());
+        moveUIPiece( currentPlayer.getPiece(), c.getX() + players.indexOf(currentPlayer) * 10 - 6, c.getY() + players.indexOf(currentPlayer) * 10 - 15);
     }
     public void moveUIPiece(Pane piece,double x, double y){
+
         piece.setLayoutX(x);
         piece.setLayoutY(y);
     }
@@ -1311,14 +1421,6 @@ public class GameEngine {
     }
 
     public void settingsButtonPushed(javafx.event.ActionEvent event) throws IOException{
-
-       /* Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/settings.fxml"));
-        Scene settingsScene = new Scene( settingsParent );
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(settingsScene);
-        window.show();*/
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/settings.fxml"));
         loader.setController(this);
@@ -1367,9 +1469,9 @@ public class GameEngine {
         window.show();
     }
 
-    public void closeButtonAction(){
+    public void closeButtonAction(javafx.event.ActionEvent event) throws IOException{
         // get a handle to the stage
-        Stage stage = (Stage) closeButton.getScene().getWindow();
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         // do what you have to do
         stage.close();
     }
@@ -1382,6 +1484,22 @@ public class GameEngine {
         loader.setController(this);
         Parent settingsParent = (Parent) loader.load();
         gameScene = new Scene( settingsParent );
+
+        settingsParent.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+
+        settingsParent.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                window.setX(event.getScreenX() - xOffset);
+                window.setY(event.getScreenY() - yOffset);
+            }
+        });
 
         window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(gameScene);

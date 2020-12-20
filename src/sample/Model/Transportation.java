@@ -45,6 +45,9 @@ public class Transportation extends Property {
         int transportationAmount = 0;
         ArrayList<Property> properties = owner.getProperties();
 
+        if ( onMortgage )
+            return 0;
+
         for ( counter = 0; counter < properties.size(); counter++ ){
             if ( properties.get(counter) instanceof Transportation ){
                 transportationAmount++;
