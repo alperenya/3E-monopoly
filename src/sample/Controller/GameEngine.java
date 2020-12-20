@@ -1064,11 +1064,11 @@ public class GameEngine {
         InputStream stream = null;
         try {
             if( neighbour.getHouseCount() == 4 ){
-                stream = new FileInputStream("/Users/welcome/Desktop/dersler/ucun-biri/cs319/proje/src/sample/imgs/hospital.png");
+                stream = new FileInputStream("../imgs/hospital.png");
                 neighbour.setCoronaRisk( neighbour.getCoronaRisk() * 0.5 );
             }
             else
-                stream = new FileInputStream("/Users/welcome/Desktop/dersler/ucun-biri/cs319/proje/src/sample/imgs/house.png");
+                stream = new FileInputStream("../imgs/house.png");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
