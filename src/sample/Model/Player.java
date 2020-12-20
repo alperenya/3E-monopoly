@@ -144,6 +144,10 @@ public class Player implements Iterator{
         this.inQuarantine = inQuarantine;
     }
 
+    public boolean getQuarantine() {
+        return inQuarantine;
+    }
+
     public ArrayList<Property> canBuild(){
         ArrayList canBuild = new ArrayList<String>();
         ArrayList canBuildings = new ArrayList<Property>();

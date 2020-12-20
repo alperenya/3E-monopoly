@@ -557,13 +557,17 @@ public class GameEngine {
 
             nextTurn();
 
-            //Skips quarantined player
-            if(currentPlayer.getBanTurn() > 0){
-                currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
-                nextTurn();
-            }else{
+            //Heals quarantine leaving players
+            if(currentPlayer.getQuarantine() && currentPlayer.getBanTurn() <= 0){
+                currentPlayer.setHealth(true);
                 currentPlayer.setQuarantine(false);
                 updateHealthUI();
+            }
+
+            //Skips quarantined player
+            if(currentPlayer.getBanTurn() > 0 && currentPlayer.getQuarantine()){
+                currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
+                nextTurn();
             }
 
             //Skips bankrupt player
@@ -618,7 +622,14 @@ public class GameEngine {
         rollDice.setOnAction( event -> {
 
             skipbtn.setDisable( false );
-            movePlayer(dice.roll());
+
+            if(!currentPlayer.getName().equals("playerName")){
+                movePlayer(dice.roll());
+            }else{
+                movePlayer(30);
+            }
+
+
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
 
@@ -806,7 +817,7 @@ public class GameEngine {
             }
         }
 
-        for ( Player player : players ){
+        /*for ( Player player : players ){
 
             if( MAX_BAN_TURN * (MAX_PLAYERS - 1) + player.getInfectionTurn() <= turns ){
 
@@ -821,7 +832,7 @@ public class GameEngine {
 
             }
 
-        }
+        }*/
 
        updateHealthUI();
     } //Check the infection risk of the cell
