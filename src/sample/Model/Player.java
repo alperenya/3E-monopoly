@@ -4,7 +4,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements Iterator{
 
     //properties
     protected String name;
@@ -19,6 +19,7 @@ public class Player {
     protected int banTurn;
     protected String password;
     protected int infectionTurn;
+    protected Moveable move;
 
     //constructors
     public Player(String name, Pane piece, String password, Cell c){
@@ -33,6 +34,8 @@ public class Player {
         this.mortgagedProperties = new ArrayList<>();
         this.password = password;
         this.infectionTurn = 0;
+        this.move = new Healthy();
+
     }
 
     public Player(){
@@ -296,4 +299,13 @@ public class Player {
         infectionTurn = 0;
     }
 
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public Object Next() {
+        return null;
+    }
 }

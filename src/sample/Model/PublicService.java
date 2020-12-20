@@ -42,6 +42,9 @@ public class PublicService extends Property{
         int publicServiceAmount = 0;
         ArrayList<Property> properties = owner.getProperties();
 
+        if ( onMortgage )
+            return 0;
+
         for ( counter = 0; counter < properties.size(); counter++ ){
             if ( properties.get(counter) instanceof PublicService ){
                 publicServiceAmount++;
