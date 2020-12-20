@@ -20,24 +20,20 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.Model.*;
 import sample.Model.Cell;
-//import sun.plugin2.ipc.windows.WindowsNamedPipe;
-//import sun.security.jca.GetInstance;
+import sample.Controller.GameUI;
 
-//import javax.smartcardio.Card;
-//import javax.xml.soap.Text;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.ResourceBundle;
-import java.util.Scanner;
 
 public class GameEngine {
     //Properties
@@ -80,7 +76,7 @@ public class GameEngine {
     @FXML private ListView sellerPropertiesListView;
     @FXML private ComboBox clientsComboBox;
 
-    //MOrtgage popup elements
+    //Mortgage popup elements
     @FXML private Button mortgageAcceptButton;
     @FXML private Button mortgageCancelButton;
     @FXML private Label totalMortgageEarnLabel;
@@ -97,6 +93,23 @@ public class GameEngine {
 
     //Build house
     @FXML private AnchorPane gamePlay;
+
+    //Auction popup elements
+    @FXML private Button auctionCompleteButton;
+    @FXML private Text player1Label;
+    @FXML private Text player2Label;
+    @FXML private Text player3Label;
+    @FXML private Text player4Label;
+    @FXML private Text player1BidLabel;
+    @FXML private Text player2BidLabel;
+    @FXML private Text player3BidLabel;
+    @FXML private Text player4BidLabel;
+    @FXML private Slider player1BidSlider;
+    @FXML private Slider player2BidSlider;
+    @FXML private Slider player3BidSlider;
+    @FXML private Slider player4BidSlider;
+
+
     private final int MAX_PLAYERS = 5; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
     private final int MAX_BAN_TURN = 3;
@@ -150,6 +163,7 @@ public class GameEngine {
         turnlabel.setText("Round: " +  currentPlayer.getName());
         System.out.println("Piece 1 id = " + player_piece_1.getId());
     }
+
     public void updateUI(){
         for (Node node : property.getChildren()) {
             Label updateProperty =  (Label) node ;
@@ -220,9 +234,16 @@ public class GameEngine {
         propertiesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if(propertiesListView.getSelectionModel().getSelectedItem() == null)
+                    return;
                 for (Property p: currentPlayer.getProperties()) {
                     if(p.getName().equals(propertiesListView.getSelectionModel().getSelectedItem())){
-                        totalMortgageEarnLabel.setText((int)(Integer.parseInt(totalMortgageEarnLabel.getText()) + p.getPrice()*0.5) + "");
+                        if(currentPlayer.getMortgagedProperties().contains(p)){
+                            totalMortgagePayLabel.setText((int)(Integer.parseInt(totalMortgagePayLabel.getText()) - p.getPrice()*0.55) + "");
+                        }
+                        else{
+                            totalMortgageEarnLabel.setText((int)(Integer.parseInt(totalMortgageEarnLabel.getText()) + p.getPrice()*0.5) + "");
+                        }
                         break;
                     }
                 }
@@ -233,9 +254,16 @@ public class GameEngine {
         mortgagedPropertiesListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if(mortgagedPropertiesListView.getSelectionModel().getSelectedItem() == null)
+                    return;
                 for (Property p: currentPlayer.getProperties()) {
                     if(p.getName().equals(mortgagedPropertiesListView.getSelectionModel().getSelectedItem())){
-                        totalMortgagePayLabel.setText((int)(Integer.parseInt(totalMortgagePayLabel.getText()) + p.getPrice()*0.55) + "");
+                        if(currentPlayer.getMortgagedProperties().contains(p)){
+                            totalMortgagePayLabel.setText((int)(Integer.parseInt(totalMortgagePayLabel.getText()) + p.getPrice()*0.55) + "");
+                        }
+                        else{
+                            totalMortgageEarnLabel.setText((int)(Integer.parseInt(totalMortgageEarnLabel.getText()) - p.getPrice()*0.5) + "");
+                        }
                         break;
                     }
                 }
@@ -257,17 +285,12 @@ public class GameEngine {
                     }
                 }
             }
-            // get a handle to the stage
-            Stage stage = (Stage) mortgageAcceptButton.getScene().getWindow();
-            // do what you have to do
+
             updateMoneyUI();
-            stage.close();
+            mortgagePopup.close();
         });
         mortgageCancelButton.setOnAction(event1 -> {
-            // get a handle to the stage
-            Stage stage = (Stage) mortgageCancelButton.getScene().getWindow();
-            // do what you have to do
-            stage.close();
+            mortgagePopup.close();
         });
     }
 
@@ -343,6 +366,7 @@ public class GameEngine {
                     updateUI();
                     System.out.println("Exchange successfull");
                     updateMoneyUI();
+                    tradePopup.close();
                 }
                 else{
                     System.out.println("Excahnge failed");
@@ -354,20 +378,157 @@ public class GameEngine {
             tradePopup.close();
         });
         cancelTradeButton.setOnAction(eventCancelTrade -> {
-            // get a handle to the stage
-            Stage stage = (Stage) cancelTradeButton.getScene().getWindow();
-            // do what you have to do
-            stage.close();
+            tradePopup.close();
+        });
+    }
+
+    private void auction() throws IOException {
+        Stage auctionPopup = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/auction.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        auctionPopup.setScene(new Scene(root));
+
+        auctionPopup.initModality(Modality.APPLICATION_MODAL);
+        auctionPopup.initOwner(tradeButton.getScene().getWindow());
+        auctionPopup.show();
+        ArrayList<Player> bidders = new ArrayList<>();
+        for (Player p: players) {
+            if (p != currentPlayer)
+                bidders.add(p);
+        }
+        switch(bidders.size()) {
+            case 4:
+                player1Label.setText(bidders.get(0).getName());
+                player2Label.setText(bidders.get(1).getName());
+                player3Label.setText(bidders.get(2).getName());
+                player4Label.setText(bidders.get(3).getName());
+                player1BidSlider.setMax(bidders.get(0).getMoney() - 1);
+                player2BidSlider.setMax(bidders.get(1).getMoney() - 1);
+                player3BidSlider.setMax(bidders.get(2).getMoney() - 1);
+                player4BidSlider.setMax(bidders.get(3).getMoney() - 1);
+                break;
+            case 3:
+                player1Label.setText(bidders.get(0).getName());
+                player2Label.setText(bidders.get(1).getName());
+                player3Label.setText(bidders.get(2).getName());
+                player1BidSlider.setMax(bidders.get(0).getMoney() - 1);
+                player2BidSlider.setMax(bidders.get(1).getMoney() - 1);
+                player3BidSlider.setMax(bidders.get(2).getMoney() - 1);
+                player4BidSlider.setMax(0);
+                player4Label.setText("-");
+                break;
+            case 2:
+                player1Label.setText(bidders.get(0).getName());
+                player2Label.setText(bidders.get(1).getName());
+                player1BidSlider.setMax(bidders.get(0).getMoney() - 1);
+                player2BidSlider.setMax(bidders.get(1).getMoney() - 1);
+                player3BidSlider.setMax(0);
+                player4BidSlider.setMax(0);
+                player3Label.setText("-");
+                player4Label.setText("-");
+                break;
+            case 1:
+                player1Label.setText(bidders.get(0).getName());
+                player1BidSlider.setMax(bidders.get(0).getMoney() - 1);
+                player2BidSlider.setMax(0);
+                player3BidSlider.setMax(0);
+                player4BidSlider.setMax(0);
+                player2Label.setText("-");
+                player3Label.setText("-");
+                player4Label.setText("-");
+                break;
+            default:
+                System.out.println("There is no player to bid?");
+        }
+
+
+        player1BidSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                player1BidLabel.setText(((int)player1BidSlider.getValue()) + "");
+            }
+        });
+
+        player2BidSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                player2BidLabel.setText(((int)player2BidSlider.getValue()) + "");
+            }
+        });
+
+        player3BidSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                player3BidLabel.setText(((int)player3BidSlider.getValue()) + "");
+            }
+        });
+
+        player4BidSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                player4BidLabel.setText(((int)player4BidSlider.getValue()) + "");
+            }
+        });
+        Cell currentPosition = currentPlayer.getPosition();
+        auctionCompleteButton.setOnAction(event -> {
+            int max = Math.max(Math.max((int)player1BidSlider.getValue(), (int)player2BidSlider.getValue()) ,Math.max((int)player3BidSlider.getValue(), (int)player4BidSlider.getValue()));
+            if(max == 0)
+                System.out.println("Nobody buy this property");
+            else{
+                if(max == (int)player1BidSlider.getValue()){
+                    if(bidders.get(0).buyAuction( (Property) currentPosition, max )){
+
+                        updateUI();
+                        updateMoneyUI();
+                    }
+                    System.out.println("Player 1 wins the auction");
+                }
+                else if(max == (int)player2BidSlider.getValue()){
+                    if(bidders.get(1).buyAuction( (Property) currentPosition, max )){
+
+                        updateUI();
+                        updateMoneyUI();
+                    }
+                    System.out.println("Player 2 wins the auction");
+                }
+                else if(max == (int)player3BidSlider.getValue()){
+                    if(bidders.get(2).buyAuction( (Property) currentPosition, max )){
+
+                        updateUI();
+                        updateMoneyUI();
+                    }
+                    System.out.println("Player 3 wins the auction");
+                }
+                else if(max == (int)player4BidSlider.getValue()){
+                    if(bidders.get(3).buyAuction( (Property) currentPosition, max )){
+
+                        updateUI();
+                        updateMoneyUI();
+                    }
+                    System.out.println("Player 4 wins the auction");
+                }
+            }
+            auctionPopup.close();
         });
     }
 
     public void gameFlow(){
+
         card_container.setVisible(false);
         card_text.setWrapText(true);
         card_title.setWrapText(true);
 
-
         skipbtn.setOnAction(event -> {
+            if ( (currentPlayer.getPosition() instanceof Transportation || currentPlayer.getPosition() instanceof PublicService ) && !((Property) currentPlayer.getPosition()).hasOwner()){
+                try {
+                    auction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             nextTurn();
 
             if(currentPlayer.getBanTurn() > 0){
@@ -416,6 +577,11 @@ public class GameEngine {
             manageProperties();
         });
 
+        buyButton.setOnAction(event -> {
+
+            manageProperties();
+        });
+
         rollDice.setOnAction( event -> {
 
             movePlayer(dice.roll());
@@ -457,7 +623,7 @@ public class GameEngine {
                 buyButton.setDisable(true);
 
                 if(((CardCell) currentPosition).getType().equals("chance") ){
-                    Card randomCard = gameMap.drawCard("Chance");
+                    sample.Model.Card randomCard = gameMap.drawCard("Chance");
                     card_title.setText("Chance Card");
                     card_text.setText(randomCard.getMessage());
 
@@ -547,7 +713,7 @@ public class GameEngine {
 
         });
 
-    } //Update game state between turns
+    }//Update game state between turns
 
 
     public void nextTurn(){
@@ -555,7 +721,9 @@ public class GameEngine {
         turnlabel.setText("Round: " +  currentPlayer.getName());
         turns++;
     } //Get to the next turn. Triggered by pressing next turn button.
+
     public void createPopup(){} //Create pop up to confirm or to get user interaction
+
     public void handleInfection(){
 
         Cell currentPosition = currentPlayer.getPosition();
@@ -822,6 +990,7 @@ public class GameEngine {
         updateMoneyUI();
         gameMap.getCells().get(0).setVisitors(players);
     } //Initialize the given amount of players
+
     public void createMap(){
         gameMap.newMap();
         gameMap.addCell(new StartCell(735,735));
@@ -941,7 +1110,6 @@ public class GameEngine {
 
         moveUIPiece(currentPlayer.getPiece(),c.getX(),c.getY());
     }
-
     public void moveUIPiece(Pane piece,double x, double y){
         piece.setLayoutX(x);
         piece.setLayoutY(y);
