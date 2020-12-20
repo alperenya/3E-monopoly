@@ -4,6 +4,9 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
+/**
+ * This is the class for Cells
+ */
 public abstract class Cell {
 
     //properties
@@ -13,6 +16,10 @@ public abstract class Cell {
     protected double y;
 
     //methods
+
+    /**
+     * @return String Returns the name of the Cell
+     */
     public String getName() {
         return name;
     }
