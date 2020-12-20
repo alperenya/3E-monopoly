@@ -32,8 +32,8 @@
             <Image url="@../imgs/gamemap.png" />
          </image>
       </ImageView>
-      <Label fx:id="turnlabel" layoutX="217.0" layoutY="225.0" prefHeight="60.0" prefWidth="135.0" text="Round: Osman" />
-      <Label fx:id="diceLabel" layoutX="505.0" layoutY="560.0" prefHeight="60.0" prefWidth="135.0" text="Dice: -" />
+      <Label fx:id="turnlabel" layoutX="167.0" layoutY="179.0" prefHeight="60.0" prefWidth="360.0" styleClass="round-dice" text="Round: Osman" textFill="#6b1515" />
+      <Label fx:id="diceLabel" layoutX="508.0" layoutY="597.0" prefHeight="60.0" prefWidth="186.0" styleClass="round-dice" text="Dice: -" textFill="#6b1515" />
       <VBox layoutX="823.0" prefHeight="228.0" prefWidth="428.0" styleClass="general-scene">
          <children>
             <Label alignment="CENTER" prefHeight="62.0" prefWidth="456.0" style="-fx-font-weight: bold;" text="Players" textFill="WHITE">

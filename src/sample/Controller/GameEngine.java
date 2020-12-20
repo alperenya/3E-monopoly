@@ -540,7 +540,7 @@ public class GameEngine {
 
         skipbtn.setOnAction(event -> {
 
-
+            diceLabel.setText( "Dice: -" );
 
             if ( (currentPlayer.getPosition() instanceof Transportation || currentPlayer.getPosition() instanceof PublicService ) && !((Property) currentPlayer.getPosition()).hasOwner()){
                 try {
