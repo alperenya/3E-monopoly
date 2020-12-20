@@ -223,15 +223,6 @@
             </ImageView>
          </children>
       </Pane>
-      <Pane fx:id="player_piece_5" layoutX="50.0" layoutY="762.0" prefHeight="42.0" prefWidth="50.0">
-         <children>
-            <ImageView fitHeight="45.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../imgs/shoe.png" />
-               </image>
-            </ImageView>
-         </children>
-      </Pane>
       <Pane fx:id="card_container" layoutX="234.0" layoutY="286.0" prefHeight="254.0" prefWidth="372.0" styleClass="community-chance-card" stylesheets="@../style.css">
          <children>
             <Label fx:id="card_title" alignment="CENTER" layoutX="24.0" layoutY="14.0" prefHeight="21.0" prefWidth="337.0" style="-fx-font-weight: bold;" text="card_type" textFill="WHITE">
