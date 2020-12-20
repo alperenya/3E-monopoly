@@ -34,6 +34,7 @@ import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class GameEngine {
     //Properties
@@ -521,6 +522,8 @@ public class GameEngine {
         card_title.setWrapText(true);
 
         skipbtn.setOnAction(event -> {
+
+
             if ( (currentPlayer.getPosition() instanceof Transportation || currentPlayer.getPosition() instanceof PublicService ) && !((Property) currentPlayer.getPosition()).hasOwner()){
                 try {
                     auction();
@@ -534,11 +537,13 @@ public class GameEngine {
             if(currentPlayer.getBanTurn() > 0){
                 currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
                 nextTurn();
-                rollDice.setDisable(false);
-                buyButton.setDisable(false);
-                card_container.setVisible(false);
-                return;
+                //rollDice.setDisable(false);
+                //buyButton.setDisable(false);
+                //card_container.setVisible(false);
+                //return;
             }
+
+
 
             rollDice.setDisable(false);
             buyButton.setDisable(false);
@@ -584,7 +589,11 @@ public class GameEngine {
 
         rollDice.setOnAction( event -> {
 
-            movePlayer(dice.roll());
+            System.out.println("Roll dice: ");
+            Scanner sc = new Scanner(System.in);
+            //sc.nextInt();
+            movePlayer(sc.nextInt());//dice.roll());
+
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
 
@@ -677,7 +686,7 @@ public class GameEngine {
 
                 currentPlayer.setPosition(gameMap.getCells().get(10));
                 currentPlayer.getPosition().addVisitor(currentPlayer);
-
+                currentPlayer.setBanTurn(MAX_BAN_TURN);
             }else if( currentPosition instanceof CoronaTest ){
                 if ( !currentPlayer.isHealthy() ){
 
@@ -685,8 +694,8 @@ public class GameEngine {
 
                     currentPlayer.setPosition(gameMap.getCells().get(10));
                     currentPlayer.getPosition().addVisitor(currentPlayer);
+                    currentPlayer.setBanTurn(MAX_BAN_TURN);
                 }
-                currentPlayer.setBanTurn(MAX_BAN_TURN * (MAX_PLAYERS - 1));
             }else if(currentPosition instanceof Transportation && ((Transportation) currentPosition).hasOwner()){
                 int rent = ((Transportation) currentPosition).calculateRent();
                 currentPlayer.setMoney( currentPlayer.getMoney() - rent );
@@ -709,8 +718,7 @@ public class GameEngine {
             }
 
             handleInfection();
-            managePatients();
-
+            //managePatients();
         });
 
     }//Update game state between turns
@@ -755,14 +763,14 @@ public class GameEngine {
             Neighbourhood neighbourhood = (Neighbourhood)currentPosition;
             if( !(neighbourhood.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
-                currentPlayer.setInfectionTurn( turns );
+                currentPlayer.setInfectionTurn( MAX_BAN_TURN * (MAX_PLAYERS - 1) );
             }
         }
         else if( currentPosition instanceof Transportation ){
             Transportation transportation = (Transportation) currentPosition;
             if( !(transportation.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
-                currentPlayer.setInfectionTurn( turns );
+                currentPlayer.setInfectionTurn( MAX_BAN_TURN * (MAX_PLAYERS - 1)  );
             }
         }
 
