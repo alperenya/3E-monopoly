@@ -5,6 +5,9 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
+/**
+ * This is the Bot class that extends the Player class to create non-human players
+ */
 public class Bot extends Player{
 
     //contructors
@@ -19,6 +22,10 @@ public class Bot extends Player{
         return false;
     }
 
+    /**
+     * This method is used to decide on mortgagingProperty by considering the money and a situation of RNG
+     * @return Boolean Returns the success of the process
+     */
     public Boolean decideMortgagingProperty()
     {
         if (money <= 0)
@@ -26,12 +33,24 @@ public class Bot extends Player{
         return false;
     }
 
+    /**
+     * This method is used to decide whether the bot should build on property or not
+     * @return Boolean Returns the success of the process
+     */
     public Boolean decideBuilding(){
         for (Property p:canBuild())
             return buildHouse((Neighbourhood) p);
         return false;
     }
 
+    /**
+     * This method is used to decide whether the bot should do a trade or not
+     * @param botProperty
+     * @param sellerProperty
+     * @param botMoney
+     * @param sellerMoney
+     * @return Boolean Returns the success of the process
+     */
     public Boolean decideTrading(Property botProperty, Property sellerProperty, int botMoney, int sellerMoney){
         if(canBuild().contains(botProperty))
             return false;
