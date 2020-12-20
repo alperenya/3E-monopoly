@@ -2,6 +2,9 @@ package sample.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This is the taxation class that manages the taxes from the players
+ */
 public class Taxation extends Cell {
     //properties
     private double taxRate;
@@ -32,6 +35,11 @@ public class Taxation extends Cell {
     }
 
     //methods
+
+    /**
+     * This method is used to extract tax money from the players
+     * @param player
+     */
     public void getMoneyFromUser(Player player) {
 
         /*int counter;
