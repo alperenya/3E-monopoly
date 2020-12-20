@@ -1288,20 +1288,22 @@ public class GameEngine {
 
     public void createPlayers(ArrayList<Player> createPlayer){
         pieces = new ArrayList<>(Arrays.asList(player_piece,player_piece_1,player_piece_2,player_piece_3,player_piece_4,player_piece_5));
-        playerCount = createPlayer.size();
-        botCount = MAX_PLAYERS - playerCount;
         ArrayList<String> shapes = new ArrayList<>( Arrays.asList( "hat", "car", "dog", "iron", "ship"));
 
         int counter = 0;
         for (Player p:createPlayer) {
-            players.add(new Player(p.getName(), pieces.get(0), shapes.get(counter), p.getPassword(), gameMap.getCells().get(0)));
-            pieces.remove(pieces.get(0));
-            counter++;
-        }
+            if(p instanceof Bot){
+                botCount++;
+                players.add(new Bot("bot" + botCount, pieces.get(0) , shapes.get(counter), "", gameMap.getCells().get(0)));
+                pieces.remove(pieces.get(0));
 
-        for(int i = 1; i <= botCount; i++){
-            players.add(new Bot("bot" + i, pieces.get(0) , shapes.get(i-1), "1234", gameMap.getCells().get(0)));
-            pieces.remove(pieces.get(0));
+            }
+            else if(p instanceof Player){
+                playerCount++;
+                players.add(new Player(p.getName(), pieces.get(0), shapes.get(counter), p.getPassword(), gameMap.getCells().get(0)));
+                pieces.remove(pieces.get(0));
+            }
+            counter++;
         }
 
 
@@ -1541,7 +1543,10 @@ public class GameEngine {
 
         ArrayList<Player> start = new ArrayList<>();
         start.add(new Player("Player", ""));
-
+        start.add(new Bot());
+        start.add(new Bot());
+        start.add(new Bot());
+        start.add(new Bot());
         this.startGame(start);
         this.gameFlow();
     }
@@ -1771,14 +1776,24 @@ public class GameEngine {
                 return;
             if(player1TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
                 start.add(new Player(player1NameTextField.getText(), player1PasswordBox.getText()));
+            else
+                start.add(new Bot());
             if(player2TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
                 start.add(new Player(player2NameTextField.getText(), player2PasswordBox.getText()));
+            else
+                start.add(new Bot());
             if(player3TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
                 start.add(new Player(player3NameTextField.getText(), player3PasswordBox.getText()));
+            else
+                start.add(new Bot());
             if(player4TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
                 start.add(new Player(player4NameTextField.getText(), player4PasswordBox.getText()));
+            else
+                start.add(new Bot());
             if(player5TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
                 start.add(new Player(player5NameTextField.getText(), player5PasswordBox.getText()));
+            else
+                start.add(new Bot());
 
             if(start.isEmpty())
                 return;
