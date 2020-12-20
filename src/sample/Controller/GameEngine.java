@@ -521,7 +521,17 @@ public class GameEngine {
                     currentPlayer.getPosition().addVisitor(currentPlayer);
                 }
                 currentPlayer.setBanTurn(MAX_BAN_TURN * (MAX_PLAYERS - 1));
+            }else if(currentPosition instanceof Transportation && ((Transportation) currentPosition).hasOwner()){
+                int rent = ((Transportation) currentPosition).calculateRent();
+                currentPlayer.setMoney( currentPlayer.getMoney() - rent );
+
+                Player owner = ((Transportation) currentPosition).getOwner();
+                owner.setMoney(owner.getMoney() + rent);
+
+                updateMoneyUI();
+                diceLabel.setText( "Dice: " + dice.roll() );
             }
+
 
             if(startCellPassed){
 
