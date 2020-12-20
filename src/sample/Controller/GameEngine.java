@@ -682,7 +682,7 @@ public class GameEngine {
 
             }else if( currentPosition instanceof BeInfected){
 
-                moveUIPiece(currentPlayer.getPiece(),65,735);
+                moveUIPiece(currentPlayer.getPiece(),65 + players.indexOf(currentPlayer) * 10 - 6,735 +  players.indexOf(currentPlayer) * 10 - 15);
 
                 currentPlayer.setPosition(gameMap.getCells().get(10));
                 currentPlayer.getPosition().addVisitor(currentPlayer);
@@ -939,11 +939,13 @@ public class GameEngine {
 
         for( Player player :  players){
 
-            if ( (turns == player.getInfectionTurn() + 3) && !player.isInQuarantine() && !player.isHealthy() ){
+            if ( (MAX_BAN_TURN * (MAX_PLAYERS - 1) <= player.getInfectionTurn() + 3) && !player.isInQuarantine() && !player.isHealthy() ){
                 player.setBanTurn( 3 );
                 moveUIPiece(player.getPiece(),65,735);
                 player.setPosition(gameMap.getCells().get(10));
                 player.getPosition().addVisitor(player);
+            }else if( player.isInQuarantine() ){
+                player.setBanTurn( player.getBanTurn() - 1 );
             }
         }
 
@@ -974,16 +976,9 @@ public class GameEngine {
     }
 
     public void createPlayers(){
-        //for(int i = 1; i <= playerCount; i++){
-            //Scanner sc = new Scanner(System.in);
-            //System.out.print("Please enter the name of player " + i + " :");
-            //String playerName = sc.nextLine();
-            //System.out.print("Please select the piece of player " + i + " " + pieces + ": ");
-            //String pieceName = sc.nextLine();
             pieces = new ArrayList<>(Arrays.asList(player_piece,player_piece_1,player_piece_2,player_piece_3,player_piece_4,player_piece_5));
             pieces.remove(player_piece);
             players.add(new Player("playerName", player_piece, "1234", gameMap.getCells().get(0)));
-        //}
         for(int i = 1; i <= botCount; i++){
             players.add(new Bot("bot" + i, pieces.get(0) , "1234", gameMap.getCells().get(0)));
             pieces.remove(pieces.get(0));
@@ -991,7 +986,7 @@ public class GameEngine {
 
         for(int i = 0; i <= players.size() - 1; i++){
             players.get(i).setMoney(STARTING_MONEY);
-            moveUIPiece(players.get(i).getPiece(),gameMap.getCells().get(0).getX(),gameMap.getCells().get(0).getY());
+            moveUIPiece( players.get(i).getPiece(),gameMap.getCells().get(0).getX() + i * 10 - 6, gameMap.getCells().get(0).getY() + i * 10 );
         }
 
 
@@ -1116,7 +1111,7 @@ public class GameEngine {
 
         diceLabel.setText( "Dice: " + amount );
 
-        moveUIPiece(currentPlayer.getPiece(),c.getX(),c.getY());
+        moveUIPiece( currentPlayer.getPiece(), c.getX() + players.indexOf(currentPlayer) * 10 - 6, c.getY() + players.indexOf(currentPlayer) * 10 - 15);
     }
     public void moveUIPiece(Pane piece,double x, double y){
         piece.setLayoutX(x);

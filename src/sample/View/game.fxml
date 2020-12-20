@@ -178,45 +178,45 @@
             </GridPane>
          </children>
       </VBox>
-      <Pane fx:id="player_piece" layoutX="40.0" layoutY="752.0" prefHeight="42.0" prefWidth="50.0">
+      <Pane fx:id="player_piece" layoutX="40.0" layoutY="752.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" prefHeight="25.0" prefWidth="25.0">
          <children>
-            <ImageView fitHeight="45.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imgs/hat.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
-      <Pane fx:id="player_piece_1" layoutX="50.0" layoutY="762.0" prefHeight="42.0" prefWidth="50.0">
+      <Pane fx:id="player_piece_1" layoutX="50.0" layoutY="762.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" prefHeight="25.0" prefWidth="25.0">
          <children>
-            <ImageView fitHeight="45.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imgs/car.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
-      <Pane fx:id="player_piece_2" layoutX="50.0" layoutY="762.0" prefHeight="42.0" prefWidth="50.0">
+      <Pane fx:id="player_piece_2" layoutX="50.0" layoutY="762.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" prefHeight="25.0" prefWidth="25.0">
          <children>
-            <ImageView fitHeight="45.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imgs/dog.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
-      <Pane fx:id="player_piece_3" layoutX="50.0" layoutY="762.0" prefHeight="42.0" prefWidth="50.0">
+      <Pane fx:id="player_piece_3" layoutX="50.0" layoutY="762.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" prefHeight="25.0" prefWidth="25.0">
          <children>
-            <ImageView fitHeight="45.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imgs/iron.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
-      <Pane fx:id="player_piece_4" layoutX="50.0" layoutY="762.0" prefHeight="42.0" prefWidth="50.0">
+      <Pane fx:id="player_piece_4" layoutX="50.0" layoutY="762.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" prefHeight="25.0" prefWidth="25.0">
          <children>
-            <ImageView fitHeight="45.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imgs/ship.png" />
                </image>
