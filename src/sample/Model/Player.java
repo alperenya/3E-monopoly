@@ -170,6 +170,15 @@ public class Player implements Iterator{
         this.inQuarantine = inQuarantine;
     }
 
+
+    /**
+     * Returns quarantine status of the player
+     * @return inQuarantine boolean
+     */
+    public boolean getQuarantine() {
+        return inQuarantine;
+    }
+
     /**
      * Checks whether the uesr can build on neighbourhoods
      * @return ArrayList Returns the slots where the player can build
@@ -348,7 +357,7 @@ public class Player implements Iterator{
     }
 
     public void setInfectionTurn( int turn ){
-        infectionTurn = 0;
+        infectionTurn = turn;
     }
 
     public void setShape( String shape ){
