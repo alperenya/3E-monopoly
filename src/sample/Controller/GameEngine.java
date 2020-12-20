@@ -504,7 +504,6 @@ public class GameEngine {
                         updateUI();
                         updateMoneyUI();
                     }
-                    System.out.println("Player 1 wins the auction");
                 }
                 else if(max == (int)player2BidSlider.getValue()){
                     if(bidders.get(1).buyAuction( (Property) currentPosition, max )){
@@ -512,7 +511,6 @@ public class GameEngine {
                         updateUI();
                         updateMoneyUI();
                     }
-                    System.out.println("Player 2 wins the auction");
                 }
                 else if(max == (int)player3BidSlider.getValue()){
                     if(bidders.get(2).buyAuction( (Property) currentPosition, max )){
@@ -520,7 +518,6 @@ public class GameEngine {
                         updateUI();
                         updateMoneyUI();
                     }
-                    System.out.println("Player 3 wins the auction");
                 }
                 else if(max == (int)player4BidSlider.getValue()){
                     if(bidders.get(3).buyAuction( (Property) currentPosition, max )){
@@ -528,7 +525,6 @@ public class GameEngine {
                         updateUI();
                         updateMoneyUI();
                     }
-                    System.out.println("Player 4 wins the auction");
                 }
             }
             auctionPopup.close();
@@ -640,7 +636,6 @@ public class GameEngine {
                 owner.setMoney(owner.getMoney() + rent);
 
                 updateMoneyUI();
-                diceLabel.setText( "Dice: " + dice.roll() );
             }
             else if(currentPosition instanceof Taxation){
 
@@ -1042,19 +1037,23 @@ public class GameEngine {
         for (Node node : name_grid.getChildren()) {
             Label label = (Label) node;
 
-            label.setText(players.get(playerCounter).getName() + "");
+            label.setText(players.get(playerCounter).getName() + " (" + players.get(playerCounter).getShape() + ") ");
             playerCounter++;
         }
 
     }
 
     public void createPlayers(){
-            pieces = new ArrayList<>(Arrays.asList(player_piece,player_piece_1,player_piece_2,player_piece_3,player_piece_4,player_piece_5));
+            pieces = new ArrayList<>(Arrays.asList(player_piece, player_piece_1, player_piece_2, player_piece_3, player_piece_4));
             pieces.remove(player_piece);
-            players.add(new Player("playerName", player_piece, "1234", gameMap.getCells().get(0)));
+            players.add(new Player("playerName", player_piece, "hat", "1234", gameMap.getCells().get(0)));
+
+            ArrayList<String> shapes = new ArrayList<>( Arrays.asList( "hat", "car", "dog", "iron", "ship"));
+
         for(int i = 1; i <= botCount; i++){
-            players.add(new Bot("bot" + i, pieces.get(0) , "1234", gameMap.getCells().get(0)));
+            players.add(new Bot("bot" + i, pieces.get(0) , shapes.get(i), "1234", gameMap.getCells().get(0)));
             pieces.remove(pieces.get(0));
+            System.out.println(shapes.get(i));
         }
 
         for(int i = 0; i <= players.size() - 1; i++){

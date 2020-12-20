@@ -9,7 +9,6 @@ public class Player implements Iterator{
     //properties
     protected String name;
     protected int money;
-    protected Pane piece;
     protected ArrayList<Property> properties;
     protected ArrayList<Property> mortgagedProperties;
     protected Cell position;
@@ -21,8 +20,15 @@ public class Player implements Iterator{
     protected int infectionTurn;
     protected Moveable move;
 
+    // it is string representation pf piece
+    protected String shape;
+
+    // it is for fxml to add
+    protected Pane piece;
+
+
     //constructors
-    public Player(String name, Pane piece, String password, Cell c){
+    public Player(String name, Pane piece, String shape,String password, Cell c){
         this.position = c;
         this.name = name;
         this.piece = piece;
@@ -35,7 +41,7 @@ public class Player implements Iterator{
         this.password = password;
         this.infectionTurn = 0;
         this.move = new Healthy();
-
+        this.shape = shape;
     }
 
     public Player(){
@@ -297,6 +303,14 @@ public class Player implements Iterator{
 
     public void setInfectionTurn( int turn ){
         infectionTurn = 0;
+    }
+
+    public void setShape( String shape ){
+        this.shape = shape;
+    }
+
+    public String getShape(){
+        return this.shape;
     }
 
     @Override
