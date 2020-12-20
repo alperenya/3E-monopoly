@@ -4,14 +4,8 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
-<<<<<<< HEAD
-/**
- * This is the Player class that defines the users
- */
-public class Player {
-=======
+
 public class Player implements Iterator{
->>>>>>> e9e386e4a17a633605f79e4d4bc61abdc6c0acd3
 
     //properties
     protected String name;
