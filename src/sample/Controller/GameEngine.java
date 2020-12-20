@@ -1,17 +1,10 @@
 package sample.Controller;
 
-//import com.sun.deploy.util.StringUtils;
-import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,16 +16,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import sample.Model.*;
 import sample.Model.Cell;
-import sample.Controller.GameUI;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,12 +29,12 @@ import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class GameEngine {
     //Properties
-    @FXML
-    private Button closeButton;
+
+    //These are properties that is for FXML. No need to use them in uml diagram beacuse they don't effect the logic.
+    @FXML private Button closeButton;
     private MediaPlayer mediaPlayer;
     @FXML private Slider soundControl;
     @FXML private Pane player_piece;
@@ -120,10 +108,12 @@ public class GameEngine {
     //draggable game screen
     double xOffset = 0;
     double yOffset = 0;
+    private  boolean startCellPassed = false;
 
 
+    // These are the main properties in the uml diagram. These properties effects game logic
     private final int MAX_PLAYERS = 5; //Will be decided after pressing create game button
-    private final int STARTING_MONEY = 1000000;
+    private final int STARTING_MONEY = 1500;
     private final int MAX_BAN_TURN = 3;
     private int playerCount;
     private int botCount; //Newly added. Will be decided after pressing create game button
@@ -154,26 +144,22 @@ public class GameEngine {
     public int getTurns(){ return turns;}
     public int getStartingMoney(){ return STARTING_MONEY;}
 
-    public GameUI getGameUI(){ return gameUI;}
-    public GameMap getMap(){ return gameMap;}
-    public ArrayList<Player> getPlayers(){ return players;}
-    public Dice getDice(){ return dice;}
-    public Player getCurrentPlayer(){return currentPlayer;}
-    public void setBotCount(int botCount){ this.botCount = botCount;}
+    public GameUI getGameUI(){ return gameUI; }
+    public GameMap getMap(){ return gameMap; }
+    public ArrayList<Player> getPlayers(){ return players; }
+    public Dice getDice(){ return dice; }
+    public Player getCurrentPlayer(){return currentPlayer; }
+    public void setBotCount(int botCount){ this.botCount = botCount; }
 
     //These methods will be working inside of the engine so I think they can be changed to private.
     public void startGame(int playerCount){ //Runs after deciding maxPlayers and
         this.playerCount = playerCount;
-        System.out.println("There are " + playerCount + " players. " + (MAX_PLAYERS-playerCount) + " bot(s) can be added.");
-        /*Scanner sc = new Scanner(System.in);
-        System.out.print("Please enter the number of bot: ");*/
         setBotCount(MAX_PLAYERS-playerCount);
 
         createMap();
         createPlayers();
         currentPlayer = players.get(0);
         turnlabel.setText("Round: " +  currentPlayer.getName());
-        System.out.println("Piece 1 id = " + player_piece_1.getId());
     }
 
     public void updateUI(){
@@ -202,9 +188,11 @@ public class GameEngine {
         }
         return bankrupted >= players.size() - 1;
     } //Finish the game if everybody is bankrupt except one
+
     public void setGameVolume(double volume){
         gameVolume = volume;
     }
+
     public void muteGame(){
         gameVolume = 0;
     } //Make the volume 0
@@ -492,6 +480,7 @@ public class GameEngine {
                 player4BidLabel.setText(((int)player4BidSlider.getValue()) + "");
             }
         });
+
         Cell currentPosition = currentPlayer.getPosition();
         auctionCompleteButton.setOnAction(event -> {
             int max = Math.max(Math.max((int)player1BidSlider.getValue(), (int)player2BidSlider.getValue()) ,Math.max((int)player3BidSlider.getValue(), (int)player4BidSlider.getValue()));
@@ -751,7 +740,6 @@ public class GameEngine {
             }
 
             handleInfection();
-            //managePatients();
         });
 
     }//Update game state between turns
@@ -798,8 +786,6 @@ public class GameEngine {
             if( !(neighbourhood.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
                 currentPlayer.setInfectionTurn( turns );
-                System.out.println( "Turns" + turns );
-                System.out.println( currentPlayer.getInfectionTurn() );
             }
         }
         else if( currentPosition instanceof Transportation ){
@@ -807,28 +793,10 @@ public class GameEngine {
             if( !(transportation.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
                 currentPlayer.setInfectionTurn( turns );
-                System.out.println( "Turns: " + turns );
-                System.out.println( currentPlayer.getInfectionTurn() );
 
             }
         }
 
-        /*for ( Player player : players ){
-
-            if( MAX_BAN_TURN * (MAX_PLAYERS - 1) + player.getInfectionTurn() <= turns ){
-
-                System.out.println( player.getName() + " bura " + player.getInfectionTurn() + " " + turns);
-
-                moveUIPiece(player.getPiece(),65 + players.indexOf(player) * 10 - 6,735 +  players.indexOf(player) * 10 - 15);
-                player.setPosition(gameMap.getCells().get(10));
-                player.getPosition().addVisitor(player);
-                player.setBanTurn(MAX_BAN_TURN);
-                player.setQuarantine(true);
-                updateHealthUI();
-
-            }
-
-        }*/
 
        updateHealthUI();
     } //Check the infection risk of the cell
@@ -902,7 +870,6 @@ public class GameEngine {
             imageView.setY( appendSizeForY );
 
             imageView.setRotate( 90 );
-            System.out.println( "sol" );
 
         }else if( neighbour.getX() == 755 ){ // sağ
 
@@ -911,14 +878,12 @@ public class GameEngine {
             imageView.setY( appendSizeForY );
 
             imageView.setRotate( 270 );
-            System.out.println( "sağ" );
 
         }else if( neighbour.getY() == 755 ){ // alt
 
             //Setting the image view parameters
             imageView.setX( appendSizeForX );
             imageView.setY( 708 );
-            System.out.println( "alt" );
 
         }else if( neighbour.getY() == 35 ){ // üst
 
@@ -927,7 +892,6 @@ public class GameEngine {
             imageView.setY( 98 );
 
             imageView.setRotate( 180 );
-            System.out.println( "üst" );
         }
 
         imageView.setFitHeight(17);
@@ -945,10 +909,6 @@ public class GameEngine {
             }
         }
         gamePlay.getChildren().add(imageView);
-
-        for( Node node : gamePlay.getChildren() ){
-            System.out.println(node.toString());
-        }
 
     }
 
@@ -991,7 +951,7 @@ public class GameEngine {
 
         });
 
-    } //
+    }
 
 
     public void handleBankruptcy(){
@@ -1000,7 +960,7 @@ public class GameEngine {
         Player p = null;
 
         for(int i = 0; i < players.size(); i++){
-            System.out.println(players.get(i).getName() +" "+ players.get(i).isBankrupt());
+
             if(players.get(i).isBankrupt()){
                 bankruptCount++;
             }else{
@@ -1014,8 +974,6 @@ public class GameEngine {
     } //Check the bankruptcy status of players
 
     private void EndGame(Player player) {
-        System.out.println("Game Over");
-        System.out.println(player.getName() + " WINS THIS GAME!");
 
         buyButton.setDisable(true);
         rollDice.setDisable(true);
@@ -1087,7 +1045,6 @@ public class GameEngine {
         for(int i = 1; i <= botCount; i++){
             players.add(new Bot("bot" + i, pieces.get(0) , shapes.get(i), "1234", gameMap.getCells().get(0)));
             pieces.remove(pieces.get(0));
-            System.out.println(shapes.get(i));
         }
 
         for(int i = 0; i <= players.size() - 1; i++){
@@ -1198,8 +1155,7 @@ public class GameEngine {
         gameMap.shuffleCards();
     } //Initialize the map
 
-    private  boolean startCellPassed = false;
-    //double x, double y
+
     private void movePlayer(int amount){
         int position = (amount + gameMap.getCells().indexOf(currentPlayer.getPosition()));
 
@@ -1348,15 +1304,9 @@ public class GameEngine {
 
     public void backButtonPushed(javafx.event.ActionEvent event) throws IOException {
 
-        //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/sample.fxml"));
-        //Scene settingsScene = new Scene( settingsParent );
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/sample.fxml"));
-        // loader.setController(this);
         Parent settingsParent = (Parent) loader.load();
         Scene mainScene = new Scene(settingsParent);
-
-        //window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         if(window == null){
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -1368,40 +1318,17 @@ public class GameEngine {
         }
     }
 
-    //@FXML private Button pauseContinueButton;
     public void gamePausedButtonPushed(javafx.event.ActionEvent event) throws IOException {
-
-        //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/pause.fxml"));
-
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/pause.fxml"));
         loader.setController(this);
-        //loader.getController();
 
         Parent settingsParent = (Parent) loader.load();
         pauseScene = new Scene( settingsParent );
 
-        //window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
         window.setScene(pauseScene);
         window.show();
 
-        //continueButtonPushed(gameScene);
-       //pauseContinueButton.setOnAction(event1 ->{
-         //   continueButtonPushed(gameScene);
-        //});
-
-
-        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/pause.fxml"));
-        Stage stage = new Stage();
-        stage.initOwner(pauseButton.getScene().getWindow());
-        stage.setScene(new Scene((Parent) loader.load()));
-
-        // showAndWait will block execution until the window closes...
-
-        stage.showAndWait();*/
-
-        //window.setScene(pauseScene);
     }
 
     public void adjustSoundButtonPushed(){
@@ -1413,8 +1340,6 @@ public class GameEngine {
             public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
 
                 mediaPlayer.volumeProperty().bindBidirectional( soundControl.valueProperty());
-                System.out.println( (soundControl.valueProperty().getClass()) );
-
             }
         });
     }
