@@ -2,6 +2,9 @@ package sample.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This is the class for Neighbourhood class that involves with corona risk and rent
+ */
 public class Neighbourhood extends Property {
     //properties
     private int houseCount;
@@ -47,6 +50,10 @@ public class Neighbourhood extends Property {
         this.coronaRisk = coronaRisk;
     }
 
+    /**
+     * This method is used to check whether the player has all of the colors of a property that increases the rent price.
+     * @return int Returns the calculated rent
+     */
     public int calculateRent( ) {
 
         if ( houseCount == 1 ){
