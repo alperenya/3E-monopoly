@@ -622,7 +622,7 @@ public class GameEngine {
         rollDice.setOnAction( event -> {
 
             skipbtn.setDisable( false );
-            movePlayer(25);
+            movePlayer(dice.roll());
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
 
