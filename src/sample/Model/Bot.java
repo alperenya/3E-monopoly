@@ -11,7 +11,7 @@ public class Bot extends Player{
     public Bot(String name, Pane piece, String password, Cell cell){
         super(name, piece, password, cell);
     }
-
+    public Bot(){}
     //methods
     public Boolean decideBuyingProperty(){
         if(position instanceof Property)
