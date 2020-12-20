@@ -622,13 +622,7 @@ public class GameEngine {
         rollDice.setOnAction( event -> {
 
             skipbtn.setDisable( false );
-
-            if(!currentPlayer.getName().equals("playerName")){
-                movePlayer(dice.roll());
-            }else{
-                movePlayer(30);
-            }
-
+            movePlayer(dice.roll());
 
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
@@ -722,7 +716,9 @@ public class GameEngine {
                 currentPlayer.getPosition().addVisitor(currentPlayer);
                 currentPlayer.setBanTurn(MAX_BAN_TURN);
                 currentPlayer.setQuarantine(true);
+                currentPlayer.setMoney(currentPlayer.getMoney() - 500);
                 updateHealthUI();
+                updateMoneyUI();
 
             }else if( currentPosition instanceof CoronaTest ){
                 if ( !currentPlayer.isHealthy() ){
