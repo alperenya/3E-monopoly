@@ -112,7 +112,7 @@ public class GameEngine {
 
 
     private final int MAX_PLAYERS = 5; //Will be decided after pressing create game button
-    private final int STARTING_MONEY = 100000;
+    private final int STARTING_MONEY = 10;
     private final int MAX_BAN_TURN = 3;
     private int playerCount;
     private int botCount; //Newly added. Will be decided after pressing create game button
@@ -524,6 +524,7 @@ public class GameEngine {
         skipbtn.setOnAction(event -> {
 
 
+
             if ( (currentPlayer.getPosition() instanceof Transportation || currentPlayer.getPosition() instanceof PublicService ) && !((Property) currentPlayer.getPosition()).hasOwner()){
                 try {
                     auction();
@@ -532,8 +533,11 @@ public class GameEngine {
                 }
             }
 
+
+
             nextTurn();
 
+            //Skips quarantined player
             if(currentPlayer.getBanTurn() > 0){
                 currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
                 nextTurn();
@@ -543,11 +547,16 @@ public class GameEngine {
                 //return;
             }
 
+            //Skips bankrupt player
+            if(currentPlayer.getMoney() < 0){
+                nextTurn();
+            }
 
 
             rollDice.setDisable(false);
             buyButton.setDisable(false);
             card_container.setVisible(false);
+            //handleBankruptcy();
 
         });
 
@@ -589,10 +598,10 @@ public class GameEngine {
 
         rollDice.setOnAction( event -> {
 
-            //System.out.println("Roll dice: ");
-            //Scanner sc = new Scanner(System.in);
+            System.out.println("Roll dice: ");
+            Scanner sc = new Scanner(System.in);
             //sc.nextInt();
-            movePlayer(dice.roll());
+            movePlayer(sc.nextInt());//dice.roll());
 
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
@@ -934,9 +943,10 @@ public class GameEngine {
     } //
 
 
-    public void handleBankruptcy(){} //Check the bankruptcy status of players
-    public void managePatients(){
+    public void handleBankruptcy(){
+    } //Check the bankruptcy status of players
 
+    public void managePatients(){
         for( Player player :  players){
 
             if ( (MAX_BAN_TURN * (MAX_PLAYERS - 1) <= player.getInfectionTurn() + 3) && !player.isInQuarantine() && !player.isHealthy() ){
@@ -960,7 +970,12 @@ public class GameEngine {
         for (Node node : money_grid.getChildren()) {
             Label label = (Label) node;
 
-            label.setText(players.get(playerCounter).getMoney() + "");
+            if(players.get(playerCounter).getMoney() >= 0){
+                label.setText(players.get(playerCounter).getMoney() + "");
+            }else{
+                label.setText("Bankrupt");
+            }
+
             playerCounter++;
         }
 
