@@ -1,5 +1,8 @@
 package sample.Model;
 
+/**
+ * This is the commerce that is used to ensure the safety of trading such as checking passwords and etc.
+ */
 public class  Commerce {
     //Properties
     private Player buyer;
@@ -19,6 +22,11 @@ public class  Commerce {
         this.requestedMoney = requestedMoney;
     }
     //Methods
+
+    /**
+     * This method is used to do an exchange of properties and money
+     * @return Boolean Returns the success of the process
+     */
     public boolean exchange(){
         if(seller instanceof Bot){
             if(!(((Bot) seller).decideTrading(requestedProperty, offeredProperty, requestedMoney, offeredMoney)))
