@@ -302,7 +302,7 @@ public class Player implements Iterator{
     }
 
     public void setInfectionTurn( int turn ){
-        infectionTurn = 0;
+        infectionTurn = turn;
     }
 
     public void setShape( String shape ){

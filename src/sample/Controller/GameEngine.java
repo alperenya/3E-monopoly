@@ -561,10 +561,6 @@ public class GameEngine {
             if(currentPlayer.getBanTurn() > 0){
                 currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
                 nextTurn();
-                //rollDice.setDisable(false);
-                //buyButton.setDisable(false);
-                //card_container.setVisible(false);
-                //return;
             }else{
                 currentPlayer.setQuarantine(false);
                 updateHealthUI();
@@ -795,7 +791,8 @@ public class GameEngine {
             if( !(neighbourhood.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
                 currentPlayer.setInfectionTurn( turns );
-                System.out.println( turns );
+                System.out.println( "Turns" + turns );
+                System.out.println( currentPlayer.getInfectionTurn() );
             }
         }
         else if( currentPosition instanceof Transportation ){
@@ -803,7 +800,9 @@ public class GameEngine {
             if( !(transportation.getCoronaRisk() < Math.random()) ){
                 currentPlayer.setHealth( false );
                 currentPlayer.setInfectionTurn( turns );
-                System.out.println( turns );
+                System.out.println( "Turns: " + turns );
+                System.out.println( currentPlayer.getInfectionTurn() );
+
             }
         }
 
