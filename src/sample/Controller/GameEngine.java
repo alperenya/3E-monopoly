@@ -123,7 +123,7 @@ public class GameEngine {
 
 
     private final int MAX_PLAYERS = 5; //Will be decided after pressing create game button
-    private final int STARTING_MONEY = 10;
+    private final int STARTING_MONEY = 1000000;
     private final int MAX_BAN_TURN = 3;
     private int playerCount;
     private int botCount; //Newly added. Will be decided after pressing create game button
@@ -622,7 +622,7 @@ public class GameEngine {
         rollDice.setOnAction( event -> {
 
             skipbtn.setDisable( false );
-            movePlayer(dice.roll());
+            movePlayer(25);
             rollDice.setDisable(true);
             Cell currentPosition = currentPlayer.getPosition();
 
@@ -1101,7 +1101,7 @@ public class GameEngine {
         gameMap.addCell(new CardCell("Chance","chance", 195, 35 ));
         gameMap.addCell(new Neighbourhood("Yenimahalle", 2400, 320, 0.3, "red", 260, 35  ));
         gameMap.addCell(new Neighbourhood("Mamak", 600, 80, 0.7, "red", 330, 35 ));
-        gameMap.addCell(new Transportation("Esenboga Airport", 2000, 300, 0.6, "black", 395, 35 ));
+        gameMap.addCell(new Transportation("Esenboğa", 2000, 300, 0.6, "black", 395, 35 ));
         gameMap.addCell(new Neighbourhood("Sıhhiye", 3200, 440, 0.6, "yellow", 460, 35  ));
         gameMap.addCell(new Neighbourhood("Emek", 2200,300, 0.55, "yellow", 525, 35 ));
         gameMap.addCell(new PublicService("ASKİ", 1500, 200, "white", 590, 35 ));
@@ -1111,7 +1111,7 @@ public class GameEngine {
         gameMap.addCell(new Neighbourhood("Cebeci", 1600,220, 0.75, "green", 755, 200 ));
         gameMap.addCell(new CardCell("Community Chest","community", 755, 260 ));
         gameMap.addCell(new Neighbourhood("Ulus", 3000, 400, 0.5, "green" , 755, 325 ));
-        gameMap.addCell(new Transportation("AŞTİ", 2000, 300, 0.9, "black", 755, 395 ));
+        gameMap.addCell(new Transportation("Aşti", 2000, 300, 0.9, "black", 755, 395 ));
         gameMap.addCell(new CardCell("Chance","chance", 755, 460 ));
         gameMap.addCell(new Neighbourhood("Çankaya", 1400,200, 0.3, "darkblue", 755, 525 ));
         gameMap.addCell(new Taxation("Luxury Tax", 0.23, 755, 590 ));

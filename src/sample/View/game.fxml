@@ -122,7 +122,7 @@
                   <Label prefHeight="17.0" prefWidth="138.0" text="YHT -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Railroad -&gt; Empty" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Kızılay -&gt; Empty" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="9" />
-                  <Label prefHeight="17.0" prefWidth="138.0" text="Sıhhıye -&gt; Empty" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                  <Label prefHeight="17.0" prefWidth="138.0" text="Sıhhiye -&gt; Empty" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="6" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Mamak -&gt; Empty" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Yenimahalle -&gt; Empty" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                   <Label prefHeight="17.0" prefWidth="138.0" text="Etimesgut -&gt; Empty" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="4" />
