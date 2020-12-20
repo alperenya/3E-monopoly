@@ -295,6 +295,15 @@ public class GameEngine {
         });
     }
 
+    @FXML private Label winnerLabel;
+    private void openWinPopup() throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/end.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        window.setScene(new Scene(root));
+
+    }
+
     private void openTradePopup(javafx.event.ActionEvent event) throws IOException {
         Stage tradePopup = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/trade.fxml"));
@@ -974,6 +983,13 @@ public class GameEngine {
         upgradeButton.setDisable(true);
         tradeButton.setDisable(true);
 
+
+        try {
+            openWinPopup();
+            winnerLabel.setText(player.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void managePatients(){
@@ -1235,9 +1251,9 @@ public class GameEngine {
         window.show();
     }
 
-    public void closeButtonAction(){
+    public void closeButtonAction(javafx.event.ActionEvent event) throws IOException{
         // get a handle to the stage
-        Stage stage = (Stage) closeButton.getScene().getWindow();
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         // do what you have to do
         stage.close();
     }
