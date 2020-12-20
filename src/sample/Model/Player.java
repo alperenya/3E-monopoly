@@ -4,6 +4,9 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
+/**
+ * This is the Player class that defines the users
+ */
 public class Player {
 
     //properties
@@ -89,13 +92,22 @@ public class Player {
         return password;
     }
 
-    public Boolean sellProperty(Property p){
-        properties.remove(p);
-        money += p.getPrice();
-        //p.setAvailability(true);
+    /**
+     * Sells the property of the user
+     * @param property
+     * @return Boolean Returns true
+     */
+    public Boolean sellProperty(Property property){
+        properties.remove(property);
+        money += property.getPrice();
         return true;
     }
 
+    /**
+     * Removes the property from the user and sets it available for the other players
+     * @param p
+     * @return Boolean Returns the success of the process
+     */
     public boolean removeProperty(Property p){
         if(properties.contains(p)){
             properties.remove(p);
@@ -106,6 +118,11 @@ public class Player {
         return false;
     }
 
+    /**
+     * Adds the property to the player and sets the ownership and availability
+     * @param p
+     * @return Boolean Returns the success of the process
+     */
     public boolean buyProperty(Property p){
         if( money > p.getPrice() && p.getAvailability() ){
             properties.add(p);
@@ -117,6 +134,12 @@ public class Player {
         return false;
     }
 
+    /**
+     * Buys the auction property p to the user
+     * @param p
+     * @param price
+     * @return Boolean Returns true
+     */
     public Boolean buyAuction(Property p, int price){
 
         properties.add(p);
@@ -140,6 +163,10 @@ public class Player {
         this.inQuarantine = inQuarantine;
     }
 
+    /**
+     * Checks whether the uesr can build on neighbourhoods
+     * @return ArrayList Returns the slots where the player can build
+     */
     public ArrayList<Property> canBuild(){
         ArrayList canBuild = new ArrayList<String>();
         ArrayList canBuildings = new ArrayList<Property>();
@@ -210,6 +237,11 @@ public class Player {
         return canBuildings;
     }
 
+    /**
+     * Builds house for the given neighbourhood and if it satisfies directly builds a hospital
+     * @param n
+     * @return Boolean Returns the success of the process
+     */
     public Boolean buildHouse(Neighbourhood n){
 
         if ( buildHospital(n) ){
@@ -237,6 +269,10 @@ public class Player {
         return false;
     }
 
+    /**
+     * Checks if the money of the player is less than 0, if so then sets the player bankrupt
+     * @return Boolean Returns the success of the process
+     */
     public Boolean setBankrupt(){
         if(money <= 0){
             isBankrupt = true;
@@ -266,7 +302,14 @@ public class Player {
         return true;
     }
 
-    //Will do the trading without any checks.
+    /**
+     * Does a trade transaction between the specified players with the requested money
+     * @param otherPlayer
+     * @param offeredMoney
+     * @param offeredProperty
+     * @param requestedMoney
+     * @param requestedProperty
+     */
     public void trade(Player otherPlayer, int offeredMoney, Property offeredProperty, int requestedMoney, Property requestedProperty){
 
         if(offeredProperty != null){
