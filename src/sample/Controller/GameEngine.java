@@ -97,8 +97,7 @@ public class GameEngine {
 
     //Build house
     @FXML private AnchorPane gamePlay;
-
-    private final int MAX_PLAYERS = 6; //Will be decided after pressing create game button
+    private final int MAX_PLAYERS = 5; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 100000;
     private final int MAX_BAN_TURN = 3;
     private int playerCount;
@@ -261,6 +260,7 @@ public class GameEngine {
             // get a handle to the stage
             Stage stage = (Stage) mortgageAcceptButton.getScene().getWindow();
             // do what you have to do
+            updateMoneyUI();
             stage.close();
         });
         mortgageCancelButton.setOnAction(event1 -> {
@@ -351,6 +351,7 @@ public class GameEngine {
             else{
                 System.out.println("Wrong password");
             }
+            tradePopup.close();
         });
         cancelTradeButton.setOnAction(eventCancelTrade -> {
             // get a handle to the stage
@@ -372,6 +373,10 @@ public class GameEngine {
             if(currentPlayer.getBanTurn() > 0){
                 currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
                 nextTurn();
+                rollDice.setDisable(false);
+                buyButton.setDisable(false);
+                card_container.setVisible(false);
+                return;
             }
 
             rollDice.setDisable(false);
@@ -515,7 +520,7 @@ public class GameEngine {
                     currentPlayer.setPosition(gameMap.getCells().get(10));
                     currentPlayer.getPosition().addVisitor(currentPlayer);
                 }
-                currentPlayer.setBanTurn(MAX_BAN_TURN);
+                currentPlayer.setBanTurn(MAX_BAN_TURN * (MAX_PLAYERS - 1));
             }
 
             if(startCellPassed){
@@ -531,7 +536,6 @@ public class GameEngine {
             managePatients();
 
         });
-
 
     } //Update game state between turns
 
@@ -741,7 +745,6 @@ public class GameEngine {
 
         });
 
-
     } //
 
 
@@ -848,7 +851,7 @@ public class GameEngine {
         gameMap.addCell(new Neighbourhood("Ulus", 3000, 400, 0.5, "green" , 755, 325 ));
         gameMap.addCell(new Transportation("AŞTİ", 2000, 300, 0.9, "black", 755, 395 ));
         gameMap.addCell(new CardCell("Chance","chance", 755, 460 ));
-        gameMap.addCell(new Neighbourhood("Kızılcahamam", 1400,200, 0.3, "darkblue", 755, 525 ));
+        gameMap.addCell(new Neighbourhood("Çankaya", 1400,200, 0.3, "darkblue", 755, 525 ));
         gameMap.addCell(new Taxation("Luxury Tax", 0.23, 755, 590 ));
         gameMap.addCell(new Neighbourhood("Kızılay", 1800,250, 0.95, "darkblue", 755, 655 ));
 
@@ -934,6 +937,10 @@ public class GameEngine {
         piece.setLayoutY(y);
     }
 
+    Stage window;
+    public Scene gameScene;
+    public Scene pauseScene;
+
     public void playButtonPushed(javafx.event.ActionEvent event) throws IOException {
 
         Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/playGame.fxml"));
@@ -947,30 +954,54 @@ public class GameEngine {
 
     public void settingsButtonPushed(javafx.event.ActionEvent event) throws IOException{
 
-        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/settings.fxml"));
+       /* Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/settings.fxml"));
         Scene settingsScene = new Scene( settingsParent );
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         window.setScene(settingsScene);
-        window.show();
+        window.show();*/
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/settings.fxml"));
+        loader.setController(this);
+        Parent settingsParent = (Parent) loader.load();
+        Scene settingsScene = new Scene( settingsParent );
+
+        if(window == null){
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(settingsScene);
+            window.show();
+        }else{
+            window.setScene(settingsScene);
+            window.show();
+        }
     }
 
     public void howToPlayButtonPushed(javafx.event.ActionEvent event) throws IOException{
 
-        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/howToPlay.fxml"));
+        //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/howToPlay.fxml"));
+        //Scene settingsScene = new Scene( settingsParent );
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/howToPlay.fxml"));
+        loader.setController(this);
+        Parent settingsParent = (Parent) loader.load();
         Scene settingsScene = new Scene( settingsParent );
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(settingsScene);
-        window.show();
+        if(window == null){
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(settingsScene);
+            window.show();
+        }else{
+            window.setScene(settingsScene);
+            window.show();
+        }
     }
 
     public void creditsButtonPushed(javafx.event.ActionEvent event) throws IOException{
 
         Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/credits.fxml"));
         Scene settingsScene = new Scene( settingsParent );
+
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -986,21 +1017,26 @@ public class GameEngine {
     }
 
     public void singlePlayerButtonPushed(javafx.event.ActionEvent event) throws IOException{
+        //if(gameScene == null){
+            //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
+            loader.setController(this);
+            Parent settingsParent = (Parent) loader.load();
+            //Scene settingsScene = new Scene( settingsParent );
+            gameScene = new Scene(settingsParent);
 
-        //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
-        GameEngine engine = new GameEngine();
-        loader.setController(this);
-        Parent settingsParent = (Parent) loader.load();
-        Scene settingsScene = new Scene( settingsParent );
+            window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            //window.setScene(settingsScene);
+            window.setScene(gameScene);
+            window.show();
+        System.out.println("start: " + loader.getController().toString());
+            this.startGame(1);
+            this.gameFlow();
+    }
 
-        window.setScene(settingsScene);
-        window.show();
-        System.out.println("Başladı: " + property);
-        this.startGame(1);
-        this.gameFlow();
+    public void continueButtonPushed(){//Scene scene
+        window.setScene(gameScene);
     }
 
     public void multiPlayerButtonPushed(javafx.event.ActionEvent event) throws IOException{
@@ -1016,24 +1052,60 @@ public class GameEngine {
 
     public void backButtonPushed(javafx.event.ActionEvent event) throws IOException {
 
-        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/sample.fxml"));
-        Scene settingsScene = new Scene( settingsParent );
+        //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/sample.fxml"));
+        //Scene settingsScene = new Scene( settingsParent );
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/sample.fxml"));
+        // loader.setController(this);
+        Parent settingsParent = (Parent) loader.load();
+        Scene mainScene = new Scene(settingsParent);
 
-        window.setScene(settingsScene);
-        window.show();
+        //window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        if(window == null){
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(mainScene);
+            window.show();
+        }else{
+            window.setScene(pauseScene);
+            window.show();
+        }
     }
 
+    //@FXML private Button pauseContinueButton;
     public void gamePausedButtonPushed(javafx.event.ActionEvent event) throws IOException {
 
-        Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/pause.fxml"));
-        Scene settingsScene = new Scene( settingsParent );
+        //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/pause.fxml"));
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        window.setScene(settingsScene);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/pause.fxml"));
+        loader.setController(this);
+        //loader.getController();
+
+        Parent settingsParent = (Parent) loader.load();
+        pauseScene = new Scene( settingsParent );
+
+        //window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(pauseScene);
         window.show();
+
+        //continueButtonPushed(gameScene);
+       //pauseContinueButton.setOnAction(event1 ->{
+         //   continueButtonPushed(gameScene);
+        //});
+
+
+        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/pause.fxml"));
+        Stage stage = new Stage();
+        stage.initOwner(pauseButton.getScene().getWindow());
+        stage.setScene(new Scene((Parent) loader.load()));
+
+        // showAndWait will block execution until the window closes...
+
+        stage.showAndWait();*/
+
+        //window.setScene(pauseScene);
     }
 
     public void adjustSoundButtonPushed(){
