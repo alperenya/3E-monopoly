@@ -557,6 +557,9 @@ public class GameEngine {
                 //buyButton.setDisable(false);
                 //card_container.setVisible(false);
                 //return;
+            }else{
+                currentPlayer.setQuarantine(false);
+                updateHealthUI();
             }
 
             //Skips bankrupt player
@@ -703,10 +706,11 @@ public class GameEngine {
             }else if( currentPosition instanceof BeInfected){
 
                 moveUIPiece(currentPlayer.getPiece(),65 + players.indexOf(currentPlayer) * 10 - 6,735 +  players.indexOf(currentPlayer) * 10 - 15);
-
                 currentPlayer.setPosition(gameMap.getCells().get(10));
                 currentPlayer.getPosition().addVisitor(currentPlayer);
                 currentPlayer.setBanTurn(MAX_BAN_TURN);
+                currentPlayer.setQuarantine(true);
+                updateHealthUI();
             }else if( currentPosition instanceof CoronaTest ){
                 if ( !currentPlayer.isHealthy() ){
 
@@ -794,6 +798,10 @@ public class GameEngine {
             }
         }
 
+       updateHealthUI();
+    } //Check the infection risk of the cell
+
+    private void updateHealthUI() {
         int counter = 0;
 
 
@@ -819,7 +827,7 @@ public class GameEngine {
             counter++;
 
         }
-    } //Check the infection risk of the cell
+    }
 
     public void manageBuildings( Neighbourhood neighbour ){
         InputStream stream = null;
