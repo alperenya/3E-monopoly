@@ -35,9 +35,15 @@ public class Bot extends Player{
     public Boolean decideTrading(Property botProperty, Property sellerProperty, int botMoney, int sellerMoney){
         if(canBuild().contains(botProperty))
             return false;
-        if(botProperty.getPrice() + botMoney < sellerProperty.getPrice() + sellerMoney)
-            return false;
-        return true;
+        if (sellerProperty == null){
+            return botProperty.getPrice() + botMoney <= sellerMoney;
+        }
+        else if (botProperty == null){
+            return botMoney <= sellerProperty.getPrice() + sellerMoney;
+        }
+        else{
+            return botProperty.getPrice() + botMoney <= sellerProperty.getPrice() + sellerMoney;
+        }
     }
 
 }

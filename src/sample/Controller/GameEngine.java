@@ -363,7 +363,6 @@ public class GameEngine {
                 clientsComboBox.getItems().add(p.getName());
             }
         }
-
         clientsComboBox.setOnAction(eventComboBox -> {
             Player client = null;
             String clientName = (String) clientsComboBox.getSelectionModel().getSelectedItem();
@@ -378,7 +377,6 @@ public class GameEngine {
                 sellerPropertiesListView.getItems().add(p.getName());
             }
         });
-
         completeTradeButton.setOnAction(eventCompleteTrade -> {
             Player client = null;
             String clientName = (String) clientsComboBox.getSelectionModel().getSelectedItem();
@@ -389,43 +387,43 @@ public class GameEngine {
                 }
             }
             if (client == null) return;
-            if(buyerPasswordBox.getText().equals(currentPlayer.getPassword()) && sellerPasswordBox.getText().equals(client.getPassword())){
-                Property offeredProperty = null;
-                if (buyerPropertiesListView.getSelectionModel().getSelectedItem() != null){
-                    for (Property p:currentPlayer.getProperties()) {
-                        if (p.getName().equals((String) buyerPropertiesListView.getSelectionModel().getSelectedItem())){
-                            offeredProperty = p;
-                            break;
+            if(buyerPasswordBox.getText().equals(currentPlayer.getPassword())){
+                if(client instanceof Bot || sellerPasswordBox.getText().equals(client.getPassword())){
+                    Property offeredProperty = null;
+                    if (buyerPropertiesListView.getSelectionModel().getSelectedItem() != null){
+                        for (Property p:currentPlayer.getProperties()) {
+                            if (p.getName().equals((String) buyerPropertiesListView.getSelectionModel().getSelectedItem())){
+                                offeredProperty = p;
+                                break;
+                            }
                         }
                     }
-                }
 
-                Property requestedProperty = null;
-                if (sellerPropertiesListView.getSelectionModel().getSelectedItem() != null) {
-                    for (Property p : client.getProperties()) {
-                        if (p.getName().equals((String) sellerPropertiesListView.getSelectionModel().getSelectedItem())) {
-                            requestedProperty = p;
-                            break;
+                    Property requestedProperty = null;
+                    if (sellerPropertiesListView.getSelectionModel().getSelectedItem() != null) {
+                        for (Property p : client.getProperties()) {
+                            if (p.getName().equals((String) sellerPropertiesListView.getSelectionModel().getSelectedItem())) {
+                                requestedProperty = p;
+                                break;
+                            }
                         }
                     }
-                }
-
-                Commerce commerce = new Commerce(currentPlayer, client, offeredProperty, requestedProperty,
-                        Integer.parseInt(isNumeric(offeredMoneyBox.getText()) ? offeredMoneyBox.getText() : "0"), Integer.parseInt(isNumeric(requestedMoneyBox.getText()) ? requestedMoneyBox.getText() : "0"));
-                if (commerce.exchange()){
-                    updateUI();
-                    System.out.println("Exchange successfull");
-                    updateMoneyUI();
-                    tradePopup.close();
-                }
-                else{
-                    System.out.println("Excahnge failed");
+                    Commerce commerce = new Commerce(currentPlayer, client, offeredProperty, requestedProperty,
+                            Integer.parseInt(isNumeric(offeredMoneyBox.getText()) ? offeredMoneyBox.getText() : "0"), Integer.parseInt(isNumeric(requestedMoneyBox.getText()) ? requestedMoneyBox.getText() : "0"));
+                    if (commerce.exchange()){
+                        updateUI();
+                        System.out.println("Exchange successfull");
+                        updateMoneyUI();
+                        tradePopup.close();
+                    }
+                    else{
+                        System.out.println("Excahnge failed");
+                    }
                 }
             }
             else{
                 System.out.println("Wrong password");
             }
-            tradePopup.close();
         });
         cancelTradeButton.setOnAction(eventCancelTrade -> {
             tradePopup.close();
@@ -444,7 +442,7 @@ public class GameEngine {
         auctionPopup.show();
         ArrayList<Player> bidders = new ArrayList<>();
         for (Player p: players) {
-            if (p != currentPlayer)
+            if (p != currentPlayer && !(p instanceof Bot))
                 bidders.add(p);
         }
         switch(bidders.size()) {
@@ -489,7 +487,8 @@ public class GameEngine {
                 player4Label.setText("-");
                 break;
             default:
-                System.out.println("There is no player to bid?");
+                auctionPopup.close();
+                break;
         }
 
 
@@ -550,7 +549,6 @@ public class GameEngine {
                 }
                 else if(max == (int)player4BidSlider.getValue()){
                     if(bidders.get(3).buyAuction( (Property) currentPosition, max )){
-
                         updateUI();
                         updateMoneyUI();
                     }
@@ -1507,7 +1505,7 @@ public class GameEngine {
         System.out.println("Başladı: " + property);
 
         ArrayList<Player> start = new ArrayList<>();
-        start.add(new Player("Player", "1234"));
+        start.add(new Player("Player", ""));
 
         this.startGame(start);
         this.gameFlow();
@@ -1522,7 +1520,7 @@ public class GameEngine {
         Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/multi.fxml"));
         Scene settingsScene = new Scene( settingsParent );
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         window.setScene(settingsScene);
         window.show();
@@ -1730,9 +1728,7 @@ public class GameEngine {
             if(player5TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
                 start.add(new Player(player5NameTextField.getText(), player5PasswordBox.getText()));
 
-            //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
-            GameEngine engine = new GameEngine();
             loader.setController(this);
             Parent sp = null;
             try {
@@ -1740,12 +1736,11 @@ public class GameEngine {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Scene ss = new Scene( sp );
+            gameScene = new Scene( sp );
 
-            Stage w = (Stage)((Node)event1.getSource()).getScene().getWindow();
-
-            w.setScene(ss);
-            w.show();
+            window = (Stage)((Node)event1.getSource()).getScene().getWindow();
+            window.setScene(gameScene);
+            window.show();
             System.out.println("Multiplayer Başladı: " + property);
 
             this.startGame(start);

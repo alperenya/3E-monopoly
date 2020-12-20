@@ -242,7 +242,7 @@ public class Player implements Iterator{
         }
 
         for(Property p: properties){
-            if(canBuild.contains(p.getColor()) && (p instanceof Neighbourhood) ){
+            if(canBuild.contains(p.getColor()) && (p instanceof Neighbourhood)){
                 canBuildings.add(p);
             }
         }
