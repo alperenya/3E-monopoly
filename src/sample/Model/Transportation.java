@@ -2,6 +2,9 @@ package sample.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This is the transportation class like the train stations or airports
+ */
 public class Transportation extends Property {
     //properties
     private int rent;
@@ -32,6 +35,10 @@ public class Transportation extends Property {
 
     public void setCoronaRisk( double coronaRisk) { this.coronaRisk = coronaRisk; }
 
+    /**
+     * This method is used to calculate the rent of transportation cells as their rent increases each time a player owns another transportation slot
+     * @return int The rent of the property
+     */
     @Override
     public int calculateRent() {
         int counter;

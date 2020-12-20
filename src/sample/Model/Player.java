@@ -47,6 +47,11 @@ public class Player implements Iterator{
     public Player(){
     }
 
+    public Player(String name, String password){
+        this.name = name;
+        this.password = password;
+    }
+
     //methods
     public String getName() {
         return name;

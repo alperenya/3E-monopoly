@@ -24,8 +24,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -121,6 +123,35 @@ public class GameEngine {
     double xOffset = 0;
     double yOffset = 0;
 
+    //Multiplayer scene elements
+    @FXML private ChoiceBox player1TypeChoiceBox;
+    @FXML private ChoiceBox player2TypeChoiceBox;
+    @FXML private ChoiceBox player3TypeChoiceBox;
+    @FXML private ChoiceBox player4TypeChoiceBox;
+    @FXML private ChoiceBox player5TypeChoiceBox;
+    @FXML private PasswordField player1PasswordBox;
+    @FXML private PasswordField player2PasswordBox;
+    @FXML private PasswordField player3PasswordBox;
+    @FXML private PasswordField player4PasswordBox;
+    @FXML private PasswordField player5PasswordBox;
+    @FXML private TextField player1NameTextField;
+    @FXML private TextField player2NameTextField;
+    @FXML private TextField player3NameTextField;
+    @FXML private TextField player4NameTextField;
+    @FXML private TextField player5NameTextField;
+    @FXML private Button player1ReadyButton;
+    @FXML private Button player2ReadyButton;
+    @FXML private Button player3ReadyButton;
+    @FXML private Button player4ReadyButton;
+    @FXML private Button player5ReadyButton;
+    @FXML private Label player1ReadyStatusLabel;
+    @FXML private Label player2ReadyStatusLabel;
+    @FXML private Label player3ReadyStatusLabel;
+    @FXML private Label player4ReadyStatusLabel;
+    @FXML private Label player5ReadyStatusLabel;
+    @FXML private Button multiplayerStartButton;
+    @FXML private Button multiplayerBackButton;
+
 
     private final int MAX_PLAYERS = 5; //Will be decided after pressing create game button
     private final int STARTING_MONEY = 1000000;
@@ -162,15 +193,13 @@ public class GameEngine {
     public void setBotCount(int botCount){ this.botCount = botCount;}
 
     //These methods will be working inside of the engine so I think they can be changed to private.
-    public void startGame(int playerCount){ //Runs after deciding maxPlayers and
-        this.playerCount = playerCount;
-        System.out.println("There are " + playerCount + " players. " + (MAX_PLAYERS-playerCount) + " bot(s) can be added.");
+    public void startGame(ArrayList<Player> createPlayer){ //Runs after deciding maxPlayers and
+        System.out.println("There are " + playerCount + " players. " + (botCount) + " bot(s) can be added.");
         /*Scanner sc = new Scanner(System.in);
         System.out.print("Please enter the number of bot: ");*/
-        setBotCount(MAX_PLAYERS-playerCount);
 
         createMap();
-        createPlayers();
+        createPlayers(createPlayer);
         currentPlayer = players.get(0);
         turnlabel.setText("Round: " +  currentPlayer.getName());
         System.out.println("Piece 1 id = " + player_piece_1.getId());
@@ -232,7 +261,7 @@ public class GameEngine {
         mortgagePopup.setScene(new Scene(root));
 
         mortgagePopup.initModality(Modality.APPLICATION_MODAL);
-        mortgagePopup.initOwner(tradeButton.getScene().getWindow());
+        mortgagePopup.initOwner(mortgageButton.getScene().getWindow());
         mortgagePopup.show();
 
         for (Property p:currentPlayer.getProperties()) {
@@ -575,6 +604,8 @@ public class GameEngine {
                 nextTurn();
             }
 
+            if(currentPlayer instanceof Bot)
+                nextTurn();
 
             rollDice.setDisable(false);
             buyButton.setDisable(false);
@@ -757,6 +788,156 @@ public class GameEngine {
     public void nextTurn(){
         currentPlayer = players.get((players.indexOf(currentPlayer) + 1)%players.size());
         turnlabel.setText("Round: " +  currentPlayer.getName());
+        if(currentPlayer instanceof Bot){
+            rollDice.setDisable(true);
+            skipbtn.setDisable(true);
+            tradeButton.setDisable(true);
+            upgradeButton.setDisable(true);
+            mortgageButton.setDisable(true);
+            buyButton.setDisable(true);
+            movePlayer(dice.roll());
+            Cell currentPosition = currentPlayer.getPosition();
+
+            if ( currentPosition instanceof PublicService  && ((PublicService)currentPosition).hasOwner() ){
+
+                int diceValue = dice.roll();
+
+                ((PublicService) currentPosition).setMultiplier( diceValue );
+                int rent = ((PublicService) currentPosition).calculateRent();
+
+
+                currentPlayer.setMoney( currentPlayer.getMoney() - rent );
+
+                Player owner = ((PublicService) currentPosition).getOwner();
+                owner.setMoney(owner.getMoney() + rent);
+
+                updateMoneyUI();
+                diceLabel.setText( "Dice: " + dice.roll() );
+            }
+            else if(currentPosition instanceof Taxation){
+
+                buyButton.setDisable(true);
+
+                ((Taxation) currentPosition).getMoneyFromUser(currentPlayer);
+
+                updateMoneyUI();
+
+            }else if(currentPosition instanceof StartCell){
+
+                buyButton.setDisable(true);
+
+                ((StartCell) currentPosition).payVisitors(currentPlayer);
+
+                updateMoneyUI();
+
+            }else if( currentPosition instanceof CardCell ){
+                buyButton.setDisable(true);
+
+                if(((CardCell) currentPosition).getType().equals("chance") ){
+                    Card randomCard = gameMap.drawCard("Chance");
+                    card_title.setText("Chance Card");
+                    card_text.setText(randomCard.getMessage());
+
+                    if(randomCard.getCardFunction().equals("payVisitor")){
+                        randomCard.payVisitor(currentPlayer,200);
+                    }else if(randomCard.getCardFunction().equals("getMoney")){
+                        randomCard.getMoneyFromUser(currentPlayer,200);
+                    }else if(randomCard.getCardFunction().equals("getPercent")){
+                        randomCard.getMoneyFromUser(currentPlayer,0.10);
+                    }else if(randomCard.getCardFunction().equals("vaccinate")){
+                        randomCard.vaccinate(currentPlayer);
+                    }else if(randomCard.getCardFunction().equals("infect")){
+                        randomCard.makeInfected(currentPlayer);
+                    }
+                    System.out.println("şans");
+                }
+
+                if(((CardCell) currentPosition).getType().equals("community") ){
+                    Card randomCard = gameMap.drawCard("CommunityChest");
+                    card_title.setText("Community Chest Card");
+                    card_text.setText(randomCard.getMessage());
+
+                    if(randomCard.getCardFunction().equals("payVisitor")){
+                        randomCard.payVisitor(currentPlayer,200);
+                    }else if(randomCard.getCardFunction().equals("getMoney")){
+                        randomCard.getMoneyFromUser(currentPlayer,200);
+                    }else if(randomCard.getCardFunction().equals("getPercent")){
+                        randomCard.getMoneyFromUser(currentPlayer,0.10);
+                    }else if(randomCard.getCardFunction().equals("vaccinate")){
+                        randomCard.vaccinate(currentPlayer);
+                    }else if(randomCard.getCardFunction().equals("infect")){
+                        randomCard.makeInfected(currentPlayer);
+                    }
+                    System.out.println("kamu fonu");
+                }
+
+                updateMoneyUI();
+                card_container.setVisible(true);
+            }else if( currentPosition instanceof Neighbourhood && ((Neighbourhood)currentPosition).hasOwner() ){
+
+                int rent = ((Neighbourhood) currentPosition).calculateRent();
+                currentPlayer.setMoney( currentPlayer.getMoney() - rent );
+
+                Player owner = ((Neighbourhood) currentPosition).getOwner();
+                owner.setMoney(owner.getMoney() + rent);
+
+                updateMoneyUI();
+                diceLabel.setText( "Dice: " + dice.roll() );
+
+            }else if( currentPosition instanceof BeInfected){
+
+                moveUIPiece(currentPlayer.getPiece(),65,735);
+
+                currentPlayer.setPosition(gameMap.getCells().get(10));
+                currentPlayer.getPosition().addVisitor(currentPlayer);
+
+            }else if( currentPosition instanceof CoronaTest ){
+                if ( !currentPlayer.isHealthy() ){
+
+                    moveUIPiece(currentPlayer.getPiece(),65,735);
+
+                    currentPlayer.setPosition(gameMap.getCells().get(10));
+                    currentPlayer.getPosition().addVisitor(currentPlayer);
+                }
+                currentPlayer.setBanTurn(MAX_BAN_TURN);
+            }
+
+            if(startCellPassed){
+
+                startCellPassed = false;
+                currentPlayer.setMoney(currentPlayer.getMoney() + 200);
+
+                updateMoneyUI();
+
+            }
+
+            ((Bot) currentPlayer).decideBuilding();
+            updateMoneyUI();
+            updateUI();
+            ((Bot) currentPlayer).decideBuyingProperty();
+            updateMoneyUI();
+            updateUI();
+            ((Bot) currentPlayer).decideMortgagingProperty();
+            updateMoneyUI();
+            updateUI();
+
+            handleInfection();
+            managePatients();
+            nextTurn();
+            if(currentPlayer.getBanTurn() > 0){
+                currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
+                nextTurn();
+            }
+
+            rollDice.setDisable(false);
+            skipbtn.setDisable(false);
+            tradeButton.setDisable(false);
+            upgradeButton.setDisable(false);
+            mortgageButton.setDisable(false);
+            buyButton.setDisable(false);
+            card_container.setVisible(false);
+
+        }
         turns++;
         skipbtn.setDisable( true );
     } //Get to the next turn. Triggered by pressing next turn button.
@@ -1071,24 +1252,30 @@ public class GameEngine {
 
     }
 
-    public void createPlayers(){
-            pieces = new ArrayList<>(Arrays.asList(player_piece, player_piece_1, player_piece_2, player_piece_3, player_piece_4));
-            pieces.remove(player_piece);
-            players.add(new Player("playerName", player_piece, "hat", "1234", gameMap.getCells().get(0)));
 
-            ArrayList<String> shapes = new ArrayList<>( Arrays.asList( "hat", "car", "dog", "iron", "ship"));
+    public void createPlayers(ArrayList<Player> createPlayer){
+        pieces = new ArrayList<>(Arrays.asList(player_piece,player_piece_1,player_piece_2,player_piece_3,player_piece_4,player_piece_5));
+        playerCount = createPlayer.size();
+        botCount = MAX_PLAYERS - playerCount;
+        ArrayList<String> shapes = new ArrayList<>( Arrays.asList( "hat", "car", "dog", "iron", "ship"));
+
+        int counter = 0;
+        for (Player p:createPlayer) {
+            players.add(new Player(p.getName(), pieces.get(0), shapes.get(counter), p.getPassword(), gameMap.getCells().get(0)));
+            pieces.remove(pieces.get(0));
+            counter++;
+        }
 
         for(int i = 1; i <= botCount; i++){
             players.add(new Bot("bot" + i, pieces.get(0) , shapes.get(i), "1234", gameMap.getCells().get(0)));
             pieces.remove(pieces.get(0));
-            System.out.println(shapes.get(i));
         }
+
 
         for(int i = 0; i <= players.size() - 1; i++){
             players.get(i).setMoney(STARTING_MONEY);
             moveUIPiece( players.get(i).getPiece(),gameMap.getCells().get(0).getX() + i * 10 - 6, gameMap.getCells().get(0).getY() + i * 10 );
         }
-
 
         updateMoneyUI();
         gameMap.getCells().get(0).setVisitors(players);
@@ -1290,39 +1477,40 @@ public class GameEngine {
     }
 
     public void singlePlayerButtonPushed(javafx.event.ActionEvent event) throws IOException{
-        //if(gameScene == null){
-            //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
-            loader.setController(this);
-            Parent settingsParent = (Parent) loader.load();
-            //Scene settingsScene = new Scene( settingsParent );
-            gameScene = new Scene(settingsParent);
 
-            window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
+        GameEngine engine = new GameEngine();
+        loader.setController(this);
+        Parent settingsParent = (Parent) loader.load();
+        gameScene = new Scene( settingsParent );
 
-            //window.setScene(settingsScene);
-            window.setScene(gameScene);
-            window.show();
+        settingsParent.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
 
+        settingsParent.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                window.setX(event.getScreenX() - xOffset);
+                window.setY(event.getScreenY() - yOffset);
+            }
+        });
 
-            settingsParent.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    xOffset = event.getSceneX();
-                    yOffset = event.getSceneY();
-                }
-            });
+        window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(gameScene);
+        window.show();
+        System.out.println("Başladı: " + property);
 
-            settingsParent.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    window.setX(event.getScreenX() - xOffset);
-                    window.setY(event.getScreenY() - yOffset);
-                }
-            });
+        ArrayList<Player> start = new ArrayList<>();
+        start.add(new Player("Player", "1234"));
 
-            this.startGame(1);
-            this.gameFlow();
+        this.startGame(start);
+        this.gameFlow();
     }
 
     public void continueButtonPushed(){//Scene scene
@@ -1338,6 +1526,245 @@ public class GameEngine {
 
         window.setScene(settingsScene);
         window.show();
+
+        player1TypeChoiceBox = (ChoiceBox) settingsScene.lookup("#player1TypeChoiceBox");
+        player2TypeChoiceBox = (ChoiceBox) settingsScene.lookup("#player2TypeChoiceBox");
+        player3TypeChoiceBox = (ChoiceBox) settingsScene.lookup("#player3TypeChoiceBox");
+        player4TypeChoiceBox = (ChoiceBox) settingsScene.lookup("#player4TypeChoiceBox");
+        player5TypeChoiceBox = (ChoiceBox) settingsScene.lookup("#player5TypeChoiceBox");
+        player1PasswordBox = (PasswordField) settingsScene.lookup("#player1PasswordBox");
+        player2PasswordBox = (PasswordField) settingsScene.lookup("#player2PasswordBox");
+        player3PasswordBox = (PasswordField) settingsScene.lookup("#player3PasswordBox");
+        player4PasswordBox = (PasswordField) settingsScene.lookup("#player4PasswordBox");
+        player5PasswordBox = (PasswordField) settingsScene.lookup("#player5PasswordBox");
+        player1NameTextField = (TextField) settingsScene.lookup("#player1NameTextField");
+        player2NameTextField = (TextField) settingsScene.lookup("#player2NameTextField");
+        player3NameTextField = (TextField) settingsScene.lookup("#player3NameTextField");
+        player4NameTextField = (TextField) settingsScene.lookup("#player4NameTextField");
+        player5NameTextField = (TextField) settingsScene.lookup("#player5NameTextField");
+        player1ReadyButton = (Button) settingsScene.lookup("#player1ReadyButton");
+        player2ReadyButton = (Button) settingsScene.lookup("#player2ReadyButton");
+        player3ReadyButton = (Button) settingsScene.lookup("#player3ReadyButton");
+        player4ReadyButton = (Button) settingsScene.lookup("#player4ReadyButton");
+        player5ReadyButton = (Button) settingsScene.lookup("#player5ReadyButton");
+        player1ReadyStatusLabel = (Label) settingsScene.lookup("#player1ReadyStatusLabel");
+        player2ReadyStatusLabel = (Label) settingsScene.lookup("#player2ReadyStatusLabel");
+        player3ReadyStatusLabel = (Label) settingsScene.lookup("#player3ReadyStatusLabel");
+        player4ReadyStatusLabel = (Label) settingsScene.lookup("#player4ReadyStatusLabel");
+        player5ReadyStatusLabel = (Label) settingsScene.lookup("#player5ReadyStatusLabel");
+        multiplayerStartButton = (Button) settingsScene.lookup("#multiplayerStartButton");
+        multiplayerBackButton = (Button) settingsScene.lookup("#multiplayerBackButton");
+
+        ArrayList<Player> start = new ArrayList<>();
+
+        player1TypeChoiceBox.setOnAction(event1 -> {
+            if(player1TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player")){
+                player1NameTextField.setVisible(true);
+                player1PasswordBox.setVisible(true);
+                player1ReadyButton.setVisible(true);
+                player1ReadyStatusLabel.setText("Not Ready");
+                player1ReadyStatusLabel.setTextFill(Color.web("#ddd05c")); //Yellow
+            }
+            else{
+                player1NameTextField.setVisible(false);
+                player1PasswordBox.setVisible(false);
+                player1ReadyButton.setVisible(false);
+                player1ReadyStatusLabel.setText("Ready");
+                player1ReadyStatusLabel.setTextFill(Color.web("#61f1a9")); //Green
+            }
+        });
+        player2TypeChoiceBox.setOnAction(event1 -> {
+            if(player2TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player")){
+                player2NameTextField.setVisible(true);
+                player2PasswordBox.setVisible(true);
+                player2ReadyButton.setVisible(true);
+                player2ReadyStatusLabel.setText("Not Ready");
+                player2ReadyStatusLabel.setTextFill(Color.web("#ddd05c")); //Yellow
+            }
+            else{
+                player2NameTextField.setVisible(false);
+                player2PasswordBox.setVisible(false);
+                player2ReadyButton.setVisible(false);
+                player2ReadyStatusLabel.setText("Ready");
+                player2ReadyStatusLabel.setTextFill(Color.web("#61f1a9")); //Green
+            }
+        });
+        player3TypeChoiceBox.setOnAction(event1 -> {
+            if(player3TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player")){
+                player3NameTextField.setVisible(true);
+                player3PasswordBox.setVisible(true);
+                player3ReadyButton.setVisible(true);
+                player3ReadyStatusLabel.setText("Not Ready");
+                player3ReadyStatusLabel.setTextFill(Color.web("#ddd05c")); //Yellow
+            }
+            else{
+                player3NameTextField.setVisible(false);
+                player3PasswordBox.setVisible(false);
+                player3ReadyButton.setVisible(false);
+                player3ReadyStatusLabel.setText("Ready");
+                player3ReadyStatusLabel.setTextFill(Color.web("#61f1a9")); //Green
+            }
+        });
+        player4TypeChoiceBox.setOnAction(event1 -> {
+            if(player4TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player")){
+                player4NameTextField.setVisible(true);
+                player4PasswordBox.setVisible(true);
+                player4ReadyButton.setVisible(true);
+                player4ReadyStatusLabel.setText("Not Ready");
+                player4ReadyStatusLabel.setTextFill(Color.web("#ddd05c")); //Yellow
+            }
+            else{
+                player4NameTextField.setVisible(false);
+                player4PasswordBox.setVisible(false);
+                player4ReadyButton.setVisible(false);
+                player4ReadyStatusLabel.setText("Ready");
+                player4ReadyStatusLabel.setTextFill(Color.web("#61f1a9")); //Green
+            }
+        });
+        player5TypeChoiceBox.setOnAction(event1 -> {
+            if(player5TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player")){
+                player5NameTextField.setVisible(true);
+                player5PasswordBox.setVisible(true);
+                player5ReadyButton.setVisible(true);
+                player5ReadyStatusLabel.setText("Not Ready");
+                player5ReadyStatusLabel.setTextFill(Color.web("#ddd05c")); //Yellow
+            }
+            else{
+                player5NameTextField.setVisible(false);
+                player5PasswordBox.setVisible(false);
+                player5ReadyButton.setVisible(false);
+                player5ReadyStatusLabel.setText("Ready");
+                player5ReadyStatusLabel.setTextFill(Color.web("#61f1a9")); //Green
+            }
+        });
+        player1TypeChoiceBox.getSelectionModel().select(0);
+        player2TypeChoiceBox.getSelectionModel().select(0);
+        player3TypeChoiceBox.getSelectionModel().select(0);
+        player4TypeChoiceBox.getSelectionModel().select(0);
+        player5TypeChoiceBox.getSelectionModel().select(0);
+
+        player1ReadyButton.setOnAction(event1 -> {
+            if(player1ReadyStatusLabel.getText().equals("Not Ready")){
+                player1ReadyStatusLabel.setText("Ready");
+                player1ReadyStatusLabel.setTextFill(Color.web("#61f1a9"));
+            }
+            else if(player1ReadyStatusLabel.getText().equals("Ready")){
+                player1ReadyStatusLabel.setText("Not Ready");
+                player1ReadyStatusLabel.setTextFill(Color.web("#ddd05c"));
+            }
+        });
+        player2ReadyButton.setOnAction(event1 -> {
+            if(player2ReadyStatusLabel.getText().equals("Not Ready")){
+                player2ReadyStatusLabel.setText("Ready");
+                player2ReadyStatusLabel.setTextFill(Color.web("#61f1a9"));
+            }
+            else if(player2ReadyStatusLabel.getText().equals("Ready")){
+                player2ReadyStatusLabel.setText("Not Ready");
+                player2ReadyStatusLabel.setTextFill(Color.web("#ddd05c"));
+            }
+        });
+        player3ReadyButton.setOnAction(event1 -> {
+            if(player3ReadyStatusLabel.getText().equals("Not Ready")){
+                player3ReadyStatusLabel.setText("Ready");
+                player3ReadyStatusLabel.setTextFill(Color.web("#61f1a9"));
+            }
+            else if(player3ReadyStatusLabel.getText().equals("Ready")){
+                player3ReadyStatusLabel.setText("Not Ready");
+                player3ReadyStatusLabel.setTextFill(Color.web("#ddd05c"));
+            }
+        });
+        player4ReadyButton.setOnAction(event1 -> {
+            if(player4ReadyStatusLabel.getText().equals("Not Ready")){
+                player4ReadyStatusLabel.setText("Ready");
+                player4ReadyStatusLabel.setTextFill(Color.web("#61f1a9"));
+            }
+            else if(player4ReadyStatusLabel.getText().equals("Ready")){
+                player4ReadyStatusLabel.setText("Not Ready");
+                player4ReadyStatusLabel.setTextFill(Color.web("#ddd05c"));
+            }
+        });
+        player5ReadyButton.setOnAction(event1 -> {
+            if(player5ReadyStatusLabel.getText().equals("Not Ready")){
+                player5ReadyStatusLabel.setText("Ready");
+                player5ReadyStatusLabel.setTextFill(Color.web("#61f1a9"));
+            }
+            else if(player5ReadyStatusLabel.getText().equals("Ready")){
+                player5ReadyStatusLabel.setText("Not Ready");
+                player5ReadyStatusLabel.setTextFill(Color.web("#ddd05c"));
+            }
+        });
+
+
+        multiplayerStartButton.setOnAction(event1 -> {
+            boolean flag = false;
+            if(!player1ReadyStatusLabel.getText().equals("Ready")){
+                player1ReadyStatusLabel.setTextFill(Color.web("#E74C3C"));
+                flag = true;
+            }
+            if(!player2ReadyStatusLabel.getText().equals("Ready")){
+                player2ReadyStatusLabel.setTextFill(Color.web("#E74C3C"));
+                flag = true;
+            }
+            if(!player3ReadyStatusLabel.getText().equals("Ready")){
+                player3ReadyStatusLabel.setTextFill(Color.web("#E74C3C"));
+                flag = true;
+            }
+            if(!player4ReadyStatusLabel.getText().equals("Ready")){
+                player4ReadyStatusLabel.setTextFill(Color.web("#E74C3C"));
+                flag = true;
+            }
+            if(!player5ReadyStatusLabel.getText().equals("Ready")){
+                player5ReadyStatusLabel.setTextFill(Color.web("#E74C3C"));
+                flag = true;
+            }
+            if (flag)
+                return;
+            if(player1TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
+                start.add(new Player(player1NameTextField.getText(), player1PasswordBox.getText()));
+            if(player2TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
+                start.add(new Player(player2NameTextField.getText(), player2PasswordBox.getText()));
+            if(player3TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
+                start.add(new Player(player3NameTextField.getText(), player3PasswordBox.getText()));
+            if(player4TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
+                start.add(new Player(player4NameTextField.getText(), player4PasswordBox.getText()));
+            if(player5TypeChoiceBox.getSelectionModel().getSelectedItem().equals("Player"))
+                start.add(new Player(player5NameTextField.getText(), player5PasswordBox.getText()));
+
+            //Parent settingsParent = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
+            GameEngine engine = new GameEngine();
+            loader.setController(this);
+            Parent sp = null;
+            try {
+                sp = (Parent) loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Scene ss = new Scene( sp );
+
+            Stage w = (Stage)((Node)event1.getSource()).getScene().getWindow();
+
+            w.setScene(ss);
+            w.show();
+            System.out.println("Multiplayer Başladı: " + property);
+
+            this.startGame(start);
+            this.gameFlow();
+        });
+        multiplayerBackButton.setOnAction(event1 -> {
+            Parent sp = null;
+            try {
+                sp = FXMLLoader.load(getClass().getResource("../view/playGame.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Scene ss = new Scene( sp );
+
+            Stage w = (Stage)((Node)event1.getSource()).getScene().getWindow();
+
+            w.setScene(ss);
+            w.show();
+        });
     }
 
     public void backButtonPushed(javafx.event.ActionEvent event) throws IOException {
@@ -1416,7 +1843,7 @@ public class GameEngine {
     private boolean isNumeric(final String str) {
 
         // null or empty
-        if (str == "" || str == null || str.length() == 0) {
+        if (str.equals("")  || str == null || str.length() == 0) {
             return false;
         }
         for (char c : str.toCharArray()) {

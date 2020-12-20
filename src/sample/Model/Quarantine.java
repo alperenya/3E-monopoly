@@ -2,6 +2,9 @@ package sample.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This is the Quarantine class for the quarantine slot
+ */
 public class Quarantine extends Cell{
 
     //properties

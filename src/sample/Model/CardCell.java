@@ -2,6 +2,9 @@ package sample.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This is the cardcell class
+ */
 public class CardCell extends Cell{
 
     //properties

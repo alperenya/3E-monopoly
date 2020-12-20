@@ -2,6 +2,9 @@ package sample.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This is an abstract class for the game cards like chance or community chest
+ */
 public abstract class Card{
     //properties
     private String message;
@@ -10,6 +13,8 @@ public abstract class Card{
     // abstract class has no constructers
 
     //methods
+
+
     public String getMessage(){ return message;}
     public String getCardFunction(){ return function;}
 

@@ -2,6 +2,9 @@ package sample.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This is the class for publicservice slots
+ */
 public class PublicService extends Property{
     //properties
     private int multiplier;
@@ -22,6 +25,7 @@ public class PublicService extends Property{
     }
 
     //methods
+
     public int getMultiplier() {
         return multiplier;
     }
@@ -36,6 +40,10 @@ public class PublicService extends Property{
 
     public void setBaseRent( int baseRent ){ this.baseRent = baseRent; }
 
+    /**
+     * This method is used to calculate the multiplied rent of the public service slot that differs each time by the dice roll
+     * @return
+     */
     @Override
     public int calculateRent() {
         int counter;

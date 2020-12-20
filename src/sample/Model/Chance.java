@@ -1,5 +1,8 @@
 package sample.Model;
 
+/**
+ * This is the Chance Card Class
+ */
 public class Chance extends Card {
 
     public Chance(){

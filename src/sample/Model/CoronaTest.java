@@ -2,6 +2,9 @@ package sample.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This is the class for test center
+ */
 public class CoronaTest extends Cell{
 
     //properties
@@ -19,6 +22,13 @@ public class CoronaTest extends Cell{
     }
 
     //methods
+
+    /**
+     * This method is used to make coronatest for the players
+     * @param visitors
+     * @param quarantineCell
+     * @return Boolean Returns the corona state of the players
+     */
     public Boolean coronaTest( ArrayList<Player> visitors, Cell quarantineCell ){
         int counter;
 

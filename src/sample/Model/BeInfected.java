@@ -2,6 +2,9 @@ package sample.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This is the class for go to quarantine(jail) slot
+ */
 public class BeInfected extends Cell {
 
     //properties
@@ -26,6 +29,12 @@ public class BeInfected extends Cell {
     }
 
     //methods
+
+    /**
+     * This method is used to infect a player who just landed on go to quarantine slot
+     * @param player
+     * @return Boolean Returns the succesion of the process
+     */
     private Boolean infect( Player player ){
         try {
             player.setHealth( false );
@@ -35,6 +44,14 @@ public class BeInfected extends Cell {
             return false;
         }
     }
+
+    /**
+     * Sends the player back to the quarantine slot
+     * @param player
+     * @param banNumber
+     * @param quarantineCell
+     * @return Boolean Returns the succesion of the process
+     */
     private Boolean sendQuarantine( Player player, int banNumber, Cell quarantineCell ){
         try {
             player.setBanTurn( banNumber );
@@ -54,6 +71,13 @@ public class BeInfected extends Cell {
         this.banNumber = banNumber;
     }
 
+    /**
+     * Starts Quarantine for a player
+     * @param player
+     * @param banNumber
+     * @param quarantineCell
+     * @return Boolean Returns the succesion of the process
+     */
     public Boolean startQuarantine( Player player, int banNumber, Cell quarantineCell ){
         try {
             this.infect( player );
@@ -64,6 +88,13 @@ public class BeInfected extends Cell {
             return false;
         }
     }
+
+    /**
+     * Starts Quarantine for a player
+     * @param player
+     * @param quarantineCell
+     * @return Boolean Returns the succesion of the process
+     */
     public Boolean startQuarantine( Player player, Cell quarantineCell ){
         try {
             this.infect( player );
