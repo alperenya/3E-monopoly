@@ -45,6 +45,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * This is the gameengine class that every class has an instance of in it
+ */
 public class GameEngine {
     //Properties
     @FXML
@@ -168,6 +171,7 @@ public class GameEngine {
     private Player currentPlayer; //Newly added. Current player of the turn
     private Dice dice; //Reference to the dice
 
+    //Default constructor
     public GameEngine(){
         playerCount = 0;
         botCount = 0;
@@ -179,7 +183,7 @@ public class GameEngine {
         players = new ArrayList<>();
         currentPlayer = null;
         dice = new Dice();
-    } //Default constructor
+    }
 
     public int getMaxPlayers(){ return MAX_PLAYERS;}
     public int getTurns(){ return turns;}
@@ -192,7 +196,10 @@ public class GameEngine {
     public Player getCurrentPlayer(){return currentPlayer;}
     public void setBotCount(int botCount){ this.botCount = botCount;}
 
-    //These methods will be working inside of the engine so I think they can be changed to private.
+    /**
+     * This method starts the game by initializing the map and players
+     * @param createPlayer
+     */
     public void startGame(ArrayList<Player> createPlayer){ //Runs after deciding maxPlayers and
         System.out.println("There are " + playerCount + " players. " + (botCount) + " bot(s) can be added.");
         /*Scanner sc = new Scanner(System.in);
@@ -223,6 +230,10 @@ public class GameEngine {
         }
     } // Updates the Property section
 
+    /**
+     * This methods checks if all players except one is bankrupt, if so ends the game
+     * @return
+     */
     public boolean finishGame(){
         int bankrupted = 0;
         for (Player p: players) {
@@ -230,13 +241,14 @@ public class GameEngine {
                 bankrupted++;
         }
         return bankrupted >= players.size() - 1;
-    } //Finish the game if everybody is bankrupt except one
+    }
     public void setGameVolume(double volume){
         gameVolume = volume;
     }
     public void muteGame(){
         gameVolume = 0;
     } //Make the volume 0
+
 
     public void manageProperties(){
 
@@ -430,6 +442,10 @@ public class GameEngine {
         });
     }
 
+    /**
+     * This method is used to make the auction interface and auction inbetween players
+     * @throws IOException
+     */
     private void auction() throws IOException {
         Stage auctionPopup = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/auction.fxml"));
@@ -558,6 +574,9 @@ public class GameEngine {
         });
     }
 
+    /**
+     * This method manages the game flow in terms of the players turn and their choices
+     */
     public void gameFlow(){
 
         card_container.setVisible(false);
@@ -783,6 +802,9 @@ public class GameEngine {
     }//Update game state between turns
 
 
+    /**
+     * This method prepares the board and skips to the next turn
+     */
     public void nextTurn(){
         currentPlayer = players.get((players.indexOf(currentPlayer) + 1)%players.size());
         turnlabel.setText("Round: " +  currentPlayer.getName());
@@ -1034,6 +1056,10 @@ public class GameEngine {
         }
     }
 
+    /**
+     * This method is used to manage the houses of a player in terms of their number and checks eligibility for building hotel
+     * @param neighbour
+     */
     public void manageBuildings( Neighbourhood neighbour ){
         InputStream stream = null;
         try {
@@ -1166,7 +1192,9 @@ public class GameEngine {
 
     } //
 
-
+    /**
+     * This method checks the bankruptcy status of players
+     */
     public void handleBankruptcy(){
 
         int bankruptCount = 0;
@@ -1184,8 +1212,12 @@ public class GameEngine {
         if(bankruptCount == (MAX_PLAYERS - 1)){
             EndGame(p);
         }
-    } //Check the bankruptcy status of players
+    }
 
+    /**
+     * This method is used to declare the winner of the game
+     * @param player
+     */
     private void EndGame(Player player) {
         System.out.println("Game Over");
         System.out.println(player.getName() + " WINS THIS GAME!");
@@ -1206,6 +1238,9 @@ public class GameEngine {
         }
     }
 
+    /**
+     * This method is used to manage the patients in terms of their remaning time in quarantine
+     */
     public void managePatients(){
         for( Player player :  players){
 
@@ -1219,7 +1254,7 @@ public class GameEngine {
             }
         }
 
-    } //Check the patient players
+    }
 
     public void handleCredits(){} //Go to credits scene
     public void handleSettings(){} //Go to settings menu
