@@ -36,13 +36,10 @@
       <Label fx:id="diceLabel" layoutX="508.0" layoutY="597.0" prefHeight="60.0" prefWidth="186.0" styleClass="round-dice" text="Dice: -" textFill="#6b1515" />
       <VBox layoutX="823.0" prefHeight="228.0" prefWidth="428.0" styleClass="general-scene">
          <children>
-            <Label alignment="CENTER" prefHeight="62.0" prefWidth="456.0" style="-fx-font-weight: bold;" text="Players" textFill="WHITE">
+            <Label alignment="CENTER" prefHeight="44.0" prefWidth="428.0" style="-fx-font-weight: bold;" text="Players" textFill="WHITE">
                <font>
                   <Font name="Apple Symbols" size="30.0" />
                </font>
-               <padding>
-                  <Insets bottom="30.0" />
-               </padding>
             </Label>
             <Pane prefHeight="155.0" prefWidth="318.0">
                <children>
@@ -172,7 +169,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="462.0" text="playerName                      Healthy" textAlignment="CENTER" textFill="WHITE" />
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="462.0" text="Player                      Healthy" textAlignment="CENTER" textFill="WHITE" />
                   <Label alignment="CENTER" prefHeight="17.0" prefWidth="485.0" text="bot1                      Healthy" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="4" />
                   <Label alignment="CENTER" prefHeight="17.0" prefWidth="492.0" text="bot2                      Healthy" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="3" />
                   <Label alignment="CENTER" prefHeight="17.0" prefWidth="519.0" text="bot3                     Healthy" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="2" />

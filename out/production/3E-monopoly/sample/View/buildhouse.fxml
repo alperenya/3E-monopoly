@@ -20,10 +20,6 @@
          </font>
       </Button>
       <Label alignment="CENTER" layoutX="238.0" layoutY="93.0" prefHeight="17.0" prefWidth="119.0" text="My Properties" textFill="WHITE" />
-      <Label fx:id="houseCount" layoutX="288.0" layoutY="163.0" prefHeight="17.0" prefWidth="40.0" text="3" textFill="WHITE" />
       <ComboBox fx:id="buildPropeties" layoutX="231.0" layoutY="124.0" maxWidth="-Infinity" prefHeight="25.0" prefWidth="154.0" promptText="Available Properties" visibleRowCount="5" />
-      <Label alignment="CENTER" layoutX="308.0" layoutY="163.0" prefHeight="17.0" prefWidth="61.0" text="Hospital" textFill="WHITE" />
-      <Label alignment="CENTER" layoutX="238.0" layoutY="163.0" prefHeight="17.0" prefWidth="40.0" text="House" textFill="WHITE" />
-      <Label fx:id="hospitalCount" layoutX="378.0" layoutY="163.0" prefHeight="17.0" prefWidth="31.0" text="1" textFill="WHITE" />
    </children>
 </AnchorPane>
