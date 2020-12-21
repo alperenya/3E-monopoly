@@ -1048,11 +1048,11 @@ public class GameEngine {
         InputStream stream = null;
         try {
             if( neighbour.getHouseCount() == 4 ){
-                stream = new FileInputStream("../imgs/hospital.png");
+                stream = new FileInputStream(getClass().getResource("../imgs/hospital.png").getFile());
                 neighbour.setCoronaRisk( neighbour.getCoronaRisk() * 0.5 );
             }
             else
-                stream = new FileInputStream("../imgs/house.png");
+                stream = new FileInputStream(getClass().getResource("../imgs/house.png").getFile());
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
