@@ -31,6 +31,7 @@ import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * This is the gameengine class that every class has an instance of in it
@@ -571,7 +572,7 @@ public class GameEngine {
      * This method manages the game flow in terms of the players turn and their choices
      */
     public void gameFlow(){
-
+        updateHealthUI();
         card_container.setVisible(false);
         card_text.setWrapText(true);
         card_title.setWrapText(true);
@@ -769,6 +770,8 @@ public class GameEngine {
                     currentPlayer.setPosition(gameMap.getCells().get(10));
                     currentPlayer.getPosition().addVisitor(currentPlayer);
                     currentPlayer.setBanTurn(MAX_BAN_TURN);
+                    currentPlayer.setQuarantine(true);
+                    updateHealthUI();
                 }
             }else if(currentPosition instanceof Transportation && ((Transportation) currentPosition).hasOwner()){
                 int rent = ((Transportation) currentPosition).calculateRent();
@@ -803,6 +806,7 @@ public class GameEngine {
     public void nextTurn(){
         currentPlayer = players.get((players.indexOf(currentPlayer) + 1)%players.size());
         turnlabel.setText("Round: " +  currentPlayer.getName());
+
         if(currentPlayer instanceof Bot){
             rollDice.setDisable(true);
             skipbtn.setDisable(true);
@@ -913,8 +917,8 @@ public class GameEngine {
 
                     currentPlayer.setPosition(gameMap.getCells().get(10));
                     currentPlayer.getPosition().addVisitor(currentPlayer);
+                    currentPlayer.setBanTurn(MAX_BAN_TURN);
                 }
-                currentPlayer.setBanTurn(MAX_BAN_TURN);
             }
 
             if(startCellPassed){
@@ -937,8 +941,10 @@ public class GameEngine {
             updateUI();
 
             handleInfection();
-            managePatients();
+            //managePatients();
+
             nextTurn();
+
             if(currentPlayer.getBanTurn() > 0){
                 currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
                 nextTurn();
@@ -1015,7 +1021,7 @@ public class GameEngine {
 
             Player player = players.get(counter);
 
-            if( updateHealth.getText().contains( player.getName() ) ){
+            //if( updateHealth.getText().contains( player.getName() ) ){
 
                 String updateLabel = player.getName() + "                     ";
 
@@ -1027,7 +1033,7 @@ public class GameEngine {
                     updateLabel = updateLabel + "Healhty";
                 }
                 updateHealth.setText( updateLabel );
-            }
+            //}
 
             counter++;
 
