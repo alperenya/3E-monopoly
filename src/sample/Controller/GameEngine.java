@@ -578,6 +578,7 @@ public class GameEngine {
         card_title.setWrapText(true);
         skipbtn.setDisable( true );
 
+
         skipbtn.setOnAction(event -> {
 
             diceLabel.setText( "Dice: -" );
@@ -598,14 +599,15 @@ public class GameEngine {
             nextTurn();
 
             //Heals quarantine leaving players
-            if(currentPlayer.getQuarantine() && currentPlayer.getBanTurn() <= 0){
+            if(currentPlayer.getQuarantine() && currentPlayer.getBanTurn() <= 0 ){
                 currentPlayer.setHealth(true);
                 currentPlayer.setQuarantine(false);
+                currentPlayer.setMove( new Healthy() );
                 updateHealthUI();
             }
 
             //Skips quarantined player
-            if(currentPlayer.getBanTurn() > 0 && currentPlayer.getQuarantine()){
+            if(currentPlayer.getBanTurn() > 0 && currentPlayer.getQuarantine() && currentPlayer.getMove() instanceof Patient ){
                 currentPlayer.setBanTurn(currentPlayer.getBanTurn() - 1);
                 nextTurn();
             }
@@ -759,6 +761,9 @@ public class GameEngine {
                 currentPlayer.setBanTurn(MAX_BAN_TURN);
                 currentPlayer.setQuarantine(true);
                 currentPlayer.setMoney(currentPlayer.getMoney() - 500);
+
+                currentPlayer.setMove( new Patient() );
+
                 updateHealthUI();
                 updateMoneyUI();
 
@@ -771,6 +776,7 @@ public class GameEngine {
                     currentPlayer.getPosition().addVisitor(currentPlayer);
                     currentPlayer.setBanTurn(MAX_BAN_TURN);
                     currentPlayer.setQuarantine(true);
+                    currentPlayer.setMove( new Patient() );
                     updateHealthUI();
                 }
             }else if(currentPosition instanceof Transportation && ((Transportation) currentPosition).hasOwner()){
@@ -807,6 +813,7 @@ public class GameEngine {
         currentPlayer = players.get((players.indexOf(currentPlayer) + 1)%players.size());
         turnlabel.setText("Round: " +  currentPlayer.getName());
 
+        //This is for bot player to move automatically
         if(currentPlayer instanceof Bot){
             rollDice.setDisable(true);
             skipbtn.setDisable(true);
@@ -906,6 +913,7 @@ public class GameEngine {
             }else if( currentPosition instanceof BeInfected){
 
                 moveUIPiece(currentPlayer.getPiece(),65,735);
+                currentPlayer.setMove( new Patient() );
 
                 currentPlayer.setPosition(gameMap.getCells().get(10));
                 currentPlayer.getPosition().addVisitor(currentPlayer);
@@ -913,6 +921,7 @@ public class GameEngine {
             }else if( currentPosition instanceof CoronaTest ){
                 if ( !currentPlayer.isHealthy() ){
 
+                    currentPlayer.setMove( new Patient() );
                     moveUIPiece(currentPlayer.getPiece(),65,735);
 
                     currentPlayer.setPosition(gameMap.getCells().get(10));
@@ -962,8 +971,6 @@ public class GameEngine {
         turns++;
         skipbtn.setDisable( true );
     } //Get to the next turn. Triggered by pressing next turn button.
-
-    public void createPopup(){} //Create pop up to confirm or to get user interaction
 
     public void handleInfection(){
 
@@ -1021,7 +1028,6 @@ public class GameEngine {
 
             Player player = players.get(counter);
 
-            //if( updateHealth.getText().contains( player.getName() ) ){
 
                 String updateLabel = player.getName() + "                     ";
 
@@ -1033,7 +1039,6 @@ public class GameEngine {
                     updateLabel = updateLabel + "Healhty";
                 }
                 updateHealth.setText( updateLabel );
-            //}
 
             counter++;
 
@@ -1230,8 +1235,6 @@ public class GameEngine {
 
     }
 
-    public void handleCredits(){} //Go to credits scene
-    public void handleSettings(){} //Go to settings menu
 
     public void updateMoneyUI(){
         int playerCounter = 0;

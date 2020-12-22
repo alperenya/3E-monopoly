@@ -94,6 +94,13 @@ public class Player implements Iterator{
         return mortgagedProperties;
     }
 
+    public Moveable getMove() {
+        return move;
+    }
+
+    public void setMove( Moveable moveOrNot ){
+        this.move = moveOrNot;
+    }
 
     public String getPassword() {
         return password;
